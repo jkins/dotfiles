@@ -55,7 +55,7 @@ au FileType taglist setlocal nornu
 au FileType fuf setlocal nornu
 au FileType fugitiveblame setlocal nu
 au FileType extradite setlocal nu
-au FileType qf setlocal nornu
+au FileType qf setlocal nornu nocursorline colorcolumn=
 " When vimrc is edited, reload it
 autocmd! bufwritepost .vimrc source $MYVIMRC
 autocmd! bufwritepost _vimrc source $MYVIMRC	" windows
