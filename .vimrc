@@ -44,7 +44,7 @@ endtry
 " events/autocmd
 " =============================================================================
 " position window at start
-au GUIEnter * winpos 100 100
+" au GUIEnter * winpos 100 100
 " leave insert mode after 15sec of no input
 au CursorHoldI * stopinsert
 au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
