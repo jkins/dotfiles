@@ -70,6 +70,7 @@ colorscheme jkins
 " =============================================================================
 set autoread			" autorefresh buffer when file changes
 set autoindent
+set autowrite			" autosave when leaving buffers
 set backspace=indent,eol,start
 set backup				" use backup ~ files
 set backupdir=$VIMRUNTIME\\temp\\
