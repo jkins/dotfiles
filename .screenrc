@@ -1,0 +1,29 @@
+caption splitonly "%?%F%{= wk}%:%{= Kw}%? %t%= %n "
+#caption splitonly "%?%F%{= Kw}%? %C%A %D %d-%m-%Y %{= Kw} %t%= %?%F%{= Kw}%:%{= Kb}%? %n "
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%{= KB}[ %{W}%H %{= KB}][%= %{= Kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{= KB}][%{W} %m/%d %C%A %{= KB}]"
+
+startup_message off
+defscrollback 3000
+autodetach on
+
+# Tweak termcap, terminfo, and termcapinfo  entries for best performance.
+termcap               linux           'AF=\E[3%dm:AB=\E[4%dm'
+termcap               xterm-color     'AF=\E[3%dm:AB=\E[4%dm'
+terminfo              linux           'AF=\E[3%p1%dm:AB=\E[4%p1%dm'
+terminfo              xterm-color     'AF=\E[3%p1%dm:AB=\E[4%p1%dm'
+
+# Allow xterm / Terminal scrollbars to access the scrollback buffer. This
+# enables the behavior you'd expect, instead of losing the content that scrolls
+# out of the window.
+termcapinfo           linux           ti@:te@
+termcapinfo           xterm-color     ti@:te@
+
+# Use visual bell instead of audio bell.
+vbell                 on              # default: ???
+
+# Message to be displayed when the visual bell is triggered.
+vbell_msg             " *beep* "
+
+shell bash
