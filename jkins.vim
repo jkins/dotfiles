@@ -35,10 +35,14 @@ endif
 :hi CursorColumn	guibg=#2D2D2D
 :hi CursorLine		guibg=#2D2D2D
 :hi Define							guifg=gold
-:hi DiffAdd			guibg=#071207	guifg=#D0D0D0	gui=none
-:hi DiffChange		guibg=#141410	guifg=#C0C0C0	gui=none
-:hi DiffDelete		guibg=#0A0302	guifg=#707070 	gui=none
-:hi DiffText		guibg=#242411	guifg=#F0F0F0	gui=none
+":hi DiffAdd			guibg=#071207	guifg=#D0D0D0	gui=none
+":hi DiffChange		guibg=#141410	guifg=#C0C0C0	gui=none
+":hi DiffDelete		guibg=#0A0302	guifg=#707070 	gui=none
+":hi DiffAdd			guibg=#003D00	guifg=#D0D0D0	gui=none
+:hi DiffAdd			guibg=#002400					gui=none
+:hi DiffChange		guibg=#19180A					gui=none
+:hi DiffDelete		guibg=#3B0500	guifg=#505050 	gui=none
+:hi DiffText		guibg=#2A291B					gui=none
 :hi Directory		guifg=#909090
 :hi Error 			guibg=#202020	guifg=#E8594E	gui=none
 :hi ErrorMsg		guibg=#E8594E 
@@ -93,11 +97,15 @@ endif
 " Show Marks
 :hi SignColumn		guibg=#000000	guifg=#8AC6F2	
 " lowercase
-:hi ShowMarksHll	guibg=#000000	guifg=#8AC6F2	
+":hi ShowMarksHll	guibg=#000000	guifg=#8AC6F2	
+:hi ShowMarksHll	guibg=#001E33
 " uppercase
-:hi ShowMarksHlu	guibg=#000000	guifg=#E8594E
+":hi ShowMarksHlu	guibg=#000000	guifg=#E8594E
+:hi ShowMarksHlu	guibg=#570800
 " everything else
+":hi ShowMarksHlo	guibg=#000000	guifg=#707070	
 :hi ShowMarksHlo	guibg=#000000	guifg=#707070	
 " multiple on one line
+":hi ShowMarksHlm	guibg=#000000	guifg=#8AC6F2	
 :hi ShowMarksHlm	guibg=#000000	guifg=#8AC6F2	
 
