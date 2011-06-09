@@ -9,72 +9,72 @@ call pathogen#helptags()
 filetype on
 filetype plugin indent on
 
-" settings	* value modified elsewhere
+" settings    * value modified elsewhere
 " =============================================================================
-set autoread			" autorefresh buffer when file changes
-set autoindent			" copy indent from previous line
-set autowrite			" autosave when leaving buffers
+set autoread            " autorefresh buffer when file changes
+set autoindent          " copy indent from previous line
+set autowrite           " autosave when leaving buffers
 set backspace=indent,eol,start
-set backup				" use backup ~ files
+set backup              " use backup ~ files
 set backupdir^=~/tmp//,$VIMRUNTIME/temp//
-set cmdheight=2			" commandbar height
+set cmdheight=2         " commandbar height
 set colorcolumn=80,120
-set columns=90			" *
+set columns=90          " *
 set completeopt=longest,menuone
-set copyindent			" copy previous indent
-set cursorline			" * highlight the current line
+set copyindent          " copy previous indent
+set cursorline          " * highlight the current line
 set directory^=~/tmp//,$VIMRUNTIME/temp//
 set encoding=utf-8
-set ffs=unix,dos		" default file types
-set foldmethod=indent	" fold lines at indentation
-set formatoptions=qrn1	" see :help fo-table
+set ffs=unix,dos        " default file types
+set foldmethod=indent   " fold lines at indentation
+set formatoptions=qrn1  " see :help fo-table
 set guitablabel=%!MyGuiTabLine()
-set hidden				" change buffer without saving
+set hidden              " change buffer without saving
 set history=1000
-set hlsearch			" highlight search terms
-set ignorecase			" lowercase search => case insensitive
-set incsearch			" search as you type
-set laststatus=2		" statusline is always second-to-last line
-set lazyredraw			" don't redraw when executing macros
+set hlsearch            " highlight search terms
+set ignorecase          " lowercase search => case insensitive
+set incsearch           " search as you type
+set laststatus=2        " statusline is always second-to-last line
+set lazyredraw          " don't redraw when executing macros
 set lines=45
 set listchars=tab:»\ ,trail:·,eol:¬
-"set magic				" leave magic at default settings
+"set magic              " leave magic at default settings
 set makeprg=ant\ -emacs
 set modelines=5
 set mouse=nvi
-set mousemodel=popup	" popup menu on right-click
-set nocompatible		" don't need vi compatibility
-set nowrap				" don't wrap text
+set mousemodel=popup    " popup menu on right-click
+set nocompatible        " don't need vi compatibility
+set nowrap              " don't wrap text
 set printoptions=paper:letter
-set rnu					" line numbers relative to current line
-set ruler				" show line/column in status bar
-set scrolloff=5			" keep current line n lines away from edge
-set shellpipe="2>"		" *
+set rnu                 " line numbers relative to current line
+set ruler               " show line/column in status bar
+set scrolloff=5         " keep current line n lines away from edge
+set shellpipe="2>"      " *
 set shiftround
 set shiftwidth=4
-set shortmess=atI		" short messages
-set showmatch			" highlight matching search items
-set showmode			" show the mode in the status bar
-set showtabline=2		" show tabline all the time
-set sidescrolloff=10	" keep cursor n columns away from edge
-set smartcase			" different cases make search case-sensitive
-"set smartindent		
+set shortmess=atI       " short messages
+set showmatch           " highlight matching search items
+set showmode            " show the mode in the status bar
+set showtabline=2       " show tabline all the time
+set sidescrolloff=10    " keep cursor n columns away from edge
+set smartcase           " different cases make search case-sensitive
+"set smartindent
 " looks like: /path/to/file [Git(master)] Tue 01/23/00 12:22 PM (unix){JAVA}[114,65][30%]
 set statusline=%F%m%r%h%w\ %{fugitive#statusline()}\ %{strftime(\"%a\ %m/%d/%y\ %I:%M\ %p\",\ getftime(expand('%')))}\ (%{&ff}){%Y}[%l,%v][%p%%]
 set smarttab
 if exists("+spelllang")
 	set spelllang=en_US
 endif
-set suffixes+=.class	" don't autocomplete these extensions
-set tabstop=4			" a tab is 4 characters wide
+set suffixes+=.class    " don't autocomplete these extensions
+set tabstop=4           " a tab is 4 characters wide
 set tabline=%!MyTabLine()
-set textwidth=0			" auto-newline after n chars (0 disabled)
+set textwidth=0         " auto-newline after n chars (0 disabled)
 set title
 set ttyfast
 set undodir=$VIMRUNTIME\\undo\\
-set undofile			" persistent undo
+set undofile            " persistent undo
 set virtualedit=block
-set visualbell			" flash editor instead of beeping on error
+set visualbell          " flash editor instead of beeping on error
 set wildmenu
 set wildmode=list:longest,full,full
 
@@ -98,8 +98,8 @@ endif
 " =============================================================================
 if has("gui_running")
 	set guifont=Consolas:h12:cANSI
-	set guioptions-=m	" turn off menu bar
-	set guioptions-=T	" turn off tool bar
+	set guioptions-=m    " turn off menu bar
+	set guioptions-=T    " turn off tool bar
 
 	" zoom levels
 	noremap <f1> :set guifont=Consolas:h3:cANSI<CR>
@@ -131,7 +131,7 @@ au FileType extradite setlocal nu
 au FileType qf setlocal nornu nocursorline colorcolumn=
 " When vimrc is edited, reload it
 au! bufwritepost .vimrc source $MYVIMRC
-au! bufwritepost _vimrc source $MYVIMRC	" windows
+au! bufwritepost _vimrc source $MYVIMRC    " windows
 
 " Enable cursorline only in the current buffer
 au BufEnter * setlocal cursorline
