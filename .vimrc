@@ -83,10 +83,6 @@ set wildmode=list:longest,full,full
 if has("win32") || has("win64") || has("dos32") || has("dos16")
 	source $VIMRUNTIME/mswin.vim
 	behave mswin
-	"this is breaking fugitive, not that important
-	"set shell=C:/cygwin/bin/bash
-	"set shellcmdflag=--login\ -c
-	"set shellxquote=\"
 	if $PATH =~? 'cygwin' && !exists("g:no_cygwin_shell")
 		set shell=bash
 		set shellpipe=2>&1\|tee
@@ -162,14 +158,14 @@ let g:showmarks_hlline_other = 0
 " =============================================================================
 let mapleader = ","
 let g:mapleader = ","
-" Leave cursor at position before editing started after repeat
-nmap . .'[
-" Repeat on all lines in visual selection
+" leave cursor at position before editing started after repeat
+nnoremap . .'[
+" repeat on all lines in visual selection
 vnoremap <silent> . :normal .<cr>
 " reselect selection after indenting
 vnoremap > >gv
 vnoremap < <gv
-" quick exit insert mode with jj
+" quick insert->normal mode with jj
 inoremap jj <ESC>
 " no need to hit shift to access command mode
 nnoremap ; :
@@ -266,12 +262,12 @@ vnoremap <leader>st :TlistToggle<cr>
 nnoremap <leader>on :NERDTree<cr>
 " YankRing
 nnoremap <leader>oy :YRShow<cr>
-" config - rc - vimrc
+" config - vimrc
 nnoremap <leader>oc :tabnew $MYVIMRC<cr>
-" split - vertical split and switch to it
-nnoremap <leader>ovs <C-w>v<C-w>l
 " split - horizontal split and switch to it
-nnoremap <leader>ohs <C-w>s
+nnoremap <leader>os <C-w>s
+" split - vertical split and switch to it
+nnoremap <leader>oS <C-w>v<C-w>l
 " tab
 nnoremap <leader>ot :tabnew<cr>
 " marks
