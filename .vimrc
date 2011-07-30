@@ -280,7 +280,7 @@ vnoremap <A-l> >gv
 " transparency on win32
 nnoremap <leader>T :call g:ToggleTrans()<cr>
 " toggle maximization
-nnoremap <leader>M :call g:ToggleMax()<cr>
+"nnoremap <leader>M :call g:ToggleMax()<cr>
 " snipmate
 inoremap <silent> <tab> <c-r>=TriggerSnippet()<cr>
 snoremap <silent> <tab> <esc>i<right><c-r>=TriggerSnippet()<cr>
