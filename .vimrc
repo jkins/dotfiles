@@ -252,9 +252,11 @@ nnoremap ]t :tabn<cr>
 " sort selection
 vnoremap <leader>S :sort<cr>
 " fast save
-nmap <leader>w :w!<cr>
+nnoremap <leader>w :w!<cr>
+vnoremap <leader>w :w!<cr>
 " switch to directory of open buffer
-map <leader>cd :cd %:p:h<cr>
+nnoremap <leader>cd :cd %:p:h<cr>
+vnoremap <leader>cd :cd %:p:h<cr>
 " Build
 map <leader>B :call g:MyMake()<cr>
 " / is literal search, <leader>/ is regex search, see :help magic
