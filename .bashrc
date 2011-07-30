@@ -241,10 +241,21 @@ export SVN_EDITOR='vim'
 alias g="opengvim"
 opengvim()
 {
-	if [ "$1" == "" ]; then
+	if [ "$1" == "" ]; then # no file given, just load gvim
 		gvim --servername GVIM &
-	else
-		gvim --servername GVIM --remote-tab-silent $@ &
+	elif [ -e "$1" ]; then # file exists in working dir, open it
+		gvim --servername GVIM --remote-silent $(cygpath -d $1) &
+	else # find file and open it
+		echo "'$1' not in working directory, searching..."
+		local file=$(find . -name "$1")
+		if [ -n "$file" ]; then
+			local filepath=$(cygpath -d $file)
+			echo "found at $file"
+			gvim --servername GVIM --remote-silent $filepath &
+		else
+			echo "not found"
+			return 1
+		fi
 	fi
 }
 
