@@ -199,7 +199,7 @@ let g:showmarks_hlline_other = 0
 let mapleader = ","
 let g:mapleader = ","
 " leave cursor at position before editing started after repeat
-nnoremap . .'[
+nnoremap . .`[
 " repeat on all lines in visual selection
 vnoremap <silent> . :normal .<cr>
 " reselect selection after indenting
