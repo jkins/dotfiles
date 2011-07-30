@@ -17,6 +17,7 @@ set autowrite           " autosave when leaving buffers
 set backspace=indent,eol,start
 set backup              " use backup ~ files
 set backupdir^=~/tmp//,$VIMRUNTIME/temp//
+"set bufhidden=hide		" allow buffers to be hidden
 set cmdheight=2         " commandbar height
 set colorcolumn=80,120
 set completeopt=longest,menuone
@@ -193,6 +194,8 @@ let g:showmarks_ignore_type = "hmpq"
 let g:showmarks_hlline_lower = 1
 let g:showmarks_hlline_upper = 1
 let g:showmarks_hlline_other = 0
+" minibufexplorer
+let g:miniBufExplShowBufNumbers = 0
 
 " mappings
 " =============================================================================
@@ -302,12 +305,14 @@ vnoremap <leader>t :TlistToggle<cr>
 
 " OPEN 
 " =============================================================================
+" buffers
+nnoremap <leader>ob :MiniBufExplorer<cr>
 " NERDTree explorer 
 nnoremap <leader>on :NERDTree<cr>
 " YankRing
 nnoremap <leader>oy :YRShow<cr>
 " config - vimrc
-nnoremap <leader>oc :tabnew $MYVIMRC<cr>
+nnoremap <leader>oc :e $MYVIMRC<cr>
 " split - horizontal split and switch to it
 nnoremap <leader>os <C-w>s
 " split - vertical split and switch to it
