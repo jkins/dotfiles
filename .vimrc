@@ -54,7 +54,7 @@ set shiftwidth=4
 set shortmess=atI       " short messages
 set showmatch           " highlight matching search items
 set showmode            " show the mode in the status bar
-set showtabline=2       " show tabline all the time
+set showtabline=1       " show tabline when there's more than one tab
 set sidescrolloff=10    " keep cursor n columns away from edge
 set smartcase           " different cases make search case-sensitive
 "set smartindent
