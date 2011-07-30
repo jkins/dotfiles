@@ -317,6 +317,8 @@ nnoremap <leader>MC :ShowMarksClearAll<cr>
 vnoremap <leader>MM :ShowMarksToggle<cr>
 vnoremap <leader>Mc :ShowMarksClearMark<cr>
 vnoremap <leader>MC :ShowMarksClearAll<cr>
+" diffmarks (what it should be called, not 'svndiff')
+nnoremap <leader>D :call Svndiff("prev")<cr>
 
 " OPEN 
 " =============================================================================
