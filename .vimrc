@@ -197,6 +197,9 @@ let g:showmarks_hlline_other = 0
 let g:showmarks_textupper = "\t"
 let g:showmarks_textlower = "\t"
 let g:showmarks_textother = "\t"
+" indent guides
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
 " minibufexplorer
 let g:miniBufExplShowBufNumbers = 0
 
