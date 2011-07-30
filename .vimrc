@@ -19,7 +19,6 @@ set backup              " use backup ~ files
 set backupdir^=~/tmp//,$VIMRUNTIME/temp//
 set cmdheight=2         " commandbar height
 set colorcolumn=80,120
-set columns=90          " *
 set completeopt=longest,menuone
 set copyindent          " copy previous indent
 set cursorline          " * highlight the current line
@@ -36,7 +35,6 @@ set ignorecase          " lowercase search => case insensitive
 set incsearch           " search as you type
 set laststatus=2        " statusline is always second-to-last line
 set lazyredraw          " don't redraw when executing macros
-set lines=45
 set listchars=tab:»\ ,trail:·,eol:¬
 "set magic              " leave magic at default settings
 set makeprg=ant\ -emacs
@@ -102,6 +100,9 @@ if has("gui_running")
 	noremap <f2> :set guifont=Consolas:h10:cANSI<CR>
 	noremap <f3> :set guifont=Consolas:h12:cANSI<CR>
 	noremap <f4> :set guifont=Consolas:h18:cANSI<CR>
+	" start at 45x90
+	set columns=90
+	set lines=45
 endif
 
 " language
