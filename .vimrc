@@ -79,6 +79,7 @@ set wildmode=list:longest,full,full
 " windows
 " =============================================================================
 if has("win32") || has("win64") || has("dos32") || has("dos16")
+	let g:mswindows=1
 	source $VIMRUNTIME/mswin.vim
 	behave mswin
 	if $PATH =~? 'cygwin' && !exists("g:no_cygwin_shell")
@@ -91,15 +92,26 @@ endif
 " gvim
 " =============================================================================
 if has("gui_running")
-	set guifont=Consolas:h12:cANSI
+	if g:mswindows
+		set guifont=Consolas:h12:cANSI
+		" zoom levels
+		noremap <f1> :set guifont=Consolas:h3:cANSI<CR>
+		noremap <f2> :set guifont=Consolas:h10:cANSI<CR>
+		noremap <f3> :set guifont=Consolas:h12:cANSI<CR>
+		noremap <f4> :set guifont=Consolas:h18:cANSI<CR>
+	else
+		set guifont=Inconsolata:h12:cANSI
+		" zoom levels
+		noremap <f1> :set guifont=Inconsolata:h3:cANSI<CR>
+		noremap <f2> :set guifont=Inconsolata:h10:cANSI<CR>
+		noremap <f3> :set guifont=Inconsolata:h12:cANSI<CR>
+		noremap <f4> :set guifont=Inconsolata:h18:cANSI<CR>
+
+	endif
+
 	set guioptions-=m    " turn off menu bar
 	set guioptions-=T    " turn off tool bar
-
-	" zoom levels
-	noremap <f1> :set guifont=Consolas:h3:cANSI<CR>
-	noremap <f2> :set guifont=Consolas:h10:cANSI<CR>
-	noremap <f3> :set guifont=Consolas:h12:cANSI<CR>
-	noremap <f4> :set guifont=Consolas:h18:cANSI<CR>
+	
 	" start at 45x90
 	set columns=90
 	set lines=45
