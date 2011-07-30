@@ -195,7 +195,7 @@ PS2="\[${COLOR_GRAY}\]› \[${COLOR_NONE}\]"
 
 
 # -----------------------------------------------------------------------------
-# Alias / Navigation
+# Alias
 # -----------------------------------------------------------------------------
 alias ..="cd .."
 alias ...="cd ../.."
@@ -206,10 +206,26 @@ alias ld="ls --color=auto -d */"
 alias ldl="ls --color=auto -ldA */"
 alias lt="ls --color=auto -FAhlt"
 alias cls='echo -n [2J' 
-cs()
-{
+alias gs="git status"
+alias gsr="git svn rebase"
+alias gsd="git svn dcommit"
+alias gsl="git svn log --show-commit"
+
+# cd + ls
+cs() {
 	cd "$@"
 	ls --color=auto -F
+}
+
+# find a file and go to its dir
+cdf() {
+	local path=$(find . -name $1)
+	if [ "$path" != "" ]; then
+		cd $(dirname $path)
+	else
+		echo "Didn't find '$1'"
+		return 1
+	fi
 }
 
 # dir bookmarks
