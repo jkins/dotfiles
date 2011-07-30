@@ -310,6 +310,13 @@ vnoremap <leader>n :call g:ToggleNuMode()<cr>
 " tags
 nnoremap <leader>t :TlistToggle<cr>
 vnoremap <leader>t :TlistToggle<cr>
+" showmarks
+nnoremap <leader>MM :ShowMarksToggle<cr>
+nnoremap <leader>Mc :ShowMarksClearMark<cr>
+nnoremap <leader>MC :ShowMarksClearAll<cr>
+vnoremap <leader>MM :ShowMarksToggle<cr>
+vnoremap <leader>Mc :ShowMarksClearMark<cr>
+vnoremap <leader>MC :ShowMarksClearAll<cr>
 
 " OPEN 
 " =============================================================================
