@@ -111,9 +111,7 @@ setTitle() {
 # add git ps1 if git is on this system
 prompt_git=$(builtin type -P git &>/dev/null; echo $?)
 
-# Looks like:  ――   …   »›
-# [host:.../path/to/pwd] (branch)
-# $
+# Special chars: ―  …  » ›
 setPrompt() {
 
 	# build 'return' string
@@ -133,10 +131,10 @@ setPrompt() {
 
 	local fillsize=${termwidth}-${#_ret_plain}-1
 	if [[ $fillsize -gt 0 ]]; then
-		fill="――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――"
-		fill="${fill:0:${fillsize}}"
+		local fill="――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――"
+		local fill="${fill:0:${fillsize}}"
 	else
-		fill=""
+		local fill=""
 	fi
 
 	_prompt_ret="${_prompt_ret}\[${COLOR_GRAY}\]${fill} ${curtime}\[${COLOR_NONE}\]\n"
@@ -176,7 +174,7 @@ setPrompt() {
 		setTitle ${USER}@${HOSTNAME}:${_pwd_plain}
 	fi
 
-	# add fillbar
+	# truncate working dir if needed
 	_prompt_firstline="[${_host}${_pwd_plain}]${prompt_git_ps1}"
 	let cut=${#_prompt_firstline}-${termwidth}+1
 	if [[ $cut -gt 0 ]]; then
