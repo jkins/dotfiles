@@ -194,6 +194,9 @@ let g:showmarks_ignore_type = "hmpq"
 let g:showmarks_hlline_lower = 1
 let g:showmarks_hlline_upper = 1
 let g:showmarks_hlline_other = 0
+let g:showmarks_textupper = "\t"
+let g:showmarks_textlower = "\t"
+let g:showmarks_textother = "\t"
 " minibufexplorer
 let g:miniBufExplShowBufNumbers = 0
 
