@@ -386,7 +386,8 @@ vnoremap <silent> # :<C-U>
 " toggles relative/absolute line numbers       
 " =============================================================================
 function! g:ToggleNuMode()
-	if(&rnu == 1)
+	let b:numode = exists('b:numode') ? !b:numode : 0
+	if b:numode
 		set nu
 	else
 		set rnu
