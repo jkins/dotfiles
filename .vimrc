@@ -365,8 +365,8 @@ nnoremap <leader>gd :Gdiff<cr>
 " blame
 nnoremap <leader>gb :Gblame<cr>
 " commit
-nnoremap <leader>gC :Gcommit<cr>
-" read (effectively reverts the current buffer to the git checkout version)
+nnoremap <leader>gc :Gcommit<cr>
+" read (effectively reverts the current buffer to the index version)
 nnoremap <leader>gr :Gread<cr>
 
 " search for selected text, forwards(*) or backwards(#)
