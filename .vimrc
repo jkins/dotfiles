@@ -200,6 +200,8 @@ let mapleader = ","
 let g:mapleader = ","
 " leave cursor at position before editing started after repeat
 nnoremap . .`[
+" make Y work like C and D (yank to end of line)
+nnoremap Y y$
 " repeat on all lines in visual selection
 vnoremap <silent> . :normal .<cr>
 " reselect selection after indenting
