@@ -319,6 +319,11 @@ vnoremap <leader>Mc :ShowMarksClearMark<cr>
 vnoremap <leader>MC :ShowMarksClearAll<cr>
 " diffmarks (what it should be called, not 'svndiff')
 nnoremap <leader>D :call Svndiff("prev")<cr>
+" show the active highlighting under the cursor
+nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
 
 " OPEN 
 " =============================================================================
