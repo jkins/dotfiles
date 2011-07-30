@@ -288,17 +288,17 @@ inoremap <silent> <s-tab> <c-r>=BackwardsSnippet()<cr>
 snoremap <silent> <s-tab> <esc>i<right><c-r>=BackwardsSnippet()<cr>
 inoremap <silent> <c-r><tab> <c-r>=ShowAvailableSnips()<cr>
 
-" SHOW
+" GENERAL
 " =============================================================================
 " details - tab/eol/whitespace chars
-nnoremap <leader>sd :call g:ToggleShowDetails()<cr>
-vnoremap <leader>sd :call g:ToggleShowDetails()<cr>
+nnoremap <leader>d :call g:ToggleShowDetails()<cr>
+vnoremap <leader>d :call g:ToggleShowDetails()<cr>
 " numbers - absolute/relative line numbers
-nnoremap <leader>sn :call g:ToggleNuMode()<cr>
-vnoremap <leader>sn :call g:ToggleNuMode()<cr>
+nnoremap <leader>n :call g:ToggleNuMode()<cr>
+vnoremap <leader>n :call g:ToggleNuMode()<cr>
 " tags
-nnoremap <leader>st :TlistToggle<cr>
-vnoremap <leader>st :TlistToggle<cr>
+nnoremap <leader>t :TlistToggle<cr>
+vnoremap <leader>t :TlistToggle<cr>
 
 " OPEN 
 " =============================================================================
