@@ -14,7 +14,7 @@ filetype plugin indent on
 set autoread            " autorefresh buffer when file changes
 set autoindent          " copy indent from previous line
 set autowrite           " autosave when leaving buffers
-set backspace=indent,eol,start
+set backspace=indent,eol,start " backspace behavior in insert mode 
 set backup              " use backup ~ files
 set backupdir^=~/tmp//,$VIMRUNTIME/temp//
 "set bufhidden=hide		" allow buffers to be hidden
@@ -127,10 +127,12 @@ endtry
 
 " events/autocmd
 " =============================================================================
+
 " leave insert mode after 15sec of no input
 au CursorHoldI * stopinsert
 au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
 au InsertLeave * let &updatetime=updaterestore
+
 " no line numbers for some buffers
 au FileType nerdtree setlocal nonu
 au FileType taglist setlocal nornu
@@ -139,6 +141,7 @@ au FileType fuf setlocal nornu
 au FileType fugitiveblame setlocal nu
 au FileType extradite setlocal nu
 au FileType qf setlocal nornu nocursorline colorcolumn=
+
 " When vimrc is edited, reload it
 au! bufwritepost .vimrc source $MYVIMRC
 au! bufwritepost _vimrc source $MYVIMRC    " windows
@@ -209,6 +212,7 @@ let g:EasyMotion_leader_key = '<Leader>m'
 " =============================================================================
 let mapleader = ","
 let g:mapleader = ","
+
 " leave cursor at position before editing started after repeat
 nnoremap . .`[
 " make Y work like C and D (yank to end of line)
@@ -270,7 +274,7 @@ nnoremap <leader>cd :cd %:p:h<cr>
 vnoremap <leader>cd :cd %:p:h<cr>
 " Build
 map <leader>B :call g:MyMake()<cr>
-" / is literal search, <leader>/ is regex search, see :help magic
+" / searches literally, <leader>/ is search by regex, see :help magic
 nnoremap / /\V
 nnoremap ? ?\V
 nnoremap <leader>/ /\v
@@ -457,7 +461,7 @@ function! g:ToggleTrans()
 	endif
 endfunc
 
-" Makes tab names be the basename of the file instead of the path
+" Makes tab names the basename of the file instead of the path
 " see http://bradgrissom.com/index.php?/archives/61-Rename-tabs-in-Vim.html
 " =============================================================================
 function! MyTabLine()
