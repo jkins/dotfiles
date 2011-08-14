@@ -425,8 +425,12 @@ endfunc
 function! g:ToggleShowDetails()
 	if(&list == 0)
 		set nocursorline
+		:IndentGuidesEnable
+		:call rainbow_parenthsis#Activate()
 	else
 		set cursorline
+		:IndentGuidesDisable
+		:call rainbow_parenthsis#Clear()
 	endif
 	set list!
 endfunc
