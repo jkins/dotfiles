@@ -365,7 +365,8 @@ nnoremap <leader>of :FufCoverageFile<cr>
 nnoremap <leader>oq :botright cope<cr>
 " scratch buffer
 nnoremap <leader><tab> :Scratch<cr> 
-
+" gundo tree
+nnoremap <leader>u :GundoToggle<cr>
 " git (fugitive and extradite)
 " =============================================================================
 " status
