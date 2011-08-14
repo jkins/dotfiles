@@ -354,6 +354,8 @@ nnoremap <leader>oj :jumps<cr>
 nnoremap <leader>of :FufCoverageFile<cr>
 " quickfix (copen)
 nnoremap <leader>oq :botright cope<cr>
+" scratch buffer
+nnoremap <leader><tab> :Scratch<cr> 
 
 " git (fugitive and extradite)
 " =============================================================================
