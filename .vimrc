@@ -203,8 +203,8 @@ let g:showmarks_textother = "\t"
 " indent guides
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
-" minibufexplorer
-let g:miniBufExplShowBufNumbers = 0
+" buftabs
+let g:buftabs_only_basename=1
 " easymotion
 let g:EasyMotion_leader_key = '<Leader>m'
 
@@ -332,7 +332,7 @@ nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 " OPEN 
 " =============================================================================
 " buffers
-nnoremap <leader>ob :MiniBufExplorer<cr>
+nnoremap <leader>ob :FufBuffer<cr>
 " NERDTree explorer 
 nnoremap <leader>on :NERDTree<cr>
 " YankRing
