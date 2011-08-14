@@ -231,6 +231,8 @@ nnoremap <leader><space> :noh<cr>
 " easier line+column marks
 nnoremap ' `
 nnoremap ` '
+vnoremap ' `
+vnoremap ` '
 " no movement training wheels
 nnoremap <up> <nop>
 nnoremap <down> <nop>
