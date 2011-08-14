@@ -263,9 +263,6 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-" tab movement (like unimpaired)
-nnoremap [t :tabp<cr>
-nnoremap ]t :tabn<cr>
 " sort selection
 vnoremap <leader>S :sort<cr>
 " fast save
