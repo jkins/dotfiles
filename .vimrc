@@ -44,8 +44,8 @@ set mouse=nvi
 set mousemodel=popup    " popup menu on right-click
 set nocompatible        " don't need vi compatibility
 set nowrap              " don't wrap text
+set nu                  " line numbers
 set printoptions=paper:letter
-set rnu                 " line numbers relative to current line
 set ruler               " show line/column in status bar
 set scrolloff=5         " keep current line n lines away from edge
 set shellpipe="2>"      " *
@@ -127,20 +127,18 @@ endtry
 
 " events/autocmd
 " =============================================================================
-
 " leave insert mode after 15sec of no input
 au CursorHoldI * stopinsert
 au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
 au InsertLeave * let &updatetime=updaterestore
 
 " no line numbers for some buffers
-au FileType nerdtree setlocal nonu
-au FileType taglist setlocal nornu
-au FileType taglist setlocal colorcolumn= statusline="Tag List"
-au FileType fuf setlocal nornu
-au FileType fugitiveblame setlocal nu
-au FileType extradite setlocal nu
-au FileType qf setlocal nornu nocursorline colorcolumn=
+au FileType nerdtree setlocal colorcolumn= nonu
+au FileType taglist setlocal colorcolumn= statusline="Tag List" nornu
+au FileType fuf setlocal colorcolumn= nornu
+au FileType fugitiveblame setlocal colorcolumn= nu
+au FileType extradite setlocal colorcolumn= nu
+au FileType qf setlocal colorcolumn= nornu nocursorline 
 
 " When vimrc is edited, reload it
 au! bufwritepost .vimrc source $MYVIMRC
@@ -151,7 +149,10 @@ au BufEnter * setlocal cursorline
 au BufLeave * setlocal nocursorline
 
 " Normal line numbers in diff
-au FilterWritePost * if &diff | set nu | else | set rnu | endif
+au FilterWritePost * if &diff | set nu | endif
+" Normal line numbers when cursor moves
+au CursorMoved * setlocal nu
+au InsertLeave * setlocal nu
 
 " When loading a file, if it reads in as Unix, but has a DOS line ending,
 " and is not in binary mode, reload it in DOS format. Do this AFTER loading
@@ -212,6 +213,14 @@ let g:EasyMotion_leader_key = '<Leader>m'
 " =============================================================================
 let mapleader = ","
 let g:mapleader = ","
+
+" relative line numbers when operator-pending
+nnoremap <silent> d :setlocal rnu<cr>d
+nnoremap <silent> y :setlocal rnu<cr>y
+nnoremap <silent> c :setlocal rnu<cr>c
+nnoremap <silent> = :setlocal rnu<cr>=
+nnoremap <silent> < :setlocal rnu<cr><
+nnoremap <silent> > :setlocal rnu<cr>>
 
 " leave cursor at position before editing started after repeat
 nnoremap . .`[
