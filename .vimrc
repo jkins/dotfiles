@@ -205,8 +205,12 @@ let g:showmarks_textother = "\t"
 " indent guides
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
-" buftabs
-let g:buftabs_only_basename=1
+" buffergator
+let g:buffergator_autoexpand_on_split = 0
+let g:buffergator_sort_regime = "mru"
+let g:buffergator_split_size = 6
+let g:buffergator_suppress_keymaps = 1
+let g:buffergator_viewport_split_policy = "B"
 " easymotion
 let g:EasyMotion_leader_key = '<Leader>m'
 
@@ -323,6 +327,8 @@ vnoremap <leader>n :call g:ToggleNuMode()<cr>
 " tags
 nnoremap <leader>t :TagbarToggle<cr>
 vnoremap <leader>t :TagbarToggle<cr>
+" bufexplorer
+nnoremap <leader>b :BuffergatorToggle<cr>
 " showmarks
 nnoremap <leader>MM :ShowMarksToggle<cr>
 nnoremap <leader>Mc :ShowMarksClearMark<cr>
