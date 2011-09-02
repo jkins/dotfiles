@@ -67,6 +67,7 @@ endif
 set suffixes+=.class    " don't autocomplete these extensions
 set tabstop=4           " a tab is 4 characters wide
 set tabline=%!MyTabLine()
+set tags=~/.tags
 set textwidth=0         " auto-newline after n chars (0 disabled)
 set title
 set ttyfast
