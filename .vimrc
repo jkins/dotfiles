@@ -101,6 +101,10 @@ if has("gui_running")
 		noremap <f2> :set guifont=Consolas:h10:cANSI<CR>
 		noremap <f3> :set guifont=Consolas:h12:cANSI<CR>
 		noremap <f4> :set guifont=Consolas:h18:cANSI<CR>
+		vnoremap <f1> :set guifont=Consolas:h3:cANSI<CR>
+		vnoremap <f2> :set guifont=Consolas:h10:cANSI<CR>
+		vnoremap <f3> :set guifont=Consolas:h12:cANSI<CR>
+		vnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
 	else
 		set guifont=Inconsolata:h12:cANSI
 		" zoom levels
