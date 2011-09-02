@@ -139,7 +139,7 @@ au InsertLeave * let &updatetime=updaterestore
 
 " no line numbers for some buffers
 au FileType nerdtree setlocal colorcolumn= nonu
-au FileType taglist setlocal colorcolumn= statusline="Tag List" nornu
+au FileType tagbar setlocal colorcolumn= statusline="Tag Bar" nornu
 au FileType fuf setlocal colorcolumn= nornu
 au FileType fugitiveblame setlocal colorcolumn= nu
 au FileType extradite setlocal colorcolumn= nu
@@ -194,10 +194,6 @@ colorscheme jkins
 
 " plugin settings
 " =============================================================================
-" taglist
-let g:Tlist_Show_One_File = 1
-let g:Tlist_Use_Right_Window = 1
-let g:Tlist_WinWidth = 30
 " showmarks
 let g:showmarks_ignore_type = "hmpq"
 let g:showmarks_hlline_lower = 1
@@ -325,8 +321,8 @@ vnoremap <leader>d :call g:ToggleShowDetails()<cr>
 nnoremap <leader>n :call g:ToggleNuMode()<cr>
 vnoremap <leader>n :call g:ToggleNuMode()<cr>
 " tags
-nnoremap <leader>t :TlistToggle<cr>
-vnoremap <leader>t :TlistToggle<cr>
+nnoremap <leader>t :TagbarToggle<cr>
+vnoremap <leader>t :TagbarToggle<cr>
 " showmarks
 nnoremap <leader>MM :ShowMarksToggle<cr>
 nnoremap <leader>Mc :ShowMarksClearMark<cr>
