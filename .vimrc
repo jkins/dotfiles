@@ -468,7 +468,7 @@ endfunc
 " =============================================================================
 function! g:MyMake()
 	let f = $VIMRUNTIME . "\\temp\\.errorfile"
-	execute "!ant -emacs > \"" . f . "\""
+	execute "!ant -emacs > \\\"$(cygpath -u \\\"" . f . "\\\")\\\""
 	execute "cfile" f
 endfunc
 
