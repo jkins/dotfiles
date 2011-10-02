@@ -213,6 +213,12 @@ let g:buffergator_suppress_keymaps = 1
 let g:buffergator_viewport_split_policy = "B"
 " easymotion
 let g:EasyMotion_leader_key = '<Leader>m'
+" fuzzyfinder
+let g:fuf_botRight = 1
+let g:fuf_file_exclude = '\v\~$'
+\ . '|\.(o|png|PNG|JPG|class|CLASS|jpg|exe|bak|swp|jar|war|ear|zip|tar|gz|bz2)$'
+\ . '|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
+\ . '|.*[/\\]$' 
 
 " mappings
 " =============================================================================
