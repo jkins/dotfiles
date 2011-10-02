@@ -86,6 +86,7 @@ if has("win32") || has("win64") || has("dos32") || has("dos16")
 	"behave mswin
 	if $PATH =~? 'cygwin' && !exists("g:no_cygwin_shell")
 		set shell=bash
+		set shellquote="\""
 		set shellpipe=2>&1\|tee
 		set shellslash
 	endif
