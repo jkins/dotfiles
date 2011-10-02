@@ -150,8 +150,8 @@ au! bufwritepost .vimrc source $MYVIMRC
 au! bufwritepost _vimrc source $MYVIMRC    " windows
 
 " Enable cursorline only in the current buffer
-au BufEnter * setlocal cursorline
-au BufLeave * setlocal nocursorline
+au WinEnter * setlocal cursorline
+au WinLeave * setlocal nocursorline
 
 " Normal line numbers in diff
 au FilterWritePost * if &diff | set nu | endif
