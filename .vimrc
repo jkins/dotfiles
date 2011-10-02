@@ -120,8 +120,7 @@ if has("gui_running")
 	set guioptions-=T    " turn off tool bar
 	
 	" start at 45x90
-	set columns=90
-	set lines=45
+	autocmd GUIEnter * set columns=90 | set lines=45 
 endif
 
 " language
