@@ -25,6 +25,7 @@ set cursorline          " * highlight the current line
 set directory^=~/tmp//,$VIMRUNTIME/temp//
 set encoding=utf-8
 set ffs=unix,dos        " default file types
+set foldlevel=1         " open first fold by default
 set foldmethod=indent   " fold lines at indentation
 set formatoptions=qrn1  " see :help fo-table
 set guitablabel=%!MyGuiTabLine()
