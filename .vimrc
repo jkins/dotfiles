@@ -82,8 +82,8 @@ set wildmode=list:longest,full,full
 " =============================================================================
 if has("win32") || has("win64") || has("dos32") || has("dos16")
 	let g:mswindows=1
-	source $VIMRUNTIME/mswin.vim
-	behave mswin
+	"source $VIMRUNTIME/mswin.vim
+	"behave mswin
 	if $PATH =~? 'cygwin' && !exists("g:no_cygwin_shell")
 		set shell=bash
 		set shellpipe=2>&1\|tee
