@@ -17,7 +17,6 @@ set autowrite           " autosave when leaving buffers
 set backspace=indent,eol,start " backspace behavior in insert mode 
 set backup              " use backup ~ files
 set backupdir^=~/tmp//,$VIMRUNTIME/temp//
-"set bufhidden=hide		" allow buffers to be hidden
 set cmdheight=2         " commandbar height
 set colorcolumn=80,120
 set completeopt=longest,menuone
