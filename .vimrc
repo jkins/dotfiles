@@ -283,14 +283,16 @@ vnoremap ` '
 nnoremap j gj
 nnoremap k gk
 " big movements by 10
-nnoremap <s-h> 10h
+"vnoremap <m-k> <c-u>
+"vnoremap <m-j> <c-d>
+nnoremap <s-h> b
 nnoremap <s-j> 10j
 nnoremap <s-k> 10k
-nnoremap <s-l> 10l
-vnoremap <s-h> 10h
+nnoremap <s-l> w
+vnoremap <s-h> b
 vnoremap <s-j> 10j
 vnoremap <s-k> 10k
-vnoremap <s-l> 10l
+vnoremap <s-l> w
 " split movement
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
