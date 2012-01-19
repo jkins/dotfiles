@@ -29,7 +29,14 @@ set -o vi				# vi command mode
 # -----------------------------------------------------------------------------
 # Colors
 # -----------------------------------------------------------------------------
-export TERM=xterm-color
+if [ -e /usr/share/terminfo/x/xterm-256-color ]; then
+	export TERM='xterm-256color'
+elif [ -e /usr/share/terminfo/x/xterm-color ]; then
+	export TERM='xterm-color'
+else
+	export TERM='xterm'
+fi
+
 export CLICOLOR=1
 export GREP_OPTIONS='--color=auto' GREP_COLOR='1;32'
 # LS_COLORS
