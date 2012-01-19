@@ -136,10 +136,9 @@ au InsertLeave * let &updatetime=updaterestore
 " no line numbers for some buffers
 au FileType nerdtree setlocal colorcolumn= nonu
 au FileType tagbar setlocal colorcolumn= statusline="Tag Bar" nornu
-au FileType fuf setlocal colorcolumn= nornu
 au FileType fugitiveblame setlocal colorcolumn= nu
-au FileType extradite setlocal colorcolumn= nu
 au FileType qf setlocal colorcolumn= nornu nocursorline 
+au FileType extradite setlocal colorcolumn= nu
 
 " When vimrc is edited, reload it
 au! bufwritepost .vimrc source $MYVIMRC
@@ -151,9 +150,6 @@ au WinLeave * setlocal nocursorline
 
 " Normal line numbers in diff
 au FilterWritePost * if &diff | set nu | endif
-" Normal line numbers when cursor moves
-au CursorMoved * setlocal nu
-au InsertLeave * setlocal nu
 
 " When loading a file, if it reads in as Unix, but has a DOS line ending,
 " and is not in binary mode, reload it in DOS format. Do this AFTER loading
@@ -254,14 +250,14 @@ let g:mapleader = ","
 cmap w!! %!sudo tee > /dev/null %
 
 " relative line numbers when operator-pending
-nnoremap <silent> d :setlocal rnu<cr>d
-nnoremap <silent> y :setlocal rnu<cr>y
-nnoremap <silent> c :setlocal rnu<cr>c
-nnoremap <silent> = :setlocal rnu<cr>=
-nnoremap <silent> < :setlocal rnu<cr><
-nnoremap <silent> > :setlocal rnu<cr>>
+"nnoremap <silent> d :setlocal rnu<cr>d
+"nnoremap <silent> y :setlocal rnu<cr>y
+"nnoremap <silent> c :setlocal rnu<cr>c
+"nnoremap <silent> = :setlocal rnu<cr>=
+"nnoremap <silent> < :setlocal rnu<cr><
+"nnoremap <silent> > :setlocal rnu<cr>>
+"nnoremap <silent> ~ :setlocal rnu<cr>~
 
-" leave cursor at position before editing started after repeat
 nnoremap . .`[
 " make Y work like C and D (yank to end of line)
 nnoremap Y y$
