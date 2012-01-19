@@ -223,7 +223,7 @@ alias ld="ls --color=auto -d */"
 alias ldl="ls --color=auto -ldA */"
 alias lt="ls --color=auto -FAhlt"
 alias cls='echo -n [2J' 
-alias gs="git status"
+alias gs="git status -s"
 alias gsr="git svn rebase"
 alias gsd="git svn dcommit"
 alias gsl="git svn log --show-commit"
