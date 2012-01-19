@@ -25,7 +25,6 @@ set ffs=unix,dos        " default file types
 set foldlevel=1         " open first fold by default
 set foldmethod=indent   " fold lines at indentation
 set formatoptions=qrn1  " see :help fo-table
-set guitablabel=%!MyGuiTabLine()
 set hidden              " change buffer without saving
 set history=1000
 set hlsearch            " highlight search terms
@@ -46,7 +45,6 @@ set printoptions=paper:letter
 set ruler               " show line/column in status bar
 set scrolloff=5         " keep current line n lines away from edge
 set sessionoptions=buffers,curdir,folds,help,options,tabpages,winsize
-set shellpipe="2>"      " *
 set shiftround
 set shiftwidth=4
 set shortmess=atI       " short messages
