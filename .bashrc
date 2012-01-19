@@ -326,6 +326,12 @@ function matrix {
 	tr -c "[:digit:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"
 }
 
+# URLEncode
+function urlencode {
+	echo $@ | xxd -plain | tr -d '\n' | sed 's/\(..\)/%\1/g'
+}
+
+
 # -----------------------------------------------------------------------------
 # Set sourced flag
 export SOURCED_BASHRC=1
