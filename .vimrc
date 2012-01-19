@@ -1,13 +1,64 @@
-" jeff kinslow vimrc
-" =============================================================================
+" .vimrc - Jeff Kinslow
+" vim: foldmethod=marker
 
-" pathogen
-" =============================================================================
+" {{{ pathogen/general ======================================================== 
 call pathogen#infect()
 filetype plugin indent on
+" }}}
 
-" settings    * value modified elsewhere
-" =============================================================================
+" {{{ language ================================================================
+try
+	lang en_US
+catch
+endtry
+" }}}
+
+" {{{ colors ==================================================================
+syntax enable
+colorscheme jkins
+"colorscheme solarized
+" }}}
+
+" {{{ win32 ===================================================================
+if has("win32") || has("win64") 
+	let g:mswindows=1
+	"source $VIMRUNTIME/mswin.vim
+	"behave mswin
+	if $PATH =~? 'cygwin' && !exists("g:no_cygwin_shell")
+		set shell=bash
+		set shellquote="\""
+		set shellpipe=2>&1\|tee
+		set shellslash
+	endif
+endif
+" }}}
+
+" {{{ gvim ====================================================================
+if has("gui_running")
+	" start at 45x90
+	autocmd GUIEnter * set columns=90 | set lines=45 
+
+	set guioptions=crLbh
+	
+	if g:mswindows
+		set guifont=Consolas:h12:cANSI
+		" zoom levels
+		noremap <f1> :set guifont=Consolas:h3:cANSI<CR>
+		noremap <f2> :set guifont=Consolas:h10:cANSI<CR>
+		noremap <f3> :set guifont=Consolas:h12:cANSI<CR>
+		noremap <f4> :set guifont=Consolas:h18:cANSI<CR>
+		vnoremap <f1> :set guifont=Consolas:h3:cANSI<CR>
+		vnoremap <f2> :set guifont=Consolas:h10:cANSI<CR>
+		vnoremap <f3> :set guifont=Consolas:h12:cANSI<CR>
+		vnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
+	else
+		"Inconsolata? TODO: *nix fonts
+	endif
+endif
+" }}}
+
+" {{{ settings ================================================================
+" * means value modified elsewhere
 set autoread            " autorefresh buffer when file changes
 set autoindent          " copy indent from previous line
 set autowrite           " autosave when leaving buffers
@@ -73,61 +124,9 @@ set virtualedit=block
 set visualbell          " flash editor instead of beeping on error
 set wildmenu
 set wildmode=list:longest,full,full
+" }}}
 
-" windows
-" =============================================================================
-if has("win32") || has("win64") || has("dos32") || has("dos16")
-	let g:mswindows=1
-	"source $VIMRUNTIME/mswin.vim
-	"behave mswin
-	if $PATH =~? 'cygwin' && !exists("g:no_cygwin_shell")
-		set shell=bash
-		set shellquote="\""
-		set shellpipe=2>&1\|tee
-		set shellslash
-	endif
-endif
-
-" gvim
-" =============================================================================
-if has("gui_running")
-	if g:mswindows
-		set guifont=Consolas:h12:cANSI
-		" zoom levels
-		noremap <f1> :set guifont=Consolas:h3:cANSI<CR>
-		noremap <f2> :set guifont=Consolas:h10:cANSI<CR>
-		noremap <f3> :set guifont=Consolas:h12:cANSI<CR>
-		noremap <f4> :set guifont=Consolas:h18:cANSI<CR>
-		vnoremap <f1> :set guifont=Consolas:h3:cANSI<CR>
-		vnoremap <f2> :set guifont=Consolas:h10:cANSI<CR>
-		vnoremap <f3> :set guifont=Consolas:h12:cANSI<CR>
-		vnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
-	else
-		set guifont=Inconsolata:h12:cANSI
-		" zoom levels
-		noremap <f1> :set guifont=Inconsolata:h3:cANSI<CR>
-		noremap <f2> :set guifont=Inconsolata:h10:cANSI<CR>
-		noremap <f3> :set guifont=Inconsolata:h12:cANSI<CR>
-		noremap <f4> :set guifont=Inconsolata:h18:cANSI<CR>
-
-	endif
-
-	set guioptions-=m    " turn off menu bar
-	set guioptions-=T    " turn off tool bar
-	
-	" start at 45x90
-	autocmd GUIEnter * set columns=90 | set lines=45 
-endif
-
-" language
-" =============================================================================
-try
-	lang en_US
-catch
-endtry
-
-" events/autocmd
-" =============================================================================
+" events/autocmd {{{ ==========================================================
 " leave insert mode after 15sec of no input
 au CursorHoldI * stopinsert
 au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
@@ -177,15 +176,9 @@ else
         \ endif
 endif
 autocmd BufReadPost * if exists('b:reload_dos') | unlet b:reload_dos | endif
+" }}}
 
-" colors
-" =============================================================================
-syntax enable
-colorscheme jkins
-"colorscheme solarized
-
-" plugin settings
-" =============================================================================
+" {{{ plugin settings =========================================================
 " neocomplcache
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
@@ -240,9 +233,9 @@ let g:ctrlp_mruf_exclude = '\v\~$'
 \ . '|.*[/\\]$' 
 let g:ctrlp_use_caching = 1
 let g:ctrlp_working_path_mode = 2
+" }}}
 
-" mappings
-" =============================================================================
+" {{{ mappings ================================================================
 let mapleader = ","
 let g:mapleader = ","
 
@@ -258,6 +251,7 @@ cmap w!! %!sudo tee > /dev/null %
 "nnoremap <silent> > :setlocal rnu<cr>>
 "nnoremap <silent> ~ :setlocal rnu<cr>~
 
+" return cursor to starting position after a repeat
 nnoremap . .`[
 " make Y work like C and D (yank to end of line)
 nnoremap Y y$
@@ -328,88 +322,22 @@ vnoremap <A-j> :m'>+<CR>gv=gv
 vnoremap <A-k> :m-2<CR>gv=gv
 vnoremap <A-h> <gv
 vnoremap <A-l> >gv
-" snipmate
-inoremap <silent> <tab> <c-r>=TriggerSnippet()<cr>
-snoremap <silent> <tab> <esc>i<right><c-r>=TriggerSnippet()<cr>
-inoremap <silent> <s-tab> <c-r>=BackwardsSnippet()<cr>
-snoremap <silent> <s-tab> <esc>i<right><c-r>=BackwardsSnippet()<cr>
-inoremap <silent> <c-r><tab> <c-r>=ShowAvailableSnips()<cr>
-
-" GENERAL
-" =============================================================================
 " details - tab/eol/whitespace chars
-nnoremap <leader>d :call g:ToggleShowDetails()<cr>
-vnoremap <leader>d :call g:ToggleShowDetails()<cr>
+nnoremap <leader>D :call g:ToggleShowDetails()<cr>
+vnoremap <leader>D :call g:ToggleShowDetails()<cr>
 " numbers - absolute/relative line numbers
-nnoremap <leader>n :call g:ToggleNuMode()<cr>
-vnoremap <leader>n :call g:ToggleNuMode()<cr>
-" tags
-nnoremap <leader>t :TagbarToggle<cr>
-vnoremap <leader>t :TagbarToggle<cr>
-" bufexplorer
-nnoremap <leader>b :BuffergatorToggle<cr>
-" showmarks
-nnoremap <leader>MM :ShowMarksToggle<cr>
-nnoremap <leader>Mc :ShowMarksClearMark<cr>
-nnoremap <leader>MC :ShowMarksClearAll<cr>
-vnoremap <leader>MM :ShowMarksToggle<cr>
-vnoremap <leader>Mc :ShowMarksClearMark<cr>
-vnoremap <leader>MC :ShowMarksClearAll<cr>
-" diffmarks (what it should be called, not 'svndiff')
-nnoremap <leader>D :call Svndiff("prev")<cr>
+nnoremap <leader>N :call g:ToggleNuMode()<cr>
+vnoremap <leader>N :call g:ToggleNuMode()<cr>
 " show the active highlighting under the cursor
 nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-
-" OPEN 
-" =============================================================================
-" buffers
-nnoremap <leader>ob :FufBuffer<cr>
-" NERDTree explorer 
-nnoremap <leader>on :NERDTree<cr>
-" YankRing
-nnoremap <leader>oy :YRShow<cr>
-" config - vimrc
-nnoremap <leader>oc :e $MYVIMRC<cr>
 " split - horizontal split and switch to it
-nnoremap <leader>os <C-w>s
+nnoremap <leader>s <C-w>s
 " split - vertical split and switch to it
-nnoremap <leader>oS <C-w>v<C-w>l
+nnoremap <leader>S <C-w>v<C-w>l
 " tab
-nnoremap <leader>ot :tabnew<cr>
-" marks
-nnoremap <leader>om :marks<cr>
-" registers
-nnoremap <leader>or :register<cr>
-" jumps
-nnoremap <leader>oj :jumps<cr>
-" file (fuzzy finder)
-nnoremap <leader>of :FufCoverageFile<cr>
-" quickfix (copen)
-nnoremap <leader>oq :botright cope<cr>
-" scratch buffer
-nnoremap <leader><tab> :Scratch<cr> 
-" gundo tree
-nnoremap <leader>u :GundoToggle<cr>
-" git (fugitive and extradite)
-" =============================================================================
-" status
-nnoremap <leader>gs :Gstatus<cr>
-" log
-nnoremap <leader>gl :Extradite<cr>
-" quickfix last log entries
-nnoremap <leader>gq :Glog<cr>
-" diff
-nnoremap <leader>gd :Gdiff<cr>
-" blame
-nnoremap <leader>gb :Gblame<cr>
-" commit
-nnoremap <leader>gc :Gcommit<cr>
-" read (effectively reverts the current buffer to the index version)
-nnoremap <leader>gr :Gread<cr>
-
+nnoremap <leader>t :tabnew<cr>
 
 " search for selected text, forwards(*) or backwards(#)
 " =============================================================================
@@ -425,8 +353,64 @@ vnoremap <silent> # :<C-U>
   \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
   \gV:call setreg('"', old_reg, old_regtype)<CR>
 
+" {{{ plugins =================================================================
+" scratch buffer
+nnoremap <leader><tab> :Scratch<cr> 
+" buffer (ctrlp)
+nnoremap <leader>b :CtrlPBuffer<cr>
+" diffmarks (what it should be called, not 'svndiff')
+nnoremap <leader>D :call Svndiff("prev")<cr>
+" file (ctrlp)
+nnoremap <leader>f :CtrlP<cr>
+" MRU file (ctrlp)
+nnoremap <leader>F :CtrlPMRUFiles<cr>
+" git status
+nnoremap <leader>gs :Gstatus<cr>
+" git log
+nnoremap <leader>gl :Extradite<cr>
+" git quickfix last log entries
+nnoremap <leader>gq :Glog<cr>
+" git diff
+nnoremap <leader>gd :Gdiff<cr>
+" git blame
+nnoremap <leader>gb :Gblame<cr>
+" git commit
+nnoremap <leader>gc :Gcommit<cr>
+" git read (effectively reverts the current buffer to the index version)
+nnoremap <leader>gr :Gread<cr>
+" showmarks
+nnoremap <leader>MM :ShowMarksToggle<cr>
+nnoremap <leader>Mc :ShowMarksClearMark<cr>
+nnoremap <leader>MC :ShowMarksClearAll<cr>
+vnoremap <leader>MM :ShowMarksToggle<cr>
+vnoremap <leader>Mc :ShowMarksClearMark<cr>
+vnoremap <leader>MC :ShowMarksClearAll<cr>
+" NERDTree explorer 
+nnoremap <leader>n :NERDTree<cr>
+" quickfix (copen)
+nnoremap <leader>q :botright cope<cr>
+" vimrc
+nnoremap <leader>rc :e $MYVIMRC<cr>
+" vim-session
+nnoremap <leader>SS :SaveSession
+nnoremap <leader>SO :OpenSession
+" tagbar
+nnoremap <leader>T :TagbarToggle<cr>
+" gundo tree
+nnoremap <leader>u :GundoToggle<cr>
+" YankRing
+nnoremap <leader>y :YRShow<cr>
+" snipmate
+inoremap <silent> <tab> <c-r>=TriggerSnippet()<cr>
+snoremap <silent> <tab> <esc>i<right><c-r>=TriggerSnippet()<cr>
+inoremap <silent> <s-tab> <c-r>=BackwardsSnippet()<cr>
+snoremap <silent> <s-tab> <esc>i<right><c-r>=BackwardsSnippet()<cr>
+inoremap <silent> <c-r><tab> <c-r>=ShowAvailableSnips()<cr>
+" }}}
+" }}}
+
+" {{{ functions ===============================================================
 " toggles relative/absolute line numbers       
-" =============================================================================
 function! g:ToggleNuMode()
 	let b:numode = exists('b:numode') ? !b:numode : 0
 	if b:numode
@@ -437,7 +421,6 @@ function! g:ToggleNuMode()
 endfunc
 
 " Shows tab characters/columns, trailing whitespace, newlines
-" =============================================================================
 function! g:ToggleShowDetails()
 	if(&list == 0)
 		set nocursorline
@@ -452,7 +435,6 @@ function! g:ToggleShowDetails()
 endfunc
 
 " Toggles between maximized and unmaximized mode
-" =============================================================================
 function! g:ToggleMax()
 	let w:maximized = exists('w:maximized') ? !w:maximized : 0
 	if w:maximized
@@ -464,7 +446,6 @@ function! g:ToggleMax()
 endfunc
 
 " Make behaving strangely on Windows
-" =============================================================================
 function! g:MyMake()
 	let f = $VIMRUNTIME . "\\temp\\.errorfile"
 	execute "!ant -emacs > \\\"$(cygpath -u \\\"" . f . "\\\")\\\""
@@ -472,7 +453,6 @@ function! g:MyMake()
 endfunc
 
 " Toggles between ~90% and 100% opacity on windows
-" =============================================================================
 function! g:ToggleTrans()
 	let w:trans = exists('w:trans') ? !w:trans : 1
 	if w:trans
@@ -534,5 +514,4 @@ function! MyGuiTabLine()
 	let s .= ' %{BradLabel(' . tabpagenr() . ')} '
 	return s
 endfunction
-
-" EOF
+" }}}
