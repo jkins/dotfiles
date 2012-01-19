@@ -502,15 +502,14 @@ endfunc
 
 " Makes tab names the basename of the file instead of the path
 " see http://bradgrissom.com/index.php?/archives/61-Rename-tabs-in-Vim.html
-" =============================================================================
 function! MyTabLine()
 	let s = ''
 	for i in range(tabpagenr('$'))
 		" select the highlighting
 		if i + 1 == tabpagenr()
-			let s .= '%&TabLineSel;'
+			let s .= '%#TabLineSel#'
 		else
-			let s .= '%&TabLine;'
+			let s .= '%#TabLine#'
 		endif
 
 		" set the tab page number (for mouse clicks)
@@ -522,12 +521,12 @@ function! MyTabLine()
 	endfor
 
 	" after the last tab fill with TabLineFill and reset tab page nr
-	let s .= '%&TabLineFill;%T'
+	let s .= '%#TabLineFill# %T'
 
 	" right-align the label to close the current tab page
-	if tabpagenr('$') > 1
-		let s .= '%=%&TabLine;%999Xclose'
-	endif
+	"if tabpagenr('$') > 1
+	"	let s .= '%=%#TabLine#%999Xclose'
+	"endif
 
 	return s
 endfunction
