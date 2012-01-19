@@ -302,8 +302,6 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-" sort selection
-vnoremap <leader>S :sort<cr>
 " fast save
 nnoremap <leader>w :w!<cr>
 vnoremap <leader>w :w!<cr>
@@ -334,10 +332,6 @@ vnoremap <A-j> :m'>+<CR>gv=gv
 vnoremap <A-k> :m-2<CR>gv=gv
 vnoremap <A-h> <gv
 vnoremap <A-l> >gv
-" transparency on win32
-nnoremap <leader>T :call g:ToggleTrans()<cr>
-" toggle maximization
-"nnoremap <leader>M :call g:ToggleMax()<cr>
 " snipmate
 inoremap <silent> <tab> <c-r>=TriggerSnippet()<cr>
 snoremap <silent> <tab> <esc>i<right><c-r>=TriggerSnippet()<cr>
