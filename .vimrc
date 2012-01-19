@@ -41,7 +41,7 @@ set mouse=nvi
 set mousemodel=popup    " popup menu on right-click
 set nocompatible        " don't need vi compatibility
 set nowrap              " don't wrap text
-set nu                  " line numbers
+set rnu                 "* line numbers
 set printoptions=paper:letter
 set ruler               " show line/column in status bar
 set scrolloff=5         " keep current line n lines away from edge
