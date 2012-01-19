@@ -408,26 +408,6 @@ nnoremap <leader>gc :Gcommit<cr>
 " read (effectively reverts the current buffer to the index version)
 nnoremap <leader>gr :Gread<cr>
 
-" seesions
-" =============================================================================
-nnoremap <leader>so :call g:MySessionOpen()<cr>
-nnoremap <leader>sq :call g:MySessionQuit()<cr>
-nnoremap <leader>ss :call g:MySessionSave()<cr>
-
-function! g:MySessionQuit()
-	:SessionSaveAs MY_SESSION
-	:qa	
-endfunc
-
-function! g:MySessionSave()
-	:SessionSaveAs MY_SESSION
-endfunc
-
-function! g:MySessionOpen()
-	:SessionOpen MY_SESSION
-	" session loads default colors?
-	":colors jkins 
-endfunc
 
 " search for selected text, forwards(*) or backwards(#)
 " =============================================================================
