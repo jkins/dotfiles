@@ -13,6 +13,16 @@ export TEMP=/tmp
 # General/Misc
 # -----------------------------------------------------------------------------
 shopt -s checkwinsize	# After each command, adjusts lines and columns
+shopt -s histappend		# Append to history
+shopt -u autocd
+shopt -u cdable_vars
+shopt -s cdspell
+shopt -s cmdhist
+shopt -s dirspell
+shopt -s extglob
+shopt -s globstar
+shopt -s nocaseglob
+
 set -o vi				# vi command mode
 
 
