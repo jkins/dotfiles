@@ -38,7 +38,7 @@ export LS_COLORS='di=94:fi=0:ln=96:pi=5:so=5;91:bd=5;91:cd=5:or=31:mi=90:ex=92'
 
 # Setup some colors to use later in interactive shell or scripts
 export COLOR_NONE='\e[0m' # Reset
-export COLOR_WHITE='\e[0;37m'
+export COLOR_WHITE='\e[1;37m'
 export COLOR_BLACK='\e[0;30m'
 export COLOR_BLUE='\e[0;34m'
 export COLOR_LIGHT_BLUE='\e[1;34m'
