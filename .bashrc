@@ -79,8 +79,8 @@ alias colorlist="set | egrep '^COLOR_\w*'" # lists all the colors
 # -----------------------------------------------------------------------------
 export HISTCONTROL=ignoredups
 export HISTFILE=~/.bash_history
-export HISTFILESIZE=1000
-export HISTIGNORE="ls:cd:cs:[bf]g:exit:..:..."
+export HISTFILESIZE=10000
+export HISTIGNORE="&:ls:ll:cd*:cs*:[bf]g:exit:..:..."
 alias h=history
 hf(){
 	grep "$@" ~/.bash_history
