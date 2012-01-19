@@ -45,6 +45,7 @@ set rnu                 "* line numbers
 set printoptions=paper:letter
 set ruler               " show line/column in status bar
 set scrolloff=5         " keep current line n lines away from edge
+set sessionoptions=buffers,curdir,folds,help,options,tabpages,winsize
 set shellpipe="2>"      " *
 set shiftround
 set shiftwidth=4
