@@ -245,6 +245,29 @@ cdf() {
 	fi
 }
 
+# go to the git module root
+cdm() {
+	if [[ -d ./.git ]]; then
+		echo "Already in git module root."
+		return 1
+	elif [ "$PWD" == "/" ]; then
+		echo "In root."
+		return 1
+	fi
+
+	local path=$PWD
+	while [ true ]; do
+		path=$( dirname $path )
+		if [ "$path" == "/" ]; then
+			echo "Searched to root; not in a git module."
+			return 1
+		elif [[ -d $path/.git ]]; then
+			cd $path
+			return 0
+		fi
+	done	
+}
+
 # dir bookmarks
 # http://www.macosxhints.com/article.php?story=20020716005123797
 if [ ! -f ~/.dirs ]; then # if doesn't exist, create it
