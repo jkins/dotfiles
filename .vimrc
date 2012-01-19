@@ -67,6 +67,7 @@ set tabstop=4           " a tab is 4 characters wide
 set tabline=%!MyTabLine()
 set tags=~/.tags
 set textwidth=0         " auto-newline after n chars (0 disabled)
+set tildeop				" ~ behaves like an operator
 set title
 set ttyfast
 set undodir=$VIMRUNTIME\\undo\\
