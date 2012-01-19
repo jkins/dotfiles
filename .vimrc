@@ -202,6 +202,12 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_enable_auto_select = 1
+
+" NERDTree
+let g:NERDTreeIgnore = ['\.pyc$', '\~$', '\.rbc$', '\.class$', '\.jpg$']
+let g:NERDTreeMinimalUI=1
+" Tagbar
+let g:tagbar_compact = 1
 " showmarks
 let g:showmarks_ignore_type = "hmpq"
 let g:showmarks_hlline_lower = 1
