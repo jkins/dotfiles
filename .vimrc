@@ -252,6 +252,9 @@ let g:ctrlp_working_path_mode = 2
 let mapleader = ","
 let g:mapleader = ","
 
+" save a file a super user
+cmap w!! %!sudo tee > /dev/null %
+
 " relative line numbers when operator-pending
 nnoremap <silent> d :setlocal rnu<cr>d
 nnoremap <silent> y :setlocal rnu<cr>y
