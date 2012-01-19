@@ -269,6 +269,8 @@ vnoremap <silent> . :normal .<cr>
 " reselect selection after indenting
 vnoremap > >gv
 vnoremap < <gv
+" space centers the line
+nnoremap <space> zz
 " quick insert->normal mode with jj
 inoremap jj <ESC>
 " no need to hit shift to access command mode
