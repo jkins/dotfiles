@@ -233,9 +233,20 @@ let g:EasyMotion_leader_key = '<Leader>m'
 "\ . '|\.(o|png|PNG|JPG|class|CLASS|jpg|exe|bak|swp|jar|war|ear|zip|tar|gz|bz2)$'
 "\ . '|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
 "\ . '|.*[/\\]$' 
+" session
+let g:session_autoload = 0
+let g:session_autosave = 0
+let g:session_default_to_last = 0
+" ctrlp
+let g:ctrlp_by_filename = 1
+let g:ctrlp_cache_dir = $VIMRUNTIME.'/.ctrlp_cache'
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_mruf_exclude = '\v\~$'
 \ . '|\.(o|png|PNG|JPG|class|CLASS|jpg|exe|bak|swp|jar|war|ear|zip|tar|gz|bz2)$'
 \ . '|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
 \ . '|.*[/\\]$' 
+let g:ctrlp_use_caching = 1
+let g:ctrlp_working_path_mode = 2
 
 " mappings
 " =============================================================================
