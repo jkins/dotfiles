@@ -62,6 +62,11 @@ let g:colors_name = "jkins"
 :hi StatusLine      gui=none    guibg=#A0A0A0    guifg=#000000
 :hi StatusLineNC    gui=none    guibg=#505050    guifg=#000000
 :hi String          gui=none                     guifg=#4FB269
+:hi TabLine			gui=underline guibg=#000000  guifg=#505050
+:hi TabLineSel      gui=underline guibg=#000000  guifg=#A0A0A0
+:hi TabNum			gui=underline guibg=#000000  guifg=#505050
+:hi TabNumSel       gui=underline guibg=#000000  guifg=#A0A0A0
+:hi TabLineFill     gui=underline guibg=#000000  guifg=#505050
 :hi Title           gui=none                     guifg=#00717D
 :hi Todo            gui=none    guibg=#F2D8A7    guifg=#003647
 :hi Type            gui=none                     guifg=#3D71EB
@@ -123,11 +128,7 @@ let g:colors_name = "jkins"
 :hi NERDTreeOpenable                     guifg=#3D71EB
 :hi NERDTreePart                         guifg=#505050
 :hi NERDTreePartFile                     guifg=#4FB269
-
-" Tag List
-:hi MyTagListTagScope                    guifg=#505050
-:hi MyTagListTitle                       guifg=#81A7FF
-:hi MyTagListFileName                    guifg=#4FB269
+:hi NERDTreeHelp                         guifg=#707070
 
 " Show Marks
 :hi SignColumn      guibg=#000000    guifg=#8AC6F2   
@@ -140,9 +141,23 @@ let g:colors_name = "jkins"
 " multiple on one line
 :hi ShowMarksHlm    guibg=#570800  
 
-" Mini Buf Explorer
-:hi MBENormal               guibg=#000000   guifg=#707070
-:hi MBEVisibleChangedActive guibg=#4FB269   guifg=#000000
-:hi MBEChanged              guibg=#000000   guifg=#4FB269
-:hi MBEVisibleChanged       guibg=#505050   guifg=#4FB269
-:hi MBEVisibleActive        guibg=#A0A0A0   guifg=#000000
+:hi TagbarSignature guifg=#707070
+:hi TagbarAccessPublic guifg=#3FB269
+:hi TagbarAccessPrivate guifg=#F04521
+:hi TagbarAccessProtected guifg=#FFE219
+:hi TagbarScope guifg=#81A7FF
+
+" Minibufexplorer
+:hi MBEVisibleActive        guifg=#000000 guibg=#A0A0A0
+:hi MBEVisibleChangedActive guifg=#F04221 guibg=#A0A0A0
+:hi MBEVisibleChanged       guifg=#F04221 guibg=#505050
+:hi MBEVisibleNormal        guifg=#000000 guibg=#505050
+:hi MBEChanged              guifg=#F04221 guibg=#000000
+:hi MBENormal               guifg=#808080 guibg=#000000
+
+:hi yankringHeaders guifg=#81A7FF
+:hi yankringItemNumber guifg=#3FB269
+
+" green cursor line on insert mode
+autocmd InsertEnter * hi CursorLine guibg=#203520
+autocmd InsertLeave * hi CursorLine guibg=#202020
