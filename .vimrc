@@ -17,7 +17,7 @@ set backupdir^=~/tmp//,$VIMRUNTIME/temp//
 set cmdheight=1         " commandbar height
 set colorcolumn=80,120
 set completeopt=longest,menuone
-set copyindent          " copy previous indent
+set copyindent          " copy previous indent style
 set cursorline          " * highlight the current line
 set directory^=~/tmp//,$VIMRUNTIME/temp//
 set encoding=utf-8
@@ -28,7 +28,7 @@ set formatoptions=qrn1  " see :help fo-table
 set hidden              " change buffer without saving
 set history=1000
 set hlsearch            " highlight search terms
-set ignorecase          " lowercase search => case insensitive
+set ignorecase          " lowercase search => case insensitive search
 set incsearch           " search as you type
 set laststatus=2        " statusline is always second-to-last line
 set lazyredraw          " don't redraw when executing macros
