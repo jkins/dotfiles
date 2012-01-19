@@ -236,7 +236,7 @@ cs() {
 
 # find a file and go to its dir
 cdf() {
-	local path=$(find . -name $1)
+	local path=( $(find . -name $1) )
 	if [ "$path" != "" ]; then
 		cd $(dirname $path)
 	else
