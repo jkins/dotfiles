@@ -220,11 +220,11 @@ let g:showmarks_textother = "\t"
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 " buffergator
-let g:buffergator_autoexpand_on_split = 0
-let g:buffergator_sort_regime = "mru"
-let g:buffergator_split_size = 6
-let g:buffergator_suppress_keymaps = 1
-let g:buffergator_viewport_split_policy = "B"
+"let g:buffergator_autoexpand_on_split = 0
+"let g:buffergator_sort_regime = "mru"
+"let g:buffergator_split_size = 6
+"let g:buffergator_suppress_keymaps = 1
+"let g:buffergator_viewport_split_policy = "B"
 " easymotion
 let g:EasyMotion_leader_key = '<Leader>m'
 " fuzzyfinder
