@@ -326,6 +326,10 @@ nnoremap / /\V
 nnoremap ? ?\V
 nnoremap <leader>/ /\v
 nnoremap <leader>? ?\v
+vnoremap / /\V
+vnoremap ? ?\V
+vnoremap <leader>/ /\v
+vnoremap <leader>? ?\v
 " move a line of text using ALT+[jk], indent with ALT+[hl]
 nnoremap <A-j> :m+<CR>==
 nnoremap <A-k> :m-2<CR>==
