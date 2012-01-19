@@ -70,8 +70,7 @@ set textwidth=0         " auto-newline after n chars (0 disabled)
 set tildeop				" ~ behaves like an operator
 set title
 set ttyfast
-set undodir=$VIMRUNTIME\\undo\\
-set undofile            " persistent undo
+set undodir=$VIMRUNTIME\\undo\\undofile            " persistent undo
 set virtualedit=block
 set visualbell          " flash editor instead of beeping on error
 set wildmenu
