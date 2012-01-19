@@ -228,8 +228,11 @@ let g:indent_guides_guide_size = 1
 " easymotion
 let g:EasyMotion_leader_key = '<Leader>m'
 " fuzzyfinder
-let g:fuf_botRight = 1
-let g:fuf_file_exclude = '\v\~$'
+"let g:fuf_botRight = 1
+"let g:fuf_file_exclude = '\v\~$'
+"\ . '|\.(o|png|PNG|JPG|class|CLASS|jpg|exe|bak|swp|jar|war|ear|zip|tar|gz|bz2)$'
+"\ . '|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
+"\ . '|.*[/\\]$' 
 \ . '|\.(o|png|PNG|JPG|class|CLASS|jpg|exe|bak|swp|jar|war|ear|zip|tar|gz|bz2)$'
 \ . '|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
 \ . '|.*[/\\]$' 
