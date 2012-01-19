@@ -320,7 +320,7 @@ vnoremap <leader>w :w!<cr>
 nnoremap <leader>cd :cd %:p:h<cr>
 vnoremap <leader>cd :cd %:p:h<cr>
 " Build
-map <leader>B :call g:MyMake()<cr>
+nnoremap <leader>B :call g:MyMake()<cr>
 " / searches literally, <leader>/ is search by regex, see :help magic
 nnoremap / /\V
 nnoremap ? ?\V
