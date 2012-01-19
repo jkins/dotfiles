@@ -448,9 +448,9 @@ vnoremap <silent> # :<C-U>
 function! g:ToggleNuMode()
 	let b:numode = exists('b:numode') ? !b:numode : 0
 	if b:numode
-		set nu
+		set number
 	else
-		set rnu
+		set relativenumber
 	endif
 endfunc
 
