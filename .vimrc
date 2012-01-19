@@ -14,7 +14,7 @@ set autowrite           " autosave when leaving buffers
 set backspace=indent,eol,start " backspace behavior in insert mode 
 set backup              " use backup ~ files
 set backupdir^=~/tmp//,$VIMRUNTIME/temp//
-set cmdheight=2         " commandbar height
+set cmdheight=1         " commandbar height
 set colorcolumn=80,120
 set completeopt=longest,menuone
 set copyindent          " copy previous indent
