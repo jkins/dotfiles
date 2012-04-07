@@ -1,29 +1,44 @@
+# jeff kinslow screenrc
+# =============================================================================
+
+# settings
+altscreen on
+autodetach on
 caption splitonly "%?%F%{= wk}%:%{= Kw}%? %t%= %n "
 #caption splitonly "%?%F%{= Kw}%? %C%A %D %d-%m-%Y %{= Kw} %t%= %?%F%{= Kw}%:%{= Kb}%? %n "
-hardstatus on
-hardstatus alwayslastline
-hardstatus string "%{= KB}[ %{W}%H %{= KB}][%= %{= Kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{= KB}][%{W} %m/%d %C%A %{= KB}]"
-
-startup_message off
 defscrollback 3000
-autodetach on
-
+defbce on
+defutf8 on
+hardstatus alwayslastline
+hardstatus on
+hardstatus string "%{= KB}[ %{W}%H %{= KB}][%= %{= Kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{= KB}][%{W} %m/%d %C%A %{= KB}]"
+setenv LC_CTYPE en_US.UTF-8
+shell zsh
+startup_message off
+term screen-256color
 # Tweak termcap, terminfo, and termcapinfo  entries for best performance.
 termcap               linux           'AF=\E[3%dm:AB=\E[4%dm'
 termcap               xterm-color     'AF=\E[3%dm:AB=\E[4%dm'
-terminfo              linux           'AF=\E[3%p1%dm:AB=\E[4%p1%dm'
-terminfo              xterm-color     'AF=\E[3%p1%dm:AB=\E[4%p1%dm'
-
-# Allow xterm / Terminal scrollbars to access the scrollback buffer. This
-# enables the behavior you'd expect, instead of losing the content that scrolls
-# out of the window.
+termcap               xterm-256color  'Co#256:AF=\E[3%dm:AB=\E[4%dm'
 termcapinfo           linux           ti@:te@
 termcapinfo           xterm-color     ti@:te@
-
+termcapinfo           xterm-256color  ti@:te@
+terminfo              linux           'AF=\E[3%p1%dm:AB=\E[4%p1%dm'
+terminfo              xterm-color     'AF=\E[3%p1%dm:AB=\E[4%p1%dm'
+terminfo              xterm-256color  'Co#256:AF=\E[3%p1%dm:AB=\E[4%p1%dm'
 # Use visual bell instead of audio bell.
 vbell                 on              # default: ???
-
-# Message to be displayed when the visual bell is triggered.
 vbell_msg             " *beep* "
 
-shell bash
+# screens
+screen -t zsh
+screen -t AWSWID
+#screen -t C2RPC
+screen -t weblogic
+#screen -t tomcat
+select 0
+
+# key binding
+bindkey ^] prev
+bindkey ^\ next
+
