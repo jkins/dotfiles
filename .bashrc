@@ -1,59 +1,22 @@
 # .bashrc -- Jeff Kinslow
+# vim: foldmethod=marker
 
-# -----------------------------------------------------------------------------
-# Environment Variables
-# -----------------------------------------------------------------------------
-
-# TODO: If cygwin, override windows TMP and TEMP. Google 'config.guess'
-export TMP=/tmp
-export TEMP=/tmp
-
-
-# -----------------------------------------------------------------------------
-# General/Misc
-# -----------------------------------------------------------------------------
-shopt -s checkwinsize	# After each command, adjusts lines and columns
-shopt -s histappend		# Append to history
-shopt -u autocd
-shopt -u cdable_vars
-shopt -s cdspell
-shopt -s cmdhist
-shopt -s dirspell
-shopt -s extglob
-shopt -s globstar
-shopt -s nocaseglob
-
-set -o vi				# vi command mode
-
-
-# -----------------------------------------------------------------------------
-# Colors
-# -----------------------------------------------------------------------------
-if [ -e /usr/share/terminfo/x/xterm-256-color ]; then
-	export TERM='xterm-256color'
-elif [ -e /usr/share/terminfo/x/xterm-color ]; then
-	export TERM='xterm-color'
-else
-	export TERM='xterm'
-fi
-
+# Environment Variables {{{----------------------------------------------------
 export CLICOLOR=1
-export GREP_OPTIONS='--color=auto' GREP_COLOR='1;32'
-# LS_COLORS
-# di = directory
-# fi = file
-# ln = link
-# pi = pipe
-# so = socket
-# bd = block device
-# cd = character device
-# or = orphaned link
-# mi = non-existant file (pointed to by a link)
-# ex = executable
+export EDITOR='vim'
+export GIT_EDITOR='vim'
+export GREP_COLOR='1;32'
+export GREP_OPTIONS='--color=auto'
+export HISTCONTROL=ignoredups
+export HISTFILE=~/.bash_history
+export HISTFILESIZE=10000
+export HISTIGNORE="&:ls:ll:cd*:cs*:[bf]g:exit:..:..."
 export LS_COLORS='di=94:fi=0:ln=96:pi=5:so=5;91:bd=5;91:cd=5:or=31:mi=90:ex=92'
-
-
-# Setup some colors to use later in interactive shell or scripts
+export PROMPT_COMMAND='setPrompt'
+export PS2="\[${COLOR_GRAY}\]› \[${COLOR_NONE}\]"
+export SSH_ENV="$HOME/.ssh/environment"
+export SVN_EDITOR='vim'
+# Colors {{{
 export COLOR_NONE='\e[0m' # Reset
 export COLOR_WHITE='\e[1;37m'
 export COLOR_BLACK='\e[0;30m'
@@ -71,66 +34,179 @@ export COLOR_BROWN='\e[0;33m'
 export COLOR_YELLOW='\e[1;33m'
 export COLOR_GRAY='\e[1;30m'
 export COLOR_LIGHT_GRAY='\e[0;37m'
-alias colorlist="set | egrep '^COLOR_\w*'" # lists all the colors
-
-
-# -----------------------------------------------------------------------------
-# History
-# -----------------------------------------------------------------------------
-export HISTCONTROL=ignoredups
-export HISTFILE=~/.bash_history
-export HISTFILESIZE=10000
-export HISTIGNORE="&:ls:ll:cd*:cs*:[bf]g:exit:..:..."
-alias h=history
-hf(){
-	grep "$@" ~/.bash_history
+# }}}
+# TEMP {{{
+command -v config.guess >/dev/null 2>&1 && { 
+	if [[ $(config.guess) == *cygwin* ]]
+	then
+		export TMP=/tmp
+		export TEMP=/tmp
+	fi
 }
+# }}}
+# TERM {{{
+if [ -e /usr/share/terminfo/x/xterm-256color ]; then
+	export TERM='xterm-256color'
+elif [ -e /usr/share/terminfo/x/xterm-color ]; then
+	export TERM='xterm-color'
+else
+	export TERM='xterm'
+fi
+# }}}
+# }}}--------------------------------------------------------------------------
 
-
-# -----------------------------------------------------------------------------
-# Completion
-# -----------------------------------------------------------------------------
+# Shell {{{--------------------------------------------------------------------
 bind "set completion-ignore-case-on"	# ignore case when completing
 bind "set show-all-if-ambiguous On"		# show list automatically
 bind "set bell-style none"				# disable bell
+set -o vi				# vi command mode
+shopt -s cdspell
+shopt -s checkwinsize	# After each command, adjusts lines and columns
+shopt -s cmdhist
+shopt -s dirspell
+shopt -s extglob
+shopt -s globstar
+shopt -s histappend		# Append to history
+shopt -s nocaseglob
+shopt -u autocd
+shopt -u cdable_vars
+# }}}
 
-# Turn on advanced bash completion if the file exists
-# http://www.caliban.org/bash/index.shtml#completion
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-fi
-if [ -f /opt/local/etc/bash_completion ]; then
-	. /opt/local/etc/bash_completion
-fi
+# Aliases {{{------------------------------------------------------------------
+alias lsbm='cat ~/.dirs'
+alias colorlist="set | egrep '^COLOR_\w*'" # lists all the colors
+alias h=history
+alias ..="cd .."
+alias ...="cd ../.."
+alias ls="ls --color=auto -F"
+alias la="ls --color=auto -FA"
+alias ll="ls --color=auto -FAhl"
+alias ld="ls --color=auto -d */"
+alias ldl="ls --color=auto -ldA */"
+alias lt="ls --color=auto -FAhlt"
+alias cls='echo -n [2J' 
+alias gs="git status -s"
+alias gsr="git svn rebase"
+alias gsd="git svn dcommit"
+alias gsl="git svn log --show-commit"
+alias g="opengvim"
+# }}}
 
-# git completion
-if [ -f ~/bin/git-completion.bash ]; then
-	source ~/bin/git-completion.bash
-fi
+# Functions {{{----------------------------------------------------------------
+# bookmark dir
+bm() {
+  command sed "/!$/d" ~/.dirs > ~/.dirs1; \mv ~/.dirs1 ~/.dirs; echo "$@"=\"`pwd`\" >> ~/.dirs; source ~/.dirs ;
+}
 
-# ant completion
-if [ -f ~/bin/complete-ant-cmd ]; then
-	complete -C ~/bin/complete-ant-cmd ant build.sh
-fi
+#cd + ls
+cs() {
+	cd "$@"
+	ls --color=auto -F
+}
 
-# Add completion to source and .
-complete -F _command source
-complete -F _command .
+# find a file and go to its dir
+cdf() {
+	local path=( $(find . -name $1) )
+	if [ "$path" != "" ]; then
+		cd $(dirname $path)
+	else
+		echo "Didn't find '$1'"
+		return 1
+	fi
+}
 
+# go to the git module root
+cdm() {
+	if [[ -d ./.git ]]; then
+		echo "Already in git module root."
+		return 1
+	elif [ "$PWD" == "/" ]; then
+		echo "In root."
+		return 1
+	fi
 
-# -----------------------------------------------------------------------------
-# Prompt / Window Title
-# -----------------------------------------------------------------------------
+	local path=$PWD
+	while [ true ]; do
+		path=$( dirname $path )
+		if [ "$path" == "/" ]; then
+			echo "Searched to root; not in a git module."
+			return 1
+		elif [[ -d $path/.git ]]; then
+			cd $path
+			return 0
+		fi
+	done	
+}
+
+# find through history
+hf(){
+	grep "$@" $HISTFILE
+}
+
+matrix() {
+	tr -c "[:digit:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"
+}
+
 setTitle() {
 	echo -ne "\e]2;$@\a\e]1;$@\a"
 }
 
+start_sshagent() {
+	echo -n "Initialising new SSH agent..."
+	/usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+	echo "done."
+	chmod 600 "${SSH_ENV}"
+	. "${SSH_ENV}" > /dev/null
+	ssh-add ~/.ssh/id_rsa ~/.ssh/id_rsa_ngc
+}
+
+opengvim() {
+	if [ "$1" == "" ]; then # no file given, just load gvim
+		gvim --servername GVIM &
+	elif [ -e "$1" ]; then # file exists in working dir, open it
+		gvim --servername GVIM --remote-silent $(cygpath -d $1) &
+	else # find file and open it
+		echo "'$1' not in working directory, searching..."
+		local file=$(find . -name "$1")
+		if [ -n "$file" ]; then
+			local filepath=$(cygpath -d $file)
+			echo "found at $file"
+			gvim --servername GVIM --remote-silent $filepath &
+		else
+			echo "not found"
+			return 1
+		fi
+	fi
+}
+# }}}
+
+# Completion {{{----------------------------------------------------------------
+# http://www.caliban.org/bash/index.shtml#completion
+if [ -f /etc/bash_completion ]; then
+    source /etc/bash_completion
+fi
+if [ -f /opt/local/etc/bash_completion ]; then
+	source /opt/local/etc/bash_completion
+fi
+# git completion
+if [ -f ~/bin/git-completion.bash ]; then
+	source ~/bin/git-completion.bash
+fi
+# ant completion
+if [ -f ~/bin/complete-ant-cmd ]; then
+	complete -C ~/bin/complete-ant-cmd ant build.sh
+fi
+# Add completion to source and .
+complete -F _command source
+complete -F _command .
+# }}}
+
+# Prompt {{{-------------------------------------------------------------------
 # add git ps1 if git is on this system
 prompt_git=$(builtin type -P git &>/dev/null; echo $?)
 
 # Special chars: ―  …  » ›
 setPrompt() {
-
 	# build 'return' string
 	local ret=$?
 
@@ -204,129 +280,9 @@ setPrompt() {
 	# set PS1
 	PS1="${_prompt}"
 }
+# }}}
 
-PROMPT_COMMAND='setPrompt'
-
-# PS2 is ›
-PS2="\[${COLOR_GRAY}\]› \[${COLOR_NONE}\]"
-
-
-# -----------------------------------------------------------------------------
-# Alias
-# -----------------------------------------------------------------------------
-alias ..="cd .."
-alias ...="cd ../.."
-alias ls="ls --color=auto -F"
-alias la="ls --color=auto -FA"
-alias ll="ls --color=auto -FAhl"
-alias ld="ls --color=auto -d */"
-alias ldl="ls --color=auto -ldA */"
-alias lt="ls --color=auto -FAhlt"
-alias cls='echo -n [2J' 
-alias gs="git status -s"
-alias gsr="git svn rebase"
-alias gsd="git svn dcommit"
-alias gsl="git svn log --show-commit"
-
-# cd + ls
-cs() {
-	cd "$@"
-	ls --color=auto -F
-}
-
-# find a file and go to its dir
-cdf() {
-	local path=( $(find . -name $1) )
-	if [ "$path" != "" ]; then
-		cd $(dirname $path)
-	else
-		echo "Didn't find '$1'"
-		return 1
-	fi
-}
-
-# go to the git module root
-cdm() {
-	if [[ -d ./.git ]]; then
-		echo "Already in git module root."
-		return 1
-	elif [ "$PWD" == "/" ]; then
-		echo "In root."
-		return 1
-	fi
-
-	local path=$PWD
-	while [ true ]; do
-		path=$( dirname $path )
-		if [ "$path" == "/" ]; then
-			echo "Searched to root; not in a git module."
-			return 1
-		elif [[ -d $path/.git ]]; then
-			cd $path
-			return 0
-		fi
-	done	
-}
-
-# dir bookmarks
-# http://www.macosxhints.com/article.php?story=20020716005123797
-if [ ! -f ~/.dirs ]; then # if doesn't exist, create it
-  touch ~/.dirs
-fi
-
-alias lsbm='cat ~/.dirs'
-bm() {
-  command sed "/!$/d" ~/.dirs > ~/.dirs1; \mv ~/.dirs1 ~/.dirs; echo "$@"=\"`pwd`\" >> ~/.dirs; source ~/.dirs ;
-} #"
-
-source ~/.dirs # Initialization for the above 'lsbm' facility: source the .sdirs file
-
-# set the bash option so that no '$' is required when using the above facility
-# shopt -s cdable_vars
-
-
-# -----------------------------------------------------------------------------
-# Editors
-# -----------------------------------------------------------------------------
-export EDITOR='vim'
-export GIT_EDITOR='vim'
-export SVN_EDITOR='vim'
-
-alias g="opengvim"
-opengvim()
-{
-	if [ "$1" == "" ]; then # no file given, just load gvim
-		gvim --servername GVIM &
-	elif [ -e "$1" ]; then # file exists in working dir, open it
-		gvim --servername GVIM --remote-silent $(cygpath -d $1) &
-	else # find file and open it
-		echo "'$1' not in working directory, searching..."
-		local file=$(find . -name "$1")
-		if [ -n "$file" ]; then
-			local filepath=$(cygpath -d $file)
-			echo "found at $file"
-			gvim --servername GVIM --remote-silent $filepath &
-		else
-			echo "not found"
-			return 1
-		fi
-	fi
-}
-
-
-# -----------------------------------------------------------------------------
-# SSH
-# -----------------------------------------------------------------------------
-SSH_ENV="$HOME/.ssh/environment"
-
-function start_agent {
-	echo -n "Initialising new SSH agent..."
-	/usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-	echo "done."
-	chmod 600 "${SSH_ENV}"
-	. "${SSH_ENV}" > /dev/null
-	ssh-add ~/.ssh/id_rsa ~/.ssh/id_rsa_ngc # TODO refactor keylist
-}
+# Runtime {{{------------------------------------------------------------------
 
 # Source SSH settings, if applicable
 if [ "$SSH_CONNECTION" == "" ]; then
@@ -340,22 +296,14 @@ if [ "$SSH_CONNECTION" == "" ]; then
 		start_agent;
 	fi 
 fi
-# -----------------------------------------------------------------------------
-# Misc
-# -----------------------------------------------------------------------------
 
-# Matrix!
-function matrix {
-	tr -c "[:digit:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"
-}
+# dir bookmarks
+# http://www.macosxhints.com/article.php?story=20020716005123797
+if [ ! -f ~/.dirs ]; then # if doesn't exist, create it
+  touch ~/.dirs
+fi
+source ~/.dirs # Initialization for the above 'lsbm' facility: source the .sdirs file
 
-# URLEncode
-function urlencode {
-	echo $@ | xxd -plain | tr -d '\n' | sed 's/\(..\)/%\1/g'
-}
-
-
-# -----------------------------------------------------------------------------
-# Set sourced flag
 export SOURCED_BASHRC=1
-# EOF 
+# }}}
+
