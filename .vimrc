@@ -19,6 +19,83 @@ colorscheme jkins
 "colorscheme solarized
 " }}}
 
+" {{{ settings ================================================================
+" * means value modified elsewhere
+set autoread            " autorefresh buffer when file changes
+set autoindent          " copy indent from previous line
+set autowrite           " autosave when leaving buffers
+set backspace=indent,eol,start " backspace behavior in insert mode 
+set backup              " *use backup ~ files
+set backupdir^=~/tmp//,$VIMRUNTIME/temp//
+set cmdheight=1         " commandbar height
+set colorcolumn=1,80,120
+set nocompatible        " don't need vi compatibility
+set completeopt=longest,menuone
+set copyindent          " copy previous indent style
+set cursorline          " * highlight the current line
+set directory^=~/tmp//,$VIMRUNTIME/temp//
+set encoding=utf-8
+set ffs=unix,dos        " default file types
+set fillchars=fold:―,vert:¦
+set foldlevelstart=0    " *dont open folds
+set formatoptions=qrn1  " see :help fo-table
+set gdefault            " substitute whole line by default
+set hidden              " change buffer without saving
+set history=1000
+set hlsearch            " highlight search terms
+set ignorecase          " lowercase search => case insensitive search
+set incsearch           " search as you type
+set laststatus=2        " statusline is always second-to-last line
+set lazyredraw          " don't redraw when executing macros
+set listchars=tab:»\ ,trail:·,eol:¬
+"set magic              " leave magic at default settings
+set makeprg=ant\ -emacs
+set modelines=5
+set mouse=nvi
+set mousemodel=popup    " popup menu on right-click
+set rnu                 "* line numbers
+set printoptions=paper:letter
+set ruler               " show line/column in status bar
+set scrolloff=2         " keep current line n lines away from edge
+set sessionoptions=buffers,curdir,folds,help,options,tabpages,winsize
+set shiftround
+set shiftwidth=4
+set shortmess=atI       " short messages
+set showmatch           " highlight matching search items
+set showmode            " show the mode in the status bar
+set showtabline=1       " show tabline when there's more than one tab
+set sidescrolloff=5    " keep cursor n columns away from edge
+set smartcase           " different cases make search case-sensitive
+"set smartindent
+" looks like: /path/to/file [Git(master)] Tue 01/23/00 12:22 PM (unix){JAVA}[114,65][30%]
+set statusline=%F%m%r%h%w\ %{fugitive#statusline()}\ %{strftime(\"%a\ %m/%d/%y\ %I:%M\ %p\",\ getftime(expand('%')))}\ (%{&ff}){%Y}[%l,%v][%p%%]
+set smarttab
+if exists("+spelllang")
+	set spelllang=en_US
+endif
+set suffixes+=.class    " don't autocomplete these extensions
+set noswapfile
+set tabstop=4           " a tab is 4 characters wide
+set tabline=%!MyTabLine()
+set tags=~/.tags
+set textwidth=0         " auto-newline after n chars (0 disabled)
+set tildeop				" ~ behaves like an operator
+set title
+set ttyfast
+set undodir=$VIMRUNTIME\\undo\\undofile            " persistent undo
+set virtualedit=block
+set visualbell          " flash editor instead of beeping on error
+set wildmenu
+" wildignore {{{
+set wildignore+=.git,.svn,.hg                   " version control
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg  " binary
+set wildignore+=classes,*.class                 " java bytecode
+set wildignore+=*.sw?                           " vim swap files
+" }}}
+set wildmode=list:longest,full,full
+set nowrap              " don't wrap text
+" }}}
+"
 " {{{ win32 ===================================================================
 if has("win32") || has("win64") 
 	let g:mswindows=1
@@ -57,76 +134,8 @@ if has("gui_running")
 endif
 " }}}
 
-" {{{ settings ================================================================
-" * means value modified elsewhere
-set autoread            " autorefresh buffer when file changes
-set autoindent          " copy indent from previous line
-set autowrite           " autosave when leaving buffers
-set backspace=indent,eol,start " backspace behavior in insert mode 
-set backup              " use backup ~ files
-set backupdir^=~/tmp//,$VIMRUNTIME/temp//
-set cmdheight=1         " commandbar height
-set colorcolumn=80,120
-set completeopt=longest,menuone
-set copyindent          " copy previous indent style
-set cursorline          " * highlight the current line
-set directory^=~/tmp//,$VIMRUNTIME/temp//
-set encoding=utf-8
-set ffs=unix,dos        " default file types
-set foldlevel=1         " open first fold by default
-set foldmethod=indent   " fold lines at indentation
-set formatoptions=qrn1  " see :help fo-table
-set hidden              " change buffer without saving
-set history=1000
-set hlsearch            " highlight search terms
-set ignorecase          " lowercase search => case insensitive search
-set incsearch           " search as you type
-set laststatus=2        " statusline is always second-to-last line
-set lazyredraw          " don't redraw when executing macros
-set listchars=tab:»\ ,trail:·,eol:¬
-"set magic              " leave magic at default settings
-set makeprg=ant\ -emacs
-set modelines=5
-set mouse=nvi
-set mousemodel=popup    " popup menu on right-click
-set nocompatible        " don't need vi compatibility
-set nowrap              " don't wrap text
-set rnu                 "* line numbers
-set printoptions=paper:letter
-set ruler               " show line/column in status bar
-set scrolloff=5         " keep current line n lines away from edge
-set sessionoptions=buffers,curdir,folds,help,options,tabpages,winsize
-set shiftround
-set shiftwidth=4
-set shortmess=atI       " short messages
-set showmatch           " highlight matching search items
-set showmode            " show the mode in the status bar
-set showtabline=1       " show tabline when there's more than one tab
-set sidescrolloff=10    " keep cursor n columns away from edge
-set smartcase           " different cases make search case-sensitive
-"set smartindent
-" looks like: /path/to/file [Git(master)] Tue 01/23/00 12:22 PM (unix){JAVA}[114,65][30%]
-set statusline=%F%m%r%h%w\ %{fugitive#statusline()}\ %{strftime(\"%a\ %m/%d/%y\ %I:%M\ %p\",\ getftime(expand('%')))}\ (%{&ff}){%Y}[%l,%v][%p%%]
-set smarttab
-if exists("+spelllang")
-	set spelllang=en_US
-endif
-set suffixes+=.class    " don't autocomplete these extensions
-set tabstop=4           " a tab is 4 characters wide
-set tabline=%!MyTabLine()
-set tags=~/.tags
-set textwidth=0         " auto-newline after n chars (0 disabled)
-set tildeop				" ~ behaves like an operator
-set title
-set ttyfast
-set undodir=$VIMRUNTIME\\undo\\undofile            " persistent undo
-set virtualedit=block
-set visualbell          " flash editor instead of beeping on error
-set wildmenu
-set wildmode=list:longest,full,full
-" }}}
 
-" events/autocmd {{{ ==========================================================
+" {{{ events/autocmd ==========================================================
 " leave insert mode after 15sec of no input
 au CursorHoldI * stopinsert
 au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
@@ -139,6 +148,9 @@ au FileType fugitiveblame setlocal colorcolumn= nu
 au FileType qf setlocal colorcolumn= nornu nocursorline 
 au FileType extradite setlocal colorcolumn= nu
 
+" Resize splits when the window is resized
+au VimResized * :wincmd =
+
 " When vimrc is edited, reload it
 au! bufwritepost .vimrc source $MYVIMRC
 au! bufwritepost _vimrc source $MYVIMRC    " windows
@@ -148,7 +160,7 @@ au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
 
 " Normal line numbers in diff
-au FilterWritePost * if &diff | set nu | endif
+au FilterWritePost * if &diff | setlocal nu | endif
 
 " When loading a file, if it reads in as Unix, but has a DOS line ending,
 " and is not in binary mode, reload it in DOS format. Do this AFTER loading
@@ -195,13 +207,13 @@ let g:NERDTreeMinimalUI=1
 " Tagbar
 let g:tagbar_compact = 1
 " showmarks
-let g:showmarks_ignore_type = "hmpq"
-let g:showmarks_hlline_lower = 1
-let g:showmarks_hlline_upper = 1
-let g:showmarks_hlline_other = 0
-let g:showmarks_textupper = "\t"
-let g:showmarks_textlower = "\t"
-let g:showmarks_textother = "\t"
+"let g:showmarks_ignore_type = "hmpq"
+"let g:showmarks_hlline_lower = 1
+"let g:showmarks_hlline_upper = 1
+"let g:showmarks_hlline_other = 0
+"let g:showmarks_textupper = "\t"
+"let g:showmarks_textlower = "\t"
+"let g:showmarks_textother = "\t"
 " indent guides
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
@@ -233,6 +245,14 @@ let g:ctrlp_mruf_exclude = '\v\~$'
 \ . '|.*[/\\]$' 
 let g:ctrlp_use_caching = 1
 let g:ctrlp_working_path_mode = 2
+" powerline
+let g:Powerline_symbols = "compatible"
+" xmledit
+let g:xml_syntax_folding = 1
+" delimitMate
+let g:delimitMate_expand_cr = 1
+let g:delimitMate_expand_space = 1
+
 " }}}
 
 " {{{ mappings ================================================================
@@ -249,8 +269,28 @@ cmap w!! %!sudo tee > /dev/null %
 "nnoremap <silent> = :setlocal rnu<cr>=
 "nnoremap <silent> < :setlocal rnu<cr><
 "nnoremap <silent> > :setlocal rnu<cr>>
-"nnoremap <silent> ~ :setlocal rnu<cr>~
+"nnoremap <silent> ~ :setlocal rnu<cr>~›
 
+" \ joins lines
+nnoremap \ J
+" Keep search matches in the middle of the window and pulse the line when moving
+" to them. Same with jumps.
+nnoremap n nzzzv
+nnoremap n nzzzv
+nnoremap g; g;zz
+nnoremap g, g,zz
+" Don't move on *
+nnoremap * *<c-o>
+" Center location
+nnoremap <return> zvzz
+" Close all but the current fold
+nnoremap <c-return> zMzvzz
+" Space to toggle folds.
+nnoremap <Space> za
+vnoremap <Space> za
+" Recursively open current top level fold
+nnoremap zO zCzO
+nnoremap <leader>z zMzvzz
 " return cursor to starting position after a repeat
 nnoremap . .`[
 " make Y work like C and D (yank to end of line)
@@ -260,8 +300,6 @@ vnoremap <silent> . :normal .<cr>
 " reselect selection after indenting
 vnoremap > >gv
 vnoremap < <gv
-" space centers the line
-nnoremap <space> zz
 " quick insert->normal mode with jj
 inoremap jj <ESC>
 " no need to hit shift to access command mode
@@ -323,8 +361,8 @@ vnoremap <A-k> :m-2<CR>gv=gv
 vnoremap <A-h> <gv
 vnoremap <A-l> >gv
 " details - tab/eol/whitespace chars
-nnoremap <leader>D :call g:ToggleShowDetails()<cr>
-vnoremap <leader>D :call g:ToggleShowDetails()<cr>
+nnoremap <leader>d :call g:ToggleShowDetails()<cr>
+vnoremap <leader>d :call g:ToggleShowDetails()<cr>
 " numbers - absolute/relative line numbers
 nnoremap <leader>N :call g:ToggleNuMode()<cr>
 vnoremap <leader>N :call g:ToggleNuMode()<cr>
@@ -338,6 +376,9 @@ nnoremap <leader>s <C-w>s
 nnoremap <leader>S <C-w>v<C-w>l
 " tab
 nnoremap <leader>t :tabnew<cr>
+" smart buffer delete
+nnoremap <leader>x :Sbd<cr>
+nnoremap <leader>X :Sbdm<cr>
 
 " search for selected text, forwards(*) or backwards(#)
 " =============================================================================
@@ -411,31 +452,50 @@ inoremap <silent> <c-r><tab> <c-r>=ShowAvailableSnips()<cr>
 
 " {{{ functions ===============================================================
 " toggles relative/absolute line numbers       
-function! g:ToggleNuMode()
+function! g:ToggleNuMode() " {{{
 	let b:numode = exists('b:numode') ? !b:numode : 0
 	if b:numode
-		set number
+		setlocal number
 	else
-		set relativenumber
+		setlocal relativenumber
 	endif
-endfunc
+endfunc " }}}
+
+function! MyFoldText() " {{{
+    let line = getline(v:foldstart)
+
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
+
+    let line = strpart(line, 1, windowwidth - 8 - len(foldedlinecount))
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    "return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+    return '›' . line . '…' . repeat(" ",fillcharcount-7) . '‹' . foldedlinecount . ' '
+endfunction " }}}
+set foldtext=MyFoldText()
 
 " Shows tab characters/columns, trailing whitespace, newlines
-function! g:ToggleShowDetails()
+function! g:ToggleShowDetails() " {{{
+
 	if(&list == 0)
-		set nocursorline
+		setlocal nocursorline
 		:IndentGuidesEnable
 		:RainbowParenthesesToggle
 	else
-		set cursorline
+		setlocal cursorline
 		:IndentGuidesDisable
 		:RainbowParenthesesToggle
 	endif
-	set list!
-endfunc
+	setlocal list!
+endfunc " }}}
 
 " Toggles between maximized and unmaximized mode
-function! g:ToggleMax()
+function! g:ToggleMax() " {{{
 	let w:maximized = exists('w:maximized') ? !w:maximized : 0
 	if w:maximized
 		set columns=90
@@ -443,28 +503,28 @@ function! g:ToggleMax()
 	else
 		simalt ~x
 	endif
-endfunc
+endfunc " }}}
 
 " Make behaving strangely on Windows
-function! g:MyMake()
+function! g:MyMake() " {{{
 	let f = $VIMRUNTIME . "\\temp\\.errorfile"
 	execute "!ant -emacs > \\\"$(cygpath -u \\\"" . f . "\\\")\\\""
 	execute "cfile" f
-endfunc
+endfunc " }}}
 
 " Toggles between ~90% and 100% opacity on windows
-function! g:ToggleTrans()
+function! g:ToggleTrans() " {{{
 	let w:trans = exists('w:trans') ? !w:trans : 1
 	if w:trans
 		:call libcallnr("vimtweak.dll", "SetAlpha", 225)
 	else
 		:call libcallnr("vimtweak.dll", "SetAlpha", 255)
 	endif
-endfunc
+endfunc " }}}
 
 " Makes tab names the basename of the file instead of the path
 " see http://bradgrissom.com/index.php?/archives/61-Rename-tabs-in-Vim.html
-function! MyTabLine()
+function! MyTabLine() " {{{
 	let s = ''
 	for i in range(tabpagenr('$'))
 		" select the highlighting
@@ -491,9 +551,9 @@ function! MyTabLine()
 	"endif
 
 	return s
-endfunction
+endfunc " }}}
 
-function! BradLabel(n)
+function! BradLabel(n) " {{{
 	let buflist = tabpagebuflist(a:n)
 	let winnr   = tabpagewinnr(a:n)
 	let bufnam  = bufname(buflist[winnr - 1])
@@ -501,17 +561,68 @@ function! BradLabel(n)
 	let base    = substitute(substitute(bufnam, '.*\', '', ''), '.*/', '', '')
 	let name    = a:n . ' ' . base
 	return name
-endfunction
+endfunction " }}}
 
-function! MyTabLabel(n)
+function! MyTabLabel(n) " {{{
 	let buflist = tabpagebuflist(a:n)
 	let winnr = tabpagewinnr(a:n)
 	return bufname(buflist[winnr - 1])
-endfunction
+endfunction " }}}
 
-function! MyGuiTabLine()
+function! MyGuiTabLine() " {{{
 	let s = ''
 	let s .= ' %{BradLabel(' . tabpagenr() . ')} '
 	return s
-endfunction
+endfunction " }}}
+" }}}
+
+" {{{ filetypes ===============================================================
+"   {{{ ftl 
+augroup ft_ftl
+	au!
+	au FileType ftl setlocal tabstop=2
+	au FileType ftl setlocal shiftwidth=2
+	au FileType ftl setlocal foldmethod=indent
+	au FileType ftl setlocal foldlevel=4
+	au FileType ftl setlocal filetype=html.ftl
+	au FileType ftl inoremap <c-return> <esc>A;<esc>^
+augroup END
+"   }}}
+"   {{{ html 
+augroup ft_html
+	au!
+	au FileType html setlocal tabstop=2
+	au FileType html setlocal shiftwidth=2
+	au FileType html setlocal foldmethod=indent
+	au FileType html setlocal foldlevel=4
+	au FileType html inoremap <c-return> <esc>A;<esc>^
+augroup END
+"   }}}
+"   {{{ java 
+augroup ft_java
+	au!
+	au FileType java setlocal foldmethod=marker
+	au FileType java setlocal foldmarker={,}
+	au FileType java setlocal foldlevel=1
+	au FileType java inoremap <c-return> <esc>A;<esc>^
+augroup END
+"   }}}
+"   {{{ javascript 
+augroup ft_javascript
+	au!
+	au FileType javascript setlocal foldmethod=marker
+	au FileType javascript setlocal foldmarker={,}
+	au FileType javascript setlocal foldlevel=1
+	au FileType javascript inoremap <c-return> <esc>A;<esc>^
+augroup END
+"   }}}
+"   {{{ xml 
+augroup ft_xml
+	au!
+	au FileType xml setlocal foldmethod=syntax
+	au FileType xml setlocal foldlevel=2
+	au FileType xml setlocal shiftwidth=2
+	au FileType xml setlocal tabstop=2
+augroup END
+"   }}}
 " }}}
