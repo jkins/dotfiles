@@ -1,44 +1,37 @@
-# jeff kinslow screenrc
-# =============================================================================
+# .screenrc
+# Jeff Kinslow
 
 # settings
 altscreen on
+attrcolor b ".I"
 autodetach on
 caption splitonly "%?%F%{= wk}%:%{= Kw}%? %t%= %n "
-#caption splitonly "%?%F%{= Kw}%? %C%A %D %d-%m-%Y %{= Kw} %t%= %?%F%{= Kw}%:%{= Kb}%? %n "
 defscrollback 3000
 defbce on
 defutf8 on
 hardstatus alwayslastline
 hardstatus on
-hardstatus string "%{= KB}[ %{W}%H %{= KB}][%= %{= Kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{= KB}][%{W} %m/%d %C%A %{= KB}]"
+hardstatus string "%{= Kw} %H %{k}|%{w}%= %?%-w%?%{C}<%{W}%n:%t%{C}>%{w}%?%+w%?%? %=%{k}|%{w} %m/%d %C%A "
 setenv LC_CTYPE en_US.UTF-8
 shell zsh
 startup_message off
 term screen-256color
 # Tweak termcap, terminfo, and termcapinfo  entries for best performance.
-termcap               linux           'AF=\E[3%dm:AB=\E[4%dm'
-termcap               xterm-color     'AF=\E[3%dm:AB=\E[4%dm'
-termcap               xterm-256color  'Co#256:AF=\E[3%dm:AB=\E[4%dm'
 termcapinfo           linux           ti@:te@
 termcapinfo           xterm-color     ti@:te@
-termcapinfo           xterm-256color  ti@:te@
-terminfo              linux           'AF=\E[3%p1%dm:AB=\E[4%p1%dm'
-terminfo              xterm-color     'AF=\E[3%p1%dm:AB=\E[4%p1%dm'
-terminfo              xterm-256color  'Co#256:AF=\E[3%p1%dm:AB=\E[4%p1%dm'
+#termcapinfo           xterm-256color  'ti@:te@:Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+termcapinfo           xterm-256color  'ti@:te@;Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 # Use visual bell instead of audio bell.
 vbell                 on              # default: ???
 vbell_msg             " *beep* "
 
 # screens
-screen -t zsh
-screen -t AWSWID
-#screen -t C2RPC
-screen -t weblogic
-#screen -t tomcat
-select 0
+screen -t ~ 0 zsh
+chdir /w/intel-widgets
+screen -t intel-widgets 1 zsh
+stuff "gitstat\012"
 
 # key binding
-bindkey ^] prev
-bindkey ^\ next
-
+bindkey "^[[1;5I" next # ctrl-tab next window
+bindkey "^[[1;6I" prev # ctrl-shift-tab prev window
+bindkey ^\ focus # next split
