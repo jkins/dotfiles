@@ -1,6 +1,20 @@
--C
+# print surrounding context lines
+--context
+
+# colors
 --color-filename=white on_blue
---color-match=black on_green
 --color-lineno=green
+--color-match=black on_green
+
+# case sensitivity
 --smart-case
+
+# sort file output results
 --sort-files
+
+# ignore Maven build target
+--ignore-directory=is:target
+
+# support Freemarker templates
+--type-add=ftl:ext:ftl
+
