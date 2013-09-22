@@ -1,43 +1,76 @@
 " .vimrc - Jeff Kinslow
-" vim: foldmethod=marker
+" vim:fdm=marker:sw=4:ts=4
 
-" {{{ pathogen/general ======================================================== 
-call pathogen#infect()
-filetype plugin indent on
+" {{{ general/startup ========================================================= 
+set nocompatible
+
+" {{{ terminal
+" avoid escape timeout issues in vim
+" http://code.google.com/p/mintty/wiki/Tips
+"let &t_ti.="\e[?7727h"
+"let &t_te.="\e[?7727l"
+"noremap <Esc>O[ <Esc>
+"noremap! <Esc>O[ <C-c>
+" mode-dependent cursor 
+let &t_ti.="\e[1 q"
+let &t_SI.="\e[5 q"
+let &t_EI.="\e[1 q"
+let &t_te.="\e[0 q"
 " }}}
 
-" {{{ language ================================================================
+" {{{ pathogen
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+"call pathogen#infect("test")
+call pathogen#infect()
+if !exists("vimpager")
+	call pathogen#infect("bundle-mode-lite/{}")
+	if exists("g:devmode")
+		call pathogen#infect("bundle-mode-dev/{}")
+	endif
+endif
+" }}}
+
+" {{{ colorscheme 
+if has("gui_running")
+    colorscheme gui-jkins-light
+else 
+    colorscheme 256-jkins-dark
+endif
+" }}}
+
+syntax enable
+filetype plugin indent on
+
+" {{{ language
 try
-	lang en_US
+    lang en_US
 catch
 endtry
 " }}}
-
-" {{{ colors ==================================================================
-syntax enable
-colorscheme jkins
-"colorscheme solarized
-" }}}
+" }}} =========================================================================
 
 " {{{ settings ================================================================
 " * means value modified elsewhere
+set noautochdir           " change working dir to current buffer
 set autoread            " autorefresh buffer when file changes
-set autoindent          " copy indent from previous line
+"set autoindent          " copy indent from previous line
 set autowrite           " autosave when leaving buffers
 set backspace=indent,eol,start " backspace behavior in insert mode 
 set backup              " *use backup ~ files
 set backupdir^=~/tmp//,$VIMRUNTIME/temp//
 set cmdheight=1         " commandbar height
-set colorcolumn=1,80,120
-set nocompatible        " don't need vi compatibility
+set colorcolumn=
 set completeopt=longest,menuone
-set copyindent          " copy previous indent style
+"set copyindent          " copy previous indent style
 set cursorline          " * highlight the current line
 set directory^=~/tmp//,$VIMRUNTIME/temp//
 set encoding=utf-8
-set ffs=unix,dos        " default file types
-set fillchars=fold:―,vert:¦
+set expandtab
+set fileformats=unix
+"set fillchars=fold:―,vert:¦
+set fillchars=fold:-,vert:║
 set foldlevelstart=0    " *dont open folds
+set foldtext=MyFoldText()
 set formatoptions=qrn1  " see :help fo-table
 set gdefault            " substitute whole line by default
 set hidden              " change buffer without saving
@@ -47,19 +80,19 @@ set ignorecase          " lowercase search => case insensitive search
 set incsearch           " search as you type
 set laststatus=2        " statusline is always second-to-last line
 set lazyredraw          " don't redraw when executing macros
-set listchars=tab:»\ ,trail:·,eol:¬
-"set magic              " leave magic at default settings
-set makeprg=ant\ -emacs
+set listchars=tab:»\ ,trail:·,eol:¬,precedes:‹,extends:›
+set magic              " leave magic at default settings
 set modelines=5
 set mouse=nvi
+set mousehide           " hide mouse when typing
 set mousemodel=popup    " popup menu on right-click
-set rnu                 "* line numbers
+set number                 "* line numbers
 set printoptions=paper:letter
 set ruler               " show line/column in status bar
 set scrolloff=2         " keep current line n lines away from edge
 set sessionoptions=buffers,curdir,folds,help,options,tabpages,winsize
 set shiftround
-set shiftwidth=4
+set shiftwidth=2
 set shortmess=atI       " short messages
 set showmatch           " highlight matching search items
 set showmode            " show the mode in the status bar
@@ -67,21 +100,22 @@ set showtabline=1       " show tabline when there's more than one tab
 set sidescrolloff=5    " keep cursor n columns away from edge
 set smartcase           " different cases make search case-sensitive
 "set smartindent
-" looks like: /path/to/file [Git(master)] Tue 01/23/00 12:22 PM (unix){JAVA}[114,65][30%]
-set statusline=%F%m%r%h%w\ %{fugitive#statusline()}\ %{strftime(\"%a\ %m/%d/%y\ %I:%M\ %p\",\ getftime(expand('%')))}\ (%{&ff}){%Y}[%l,%v][%p%%]
+" looks like: /path/to/file    branch|JAVA|Tue 01/23/00 12:22 PM|114,65|30% 
+set statusline=%F%m%r%h%w%=\ %{g:MyGitHead(6)}\|%Y\|%{strftime(\"%a\ %m/%d/%y\ %I:%M\ %p\",\ getftime(expand('%')))}\|%l,%v\|%p%%\  
 set smarttab
 if exists("+spelllang")
-	set spelllang=en_US
+    set spelllang=en_US
 endif
 set suffixes+=.class    " don't autocomplete these extensions
 set noswapfile
 set tabstop=4           " a tab is 4 characters wide
 set tabline=%!MyTabLine()
-set tags=~/.tags
+set tags=./tags;/,~/tags
 set textwidth=0         " auto-newline after n chars (0 disabled)
-set tildeop				" ~ behaves like an operator
-set title
-set ttyfast
+set tildeop             " ~ behaves like an operator
+set title               " vim can change window title
+set ttyfast             " fast terminal connection
+set ttymouse=xterm2
 set undodir=$VIMRUNTIME\\undo\\undofile            " persistent undo
 set virtualedit=block
 set visualbell          " flash editor instead of beeping on error
@@ -91,107 +125,113 @@ set wildignore+=.git,.svn,.hg                   " version control
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg  " binary
 set wildignore+=classes,*.class                 " java bytecode
 set wildignore+=*.sw?                           " vim swap files
+set wildignore+=target/                         " java build
 " }}}
 set wildmode=list:longest,full,full
 set nowrap              " don't wrap text
-" }}}
-"
+" }}} =========================================================================
+
 " {{{ win32 ===================================================================
 if has("win32") || has("win64") 
-	let g:mswindows=1
-	"source $VIMRUNTIME/mswin.vim
-	"behave mswin
-	if $PATH =~? 'cygwin' && !exists("g:no_cygwin_shell")
-		set shell=bash
-		set shellquote="\""
-		set shellpipe=2>&1\|tee
-		set shellslash
-	endif
+    let g:mswindows=1
+    "source $VIMRUNTIME/mswin.vim
+    "behave mswin
+    "let g:no_cygwin_shell=1
+    if $PATH =~? 'cygwin' && !exists("g:no_cygwin_shell")
+        set shell=bash
+        "set shellquote="\""
+        set shellpipe=2>&1\|tee
+        set shellslash
+    endif
 endif
-" }}}
+" }}} =========================================================================
 
 " {{{ gvim ====================================================================
 if has("gui_running")
-	" start at 45x90
-	autocmd GUIEnter * set columns=90 | set lines=45 
+    " start at 45x90
+    autocmd GUIEnter * set columns=90 | set lines=45 
+    autocmd GUIEnter * if &diff | simalt ~x | endif
+    autocmd BufEnter pentadactyl.txt call g:QuickEdit()
 
-	set guioptions=crLbh
-	
-	if g:mswindows
-		set guifont=Consolas:h12:cANSI
-		" zoom levels
-		noremap <f1> :set guifont=Consolas:h3:cANSI<CR>
-		noremap <f2> :set guifont=Consolas:h10:cANSI<CR>
-		noremap <f3> :set guifont=Consolas:h12:cANSI<CR>
-		noremap <f4> :set guifont=Consolas:h18:cANSI<CR>
-		vnoremap <f1> :set guifont=Consolas:h3:cANSI<CR>
-		vnoremap <f2> :set guifont=Consolas:h10:cANSI<CR>
-		vnoremap <f3> :set guifont=Consolas:h12:cANSI<CR>
-		vnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
-	else
-		"Inconsolata? TODO: *nix fonts
-	endif
+    set guioptions=crLbhTm
+    
+    if g:mswindows
+        set guifont=Consolas:h12:cANSI
+        " zoom levels
+        nnoremap <f1> :set guifont=Consolas:h3:cANSI<CR><Tab>
+        nnoremap <f2> :set guifont=Consolas:h10:cANSI<CR>
+        nnoremap <f3> :set guifont=Consolas:h12:cANSI<CR>
+        nnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
+        vnoremap <f1> :set guifont=Consolas:h3:cANSI<CR>
+        vnoremap <f2> :set guifont=Consolas:h10:cANSI<CR>
+        vnoremap <f3> :set guifont=Consolas:h12:cANSI<CR>
+        vnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
+    else
+        "Inconsolata? TODO: *nix fonts
+    endif
 endif
-" }}}
-
+" }}} =========================================================================
 
 " {{{ events/autocmd ==========================================================
+augroup vimrc
+au!
+
+" Event handlers
+au WinEnter * call g:HandleWinEnter()
+au WinLeave * call g:HandleWinLeave()
+
 " leave insert mode after 15sec of no input
 au CursorHoldI * stopinsert
 au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
 au InsertLeave * let &updatetime=updaterestore
 
-" no line numbers for some buffers
-au FileType nerdtree setlocal colorcolumn= nonu
-au FileType tagbar setlocal colorcolumn= statusline="Tag Bar" nornu
-au FileType fugitiveblame setlocal colorcolumn= nu
-au FileType qf setlocal colorcolumn= nornu nocursorline 
-au FileType extradite setlocal colorcolumn= nu
-
-" Resize splits when the window is resized
-au VimResized * :wincmd =
+" Resize splits when the window is resized for diffs
+au VimResized * if &diff | :wincmd = | endif
 
 " When vimrc is edited, reload it
 au! bufwritepost .vimrc source $MYVIMRC
 au! bufwritepost _vimrc source $MYVIMRC    " windows
 
-" Enable cursorline only in the current buffer
-au WinEnter * setlocal cursorline
-au WinLeave * setlocal nocursorline
-
 " Normal line numbers in diff
-au FilterWritePost * if &diff | setlocal nu | endif
+au FilterWritePost * if &diff | setlocal number | endif
 
 " When loading a file, if it reads in as Unix, but has a DOS line ending,
 " and is not in binary mode, reload it in DOS format. Do this AFTER loading
 " last known position to prevent always opening on last line.
-"
 " Time out the search after 1/10 second. Timeouts only available in 7.1.211
 " and up, so just risk long loads in earlier versions.
-if (v:version > 701 || v:version == 701 && has("patch211"))
-  autocmd BufReadPost * nested
-        \ if !exists('b:reload_dos') && !&binary && &ff=='unix' && (0 < search('\r$', 'nc', 0, 100)) |
-        \   let b:reload_dos = 1 |
-        \   redir => s:num_dos_ends |
-        \   silent %s#\r$##n |
-        \   redir END |
-        \   e ++ff=dos |
-        \   echomsg "File has ".
-        \     substitute(s:num_dos_ends, '^.\{-}\(\d\+\).*', '\1', '').
-        \     " DOS-style line endings out of ".line('$')." lines." |
-        \ endif
-else
-  autocmd BufReadPost * nested
-        \ if !exists('b:reload_dos') && !&binary && &ff=='unix' && (0 < search('\r$', 'nc')) |
-        \   let b:reload_dos = 1 |
-        \   e ++ff=dos |
-        \ endif
-endif
-autocmd BufReadPost * if exists('b:reload_dos') | unlet b:reload_dos | endif
-" }}}
+"if (v:version > 701 || v:version == 701 && has("patch211"))
+  "autocmd BufReadPost * nested
+        "\ if !exists('b:reload_dos') && !&binary && &ff=='unix' && (0 < search('\r$', 'nc', 0, 100)) |
+        "\   let b:reload_dos = 1 |
+        "\   redir => s:num_dos_ends |
+        "\   silent %s#\r$##n |
+        "\   redir END |
+        "\   e ++ff=dos |
+        "\   echomsg "File has ".
+        "\     substitute(s:num_dos_ends, '^.\{-}\(\d\+\).*', '\1', '').
+        "\     " DOS-style line endings out of ".line('$')." lines." |
+        "\ endif
+"else
+  "autocmd BufReadPost * nested
+        "\ if !exists('b:reload_dos') && !&binary && &ff=='unix' && (0 < search('\r$', 'nc')) |
+        "\   let b:reload_dos = 1 |
+        "\   e ++ff=dos |
+        "\ endif
+"endif
+"autocmd BufReadPost * if exists('b:reload_dos') | unlet b:reload_dos | endif
+
+augroup END
+" }}} =========================================================================
 
 " {{{ plugin settings =========================================================
-" neocomplcache
+" airline {{{
+let g:airline_left_sep='▒'
+let g:airline_right_sep='▒'
+let g:airline_theme="tomorrow"
+" }}}
+
+" neocomplcache {{{
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 let g:neocomplcache_enable_at_startup = 1
@@ -200,13 +240,26 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_enable_auto_select = 1
+"inoremap <expr><CR> neocomplcache#smart_close_popup() . "\<CR>"
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" }}}
 
-" NERDTree
+" NERDTree {{{
+let g:NERDTreeDirArrows=0
 let g:NERDTreeIgnore = ['\.pyc$', '\~$', '\.rbc$', '\.class$', '\.jpg$']
 let g:NERDTreeMinimalUI=1
-" Tagbar
+" }}}
+
+" Tagbar {{{
 let g:tagbar_compact = 1
-" showmarks
+let g:tagbar_iconchars = ['»', '·']
+" }}}
+
+" showmarks {{{
 "let g:showmarks_ignore_type = "hmpq"
 "let g:showmarks_hlline_lower = 1
 "let g:showmarks_hlline_upper = 1
@@ -214,53 +267,114 @@ let g:tagbar_compact = 1
 "let g:showmarks_textupper = "\t"
 "let g:showmarks_textlower = "\t"
 "let g:showmarks_textother = "\t"
-" indent guides
+" }}}
+
+" indent guides {{{
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
-" buffergator
+" }}}
+
+" buffergator {{{
 "let g:buffergator_autoexpand_on_split = 0
 "let g:buffergator_sort_regime = "mru"
 "let g:buffergator_split_size = 6
 "let g:buffergator_suppress_keymaps = 1
 "let g:buffergator_viewport_split_policy = "B"
-" easymotion
-let g:EasyMotion_leader_key = '<Leader>m'
-" fuzzyfinder
+" }}}
+
+" easymotion {{{
+let g:EasyMotion_leader_key = '<Tab>'
+" }}}
+
+" fuzzyfinder {{{
 "let g:fuf_botRight = 1
 "let g:fuf_file_exclude = '\v\~$'
 "\ . '|\.(o|png|PNG|JPG|class|CLASS|jpg|exe|bak|swp|jar|war|ear|zip|tar|gz|bz2)$'
 "\ . '|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
 "\ . '|.*[/\\]$' 
-" session
-let g:session_autoload = 0
+" }}}
+
+" session {{{
+let g:session_autoload = "prompt"
 let g:session_autosave = 0
-let g:session_default_to_last = 0
-" ctrlp
+let g:session_default_to_last = 1
+" }}}
+
+" ctrlp {{{
 let g:ctrlp_by_filename = 1
 let g:ctrlp_cache_dir = $VIMRUNTIME.'/.ctrlp_cache'
 let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_mruf_exclude = '\v\~$'
+let g:ctrlp_custom_ignore = '\v\~$'
 \ . '|\.(o|png|PNG|JPG|class|CLASS|jpg|exe|bak|swp|jar|war|ear|zip|tar|gz|bz2)$'
 \ . '|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
 \ . '|.*[/\\]$' 
 let g:ctrlp_use_caching = 1
 let g:ctrlp_working_path_mode = 2
-" powerline
-let g:Powerline_symbols = "compatible"
-" xmledit
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files']
+
+" Make sure ctrlp is installed and loaded
+"if !exists('g:loaded_ctrlp') || ( exists('g:loaded_ctrlp') && !g:loaded_ctrlp )
+	"finish
+"endif
+
+" ctrlp only looks for this
+"let g:ctrlp_status_func = {
+	"\ 'main': 'CtrlP_Statusline_1',
+	"\ 'prog': 'CtrlP_Statusline_2',
+    "\ }
+
+"" Arguments: focus, byfname, s:regexp, prv, item, nxt, marked
+"" a:1 a:2 a:3 a:4 a:5 a:6 a:7
+"fu! CtrlP_Statusline_1(...)
+	"let focus = '%#LineNr# '.a:1.' %*'
+	"let byfname = '%#Character# '.a:2.' %*'
+	"let regex = a:3 ? '%#LineNr# regex %*' : ''
+	"let prv = ' <'.a:4.'>='
+	"let item = '{ '.a:5.' }'
+	"let nxt = '=<'.a:6.'>'
+	"let marked = ' '.a:7.' '
+	"let dir = ' %=%<%#LineNr# '.getcwd().' %*'
+	"" Return almost the full statusline
+	"retu focus.byfname.regex.item.marked.dir
+"endf
+
+"" Argument: len
+"" a:1
+"fu! CtrlP_Statusline_2(...)
+	"let len = '%#Function# '.a:1.' %*'
+	"let dir = ' %=%<%#LineNr# '.getcwd().' %*'
+	"" Return the full statusline
+	"retu len.dir
+"endf
+" }}}
+
+" powerline {{{
+"let g:Powerline_symbols = "compatible"
+" }}}
+
+" xmledit {{{
 let g:xml_syntax_folding = 1
-" delimitMate
+" }}}
+
+" delimitMate {{{
 let g:delimitMate_expand_cr = 1
 let g:delimitMate_expand_space = 1
-
 " }}}
+" }}} =========================================================================
 
 " {{{ mappings ================================================================
 let mapleader = ","
 let g:mapleader = ","
+let localleader = "\\"
 
 " save a file a super user
 cmap w!! %!sudo tee > /dev/null %
+
+" command line editing
+cnoremap <c-j> <t_kd>
+cnoremap <c-k> <t_ku>
+cnoremap <c-a> <Home>
+cnoremap <c-e> <End>
 
 " relative line numbers when operator-pending
 "nnoremap <silent> d :setlocal rnu<cr>d
@@ -271,73 +385,88 @@ cmap w!! %!sudo tee > /dev/null %
 "nnoremap <silent> > :setlocal rnu<cr>>
 "nnoremap <silent> ~ :setlocal rnu<cr>~›
 
-" \ joins lines
-nnoremap \ J
+" join lines
+nnoremap <BS> J
+
 " Keep search matches in the middle of the window and pulse the line when moving
 " to them. Same with jumps.
-nnoremap n nzzzv
-nnoremap n nzzzv
-nnoremap g; g;zz
-nnoremap g, g,zz
+"nnoremap n nzzzv
+"nnoremap n nzzzv
+"nnoremap g; g;zz
+"nnoremap g, g,zz
+
 " Don't move on *
 nnoremap * *<c-o>
-" Center location
-nnoremap <return> zvzz
-" Close all but the current fold
-nnoremap <c-return> zMzvzz
+
 " Space to toggle folds.
 nnoremap <Space> za
 vnoremap <Space> za
+
 " Recursively open current top level fold
 nnoremap zO zCzO
-nnoremap <leader>z zMzvzz
+
+" Center location
+nnoremap <Return> zvzz
+
+" Close all but current fold
+nnoremap <Leader>z zMzvzz
+
 " return cursor to starting position after a repeat
 nnoremap . .`[
+
 " make Y work like C and D (yank to end of line)
 nnoremap Y y$
+
 " repeat on all lines in visual selection
 vnoremap <silent> . :normal .<cr>
+
 " reselect selection after indenting
 vnoremap > >gv
 vnoremap < <gv
+
 " quick insert->normal mode with jj
 inoremap jj <ESC>
+
 " no need to hit shift to access command mode
 nnoremap ; :
+
 " clear search results
 nnoremap <leader><space> :noh<cr>
+
 " easier line+column marks
 nnoremap ' `
 nnoremap ` '
 vnoremap ' `
 vnoremap ` '
+
 " wrapped lines treated as separate when moving up and down
 nnoremap j gj
 nnoremap k gk
-" big movements by 10
-"vnoremap <m-k> <c-u>
-"vnoremap <m-j> <c-d>
+
+" coarse movement
 nnoremap <s-h> b
 nnoremap <s-j> 10j
 nnoremap <s-k> 10k
 nnoremap <s-l> w
-vnoremap <s-h> b
+vnoremap <s-h> ge
 vnoremap <s-j> 10j
 vnoremap <s-k> 10k
-vnoremap <s-l> w
+vnoremap <s-l> e
+
 " split movement
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+
 " fast save
 nnoremap <leader>w :w!<cr>
 vnoremap <leader>w :w!<cr>
+
 " switch to directory of open buffer
-nnoremap <leader>cd :cd %:p:h<cr>
-vnoremap <leader>cd :cd %:p:h<cr>
-" Build
-nnoremap <leader>B :call g:MyMake()<cr>
+"nnoremap <leader>cd :cd %:p:h<cr>
+"vnoremap <leader>cd :cd %:p:h<cr>
+
 " / searches literally, <leader>/ is search by regex, see :help magic
 nnoremap / /\V
 nnoremap ? ?\V
@@ -347,6 +476,7 @@ vnoremap / /\V
 vnoremap ? ?\V
 vnoremap <leader>/ /\v
 vnoremap <leader>? ?\v
+
 " move a line of text using ALT+[jk], indent with ALT+[hl]
 nnoremap <A-j> :m+<CR>==
 nnoremap <A-k> :m-2<CR>==
@@ -360,47 +490,54 @@ vnoremap <A-j> :m'>+<CR>gv=gv
 vnoremap <A-k> :m-2<CR>gv=gv
 vnoremap <A-h> <gv
 vnoremap <A-l> >gv
+
 " details - tab/eol/whitespace chars
-nnoremap <leader>d :call g:ToggleShowDetails()<cr>
-vnoremap <leader>d :call g:ToggleShowDetails()<cr>
-" numbers - absolute/relative line numbers
-nnoremap <leader>N :call g:ToggleNuMode()<cr>
-vnoremap <leader>N :call g:ToggleNuMode()<cr>
+nnoremap <silent> <leader>d :call g:ToggleShowDetails()<cr>
+vnoremap <silent> <leader>d :call g:ToggleShowDetails()<cr>
+
+" toggle line numbers - absolute/relative/none
+nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
+vnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
+
 " show the active highlighting under the cursor
 nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
 " split - horizontal split and switch to it
 nnoremap <leader>s <C-w>s
+
 " split - vertical split and switch to it
 nnoremap <leader>S <C-w>v<C-w>l
+
 " tab
 nnoremap <leader>t :tabnew<cr>
-" smart buffer delete
-nnoremap <leader>x :Sbd<cr>
-nnoremap <leader>X :Sbdm<cr>
 
-" search for selected text, forwards(*) or backwards(#)
-" =============================================================================
+" windows cygwin/clipboard, vimtip 1623
+vnoremap <silent> <leader>Y :call g:PutWinClip(visualmode(), 1)<CR>
+nnoremap <silent> <leader>Y :call g:PutWinClip('n', 1)<CR>
+nnoremap <silent> <leader>P :call g:GetWinClip()<CR>
+vnoremap <silent> <leader>P x:call g:GetWinClip()<CR>
+
+" search for selected text, forwards (*)
 vnoremap <silent> * :<C-U>
-  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \gvy/<C-R><C-R>=substitute(
-  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \gV:call setreg('"', old_reg, old_regtype)<CR>
+\let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+\gvy/<C-R><C-R>=substitute(
+\escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+\gV:call setreg('"', old_reg, old_regtype)<CR>
 
+" search for selected text, backwards (#)
 vnoremap <silent> # :<C-U>
-  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \gvy?<C-R><C-R>=substitute(
-  \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \gV:call setreg('"', old_reg, old_regtype)<CR>
+\let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+\gvy?<C-R><C-R>=substitute(
+\escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+\gV:call setreg('"', old_reg, old_regtype)<CR>
 
 " {{{ plugins =================================================================
 " scratch buffer
 nnoremap <leader><tab> :Scratch<cr> 
 " buffer (ctrlp)
 nnoremap <leader>b :CtrlPBuffer<cr>
-" diffmarks (what it should be called, not 'svndiff')
-nnoremap <leader>D :call Svndiff("prev")<cr>
 " file (ctrlp)
 nnoremap <leader>f :CtrlP<cr>
 " MRU file (ctrlp)
@@ -409,6 +546,10 @@ nnoremap <leader>F :CtrlPMRUFiles<cr>
 nnoremap <leader>gs :Gstatus<cr>
 " git log
 nnoremap <leader>gl :Extradite<cr>
+" gitv (like gitk) current file
+nnoremap <leader>gv :Gitv!<cr>
+" gitv (like gitk) rep
+nnoremap <leader>gV :Gitv!<cr>
 " git quickfix last log entries
 nnoremap <leader>gq :Glog<cr>
 " git diff
@@ -419,47 +560,101 @@ nnoremap <leader>gb :Gblame<cr>
 nnoremap <leader>gc :Gcommit<cr>
 " git read (effectively reverts the current buffer to the index version)
 nnoremap <leader>gr :Gread<cr>
-" showmarks
-nnoremap <leader>MM :ShowMarksToggle<cr>
-nnoremap <leader>Mc :ShowMarksClearMark<cr>
-nnoremap <leader>MC :ShowMarksClearAll<cr>
-vnoremap <leader>MM :ShowMarksToggle<cr>
-vnoremap <leader>Mc :ShowMarksClearMark<cr>
-vnoremap <leader>MC :ShowMarksClearAll<cr>
 " NERDTree explorer 
-nnoremap <leader>n :NERDTree<cr>
+nnoremap <F5> :NERDTreeToggle<cr>
 " quickfix (copen)
-nnoremap <leader>q :botright cope<cr>
+nnoremap <F7> :botright cope<cr>
 " vimrc
 nnoremap <leader>rc :e $MYVIMRC<cr>
 " vim-session
 nnoremap <leader>SS :SaveSession
 nnoremap <leader>SO :OpenSession
 " tagbar
-nnoremap <leader>T :TagbarToggle<cr>
+nnoremap <F6> :TagbarToggle<cr>
 " gundo tree
 nnoremap <leader>u :GundoToggle<cr>
+" smart buffer delete
+nnoremap <silent> <leader>x :Sbd<cr>
+nnoremap <silent> <leader>X :Sbdm<cr>
 " YankRing
 nnoremap <leader>y :YRShow<cr>
 " snipmate
-inoremap <silent> <tab> <c-r>=TriggerSnippet()<cr>
-snoremap <silent> <tab> <esc>i<right><c-r>=TriggerSnippet()<cr>
-inoremap <silent> <s-tab> <c-r>=BackwardsSnippet()<cr>
-snoremap <silent> <s-tab> <esc>i<right><c-r>=BackwardsSnippet()<cr>
-inoremap <silent> <c-r><tab> <c-r>=ShowAvailableSnips()<cr>
+"inoremap <silent> <tab> <c-r>=snipMate#TriggerSnippet()<cr>
+"snoremap <silent> <tab> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
+"inoremap <silent> <s-tab> <c-r>=snipMate#BackwardsSnippet()<cr>
+"snoremap <silent> <s-tab> <esc>i<right><c-r>=snipMate#BackwardsSnippet()<cr>
+"inoremap <silent> <c-r><tab> <c-r>=snipMate#ShowAvailableSnips()<cr>
 " }}}
-" }}}
+" }}} =========================================================================
 
 " {{{ functions ===============================================================
-" toggles relative/absolute line numbers       
+function! g:MyGitHead(n)
+    if exists('g:loaded_fugitive')
+        return fugitive#head(a:n)
+    else
+        return ' '
+    endif
+endfunction
+
+" write to cygwin clipboard, vimtip 1623
+function! g:PutWinClip(type, ...) range
+    let sel_save = &selection
+    let &selection = "inclusive"
+    let reg_save = @@
+    if a:type == 'n'
+        silent exe a:firstline . "," . a:lastline . "y"
+    elseif a:type == 'c'
+        silent exe a:1 . "," . a:2 . "y"
+    else
+        silent exe "normal! `<" . a:type . "`>y"
+    endif
+    call writefile(split(@@,"\n"), '/dev/clipboard')
+    let &selection = sel_save
+    let @@ = reg_save
+endfunction
+
+" read from cygwin clipboard, vimptip 1623
+function! g:GetWinClip()
+    let reg_save = @@
+    let @@ = join(readfile('/dev/clipboard'), "\n")
+    setlocal paste
+    exe 'normal p'
+    setlocal nopaste
+    let @@ = reg_save
+endfunction
+
+" toggles none->absolute->relative line numbers       
 function! g:ToggleNuMode() " {{{
-	let b:numode = exists('b:numode') ? !b:numode : 0
-	if b:numode
-		setlocal number
-	else
-		setlocal relativenumber
-	endif
+    if(&number)
+        setlocal relativenumber
+    elseif(&relativenumber)
+        setlocal norelativenumber
+    else
+        setlocal number
+    endif
 endfunc " }}}
+
+function! g:HandleWinEnter()
+    "if(&number || &relativenumber)
+        "setlocal relativenumber
+    "endif
+    setlocal cursorline
+endfunction
+
+function! g:HandleWinLeave()
+    "if(&number || &relativenumber)
+        "setlocal number
+    "endif
+    setlocal nocursorline
+endfunction
+
+function! g:QuickEdit()
+	setlocal laststatus=0
+	setlocal linebreak
+	setlocal lines=10
+	setlocal nonumber
+	setlocal wrap
+endfunction
 
 function! MyFoldText() " {{{
     let line = getline(v:foldstart)
@@ -472,157 +667,185 @@ function! MyFoldText() " {{{
     let onetab = strpart('          ', 0, &tabstop)
     let line = substitute(line, '\t', onetab, 'g')
 
-    let line = strpart(line, 1, windowwidth - 8 - len(foldedlinecount))
+    let line = strpart(line, 1, windowwidth - len(foldedlinecount))
     let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
     "return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-    return '›' . line . '…' . repeat(" ",fillcharcount-7) . '‹' . foldedlinecount . ' '
+    return '↕' . line . '…' . repeat(" ",fillcharcount) . '←' . foldedlinecount 
 endfunction " }}}
-set foldtext=MyFoldText()
 
 " Shows tab characters/columns, trailing whitespace, newlines
 function! g:ToggleShowDetails() " {{{
-
-	if(&list == 0)
-		setlocal nocursorline
-		:IndentGuidesEnable
-		:RainbowParenthesesToggle
-	else
-		setlocal cursorline
-		:IndentGuidesDisable
-		:RainbowParenthesesToggle
-	endif
-	setlocal list!
-endfunc " }}}
-
-" Toggles between maximized and unmaximized mode
-function! g:ToggleMax() " {{{
-	let w:maximized = exists('w:maximized') ? !w:maximized : 0
-	if w:maximized
-		set columns=90
-		set lines=45
-	else
-		simalt ~x
-	endif
-endfunc " }}}
-
-" Make behaving strangely on Windows
-function! g:MyMake() " {{{
-	let f = $VIMRUNTIME . "\\temp\\.errorfile"
-	execute "!ant -emacs > \\\"$(cygpath -u \\\"" . f . "\\\")\\\""
-	execute "cfile" f
-endfunc " }}}
-
-" Toggles between ~90% and 100% opacity on windows
-function! g:ToggleTrans() " {{{
-	let w:trans = exists('w:trans') ? !w:trans : 1
-	if w:trans
-		:call libcallnr("vimtweak.dll", "SetAlpha", 225)
-	else
-		:call libcallnr("vimtweak.dll", "SetAlpha", 255)
-	endif
+    if(&list)
+        set colorcolumn=
+        set cursorline
+        set foldcolumn=0
+        silent IndentGuidesDisable
+    else
+        set colorcolumn=1,80,120
+        set foldcolumn=1
+        set nocursorline
+        silent IndentGuidesEnable
+    endif
+	silent RainbowParenthesesToggle
+    set list!
 endfunc " }}}
 
 " Makes tab names the basename of the file instead of the path
 " see http://bradgrissom.com/index.php?/archives/61-Rename-tabs-in-Vim.html
 function! MyTabLine() " {{{
-	let s = ''
-	for i in range(tabpagenr('$'))
-		" select the highlighting
-		if i + 1 == tabpagenr()
-			let s .= '%#TabLineSel#'
-		else
-			let s .= '%#TabLine#'
-		endif
+    let s = ''
+    for i in range(tabpagenr('$'))
+        " select the highlighting
+        if i + 1 == tabpagenr()
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
+        endif
 
-		" set the tab page number (for mouse clicks)
-		let s .= '%' . (i + 1) . 'T'
+        " set the tab page number (for mouse clicks)
+        let s .= '%' . (i + 1) . 'T'
 
-		" the label is made by MyTabLabel()
-		"let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
-		let s .= ' %{BradLabel(' . (i + 1) . ')} '
-	endfor
+        " the label is made by MyTabLabel()
+        "let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
+        let s .= ' %{BradLabel(' . (i + 1) . ')} '
+    endfor
 
-	" after the last tab fill with TabLineFill and reset tab page nr
-	let s .= '%#TabLineFill# %T'
+    " after the last tab fill with TabLineFill and reset tab page nr
+    let s .= '%#TabLineFill# %T'
 
-	" right-align the label to close the current tab page
-	"if tabpagenr('$') > 1
-	"	let s .= '%=%#TabLine#%999Xclose'
-	"endif
+    " right-align the label to close the current tab page
+    "if tabpagenr('$') > 1
+    "    let s .= '%=%#TabLine#%999Xclose'
+    "endif
 
-	return s
+    return s
 endfunc " }}}
 
 function! BradLabel(n) " {{{
-	let buflist = tabpagebuflist(a:n)
-	let winnr   = tabpagewinnr(a:n)
-	let bufnam  = bufname(buflist[winnr - 1])
-	" This is getting the basename() of bufname above
-	let base    = substitute(substitute(bufnam, '.*\', '', ''), '.*/', '', '')
-	let name    = a:n . ' ' . base
-	return name
+    let buflist = tabpagebuflist(a:n)
+    let winnr   = tabpagewinnr(a:n)
+    let bufnam  = bufname(buflist[winnr - 1])
+    " This is getting the basename() of bufname above
+    let base    = substitute(substitute(bufnam, '.*\', '', ''), '.*/', '', '')
+    let name    = a:n . ' ' . base
+    return name
 endfunction " }}}
 
 function! MyTabLabel(n) " {{{
-	let buflist = tabpagebuflist(a:n)
-	let winnr = tabpagewinnr(a:n)
-	return bufname(buflist[winnr - 1])
-endfunction " }}}
-
-function! MyGuiTabLine() " {{{
-	let s = ''
-	let s .= ' %{BradLabel(' . tabpagenr() . ')} '
-	return s
+    let buflist = tabpagebuflist(a:n)
+    let winnr = tabpagewinnr(a:n)
+    return bufname(buflist[winnr - 1])
 endfunction " }}}
 " }}}
 
 " {{{ filetypes ===============================================================
-"   {{{ ftl 
-augroup ft_ftl
-	au!
-	au FileType ftl setlocal tabstop=2
-	au FileType ftl setlocal shiftwidth=2
-	au FileType ftl setlocal foldmethod=indent
-	au FileType ftl setlocal foldlevel=4
-	au FileType ftl setlocal filetype=html.ftl
-	au FileType ftl inoremap <c-return> <esc>A;<esc>^
-augroup END
-"   }}}
-"   {{{ html 
-augroup ft_html
-	au!
-	au FileType html setlocal tabstop=2
-	au FileType html setlocal shiftwidth=2
-	au FileType html setlocal foldmethod=indent
-	au FileType html setlocal foldlevel=4
-	au FileType html inoremap <c-return> <esc>A;<esc>^
-augroup END
-"   }}}
-"   {{{ java 
-augroup ft_java
-	au!
-	au FileType java setlocal foldmethod=marker
-	au FileType java setlocal foldmarker={,}
-	au FileType java setlocal foldlevel=1
-	au FileType java inoremap <c-return> <esc>A;<esc>^
-augroup END
-"   }}}
-"   {{{ javascript 
-augroup ft_javascript
-	au!
-	au FileType javascript setlocal foldmethod=marker
-	au FileType javascript setlocal foldmarker={,}
-	au FileType javascript setlocal foldlevel=1
-	au FileType javascript inoremap <c-return> <esc>A;<esc>^
-augroup END
-"   }}}
-"   {{{ xml 
-augroup ft_xml
-	au!
-	au FileType xml setlocal foldmethod=syntax
-	au FileType xml setlocal foldlevel=2
-	au FileType xml setlocal shiftwidth=2
-	au FileType xml setlocal tabstop=2
-augroup END
-"   }}}
-" }}}
+augroup ft_ftl " {{{
+    au!
+    au FileType ftl setlocal tabstop=2
+    au FileType ftl setlocal foldmethod=indent
+    au FileType ftl setlocal foldlevel=4
+    au FileType ftl setlocal filetype=html.ftl
+    "au FileType ftl silent RainbowParenthesesLoadBraces
+    "au FileType ftl silent RainbowParenthesesLoadChevrons
+    "au FileType ftl silent RainbowParenthesesLoadRound
+    "au FileType ftl inoremap <c-return> <esc>A;<esc>^
+augroup END " }}}
+augroup ft_html " {{{
+    au!
+    au FileType html setlocal tabstop=2
+    au FileType html setlocal foldmethod=indent
+    au FileType html setlocal foldlevel=4
+    "au FileType html silent RainbowParenthesesLoadBraces
+    "au FileType html silent RainbowParenthesesLoadChevrons
+    "au FileType html silent RainbowParenthesesLoadRound
+    "au FileType html inoremap <c-return> <esc>miA;<esc>`ia
+augroup END " }}}
+augroup ft_man " {{{
+    au!
+    au FileType man setlocal nomodifiable nolist
+augroup END " }}}
+augroup ft_java " {{{
+    au!
+    au FileType java setlocal foldmethod=marker
+    au FileType java setlocal foldmarker={,}
+    au FileType java setlocal foldlevel=1
+    au FileType java setlocal foldmethod=marker
+    au FileType java setlocal shiftwidth=4
+    "au FileType java inoremap ; <C-o>A;
+    "au FileType java inoremap { {<CR><CR>}<C-o>k<TAB><TAB>
+    "au FileType java inoremap  <C-o>A;<CR>
+    au FileType javascript inoremap  <esc>miA;<esc>`ia
+    au FileType java silent RainbowParenthesesLoadBraces
+    au FileType java silent RainbowParenthesesLoadChevrons
+    au FileType java silent RainbowParenthesesLoadRound
+    "au FileType java compiler ant
+    "au FileType java setlocal makeprg=mvn\ -q\ install
+    "au BufEnter pom.xml setlocal makeprg=mvn\ -q\ install
+    "au FileType java let b:delimitMate_eol_marker = ";"
+augroup END " }}}
+augroup ft_javascript " {{{
+    au!
+    au FileType javascript setlocal foldmethod=marker
+    au FileType javascript setlocal foldmarker={,}
+    au FileType javascript setlocal foldlevel=1
+    au FileType javascript setlocal shiftwidth=2
+    "au FileType javascript inoremap ; <C-o>A;
+    "au FileType javascript inoremap { {<CR><CR>}<C-o>k<TAB><TAB>
+    "au FileType javascript inoremap  <C-o>A;<CR>
+    "au FileType javascript inoremap <expr> <c-return> <esc>miA;<esc>`ia
+    au FileType javascript inoremap  <esc>miA;<esc>`ia
+    au FileType javascript silent RainbowParenthesesLoadBraces
+    au FileType javascript silent RainbowParenthesesLoadRound
+    "au FileType javascript let b:delimitMate_eol_marker = ";"
+augroup END " }}}
+augroup ft_json " {{{
+    au!
+    au FileType json setlocal expandtab
+    au FileType json setlocal foldmethod=marker
+    au FileType json setlocal foldmarker={,}
+    au FileType json setlocal foldlevel=1
+    au FileType json silent RainbowParenthesesLoadBraces
+    au FileType json silent RainbowParenthesesLoadSquare
+augroup END " }}}
+augroup ft_xml " {{{
+    au!
+    au FileType xml setlocal expandtab
+    au FileType xml setlocal foldmethod=syntax
+    au FileType xml setlocal foldlevel=2
+    "au FileType xml silent RainbowParenthesesLoadChevrons
+    au FileType xml setlocal shiftwidth=2
+    au FileType xml setlocal tabstop=2
+augroup END " }}}
+augroup ft_nerdtree " {{{
+    au!
+    "au FileType nerdtree setlocal colorcolumn= nonu
+augroup END " }}}
+augroup ft_tagbar " {{{
+    au!
+    "au FileType tagbar setlocal colorcolumn= statusline="Tag Bar" nornu
+augroup END " }}}
+augroup ft_fugitiveblame " {{{
+    au!
+    au FileType fugitiveblame setlocal colorcolumn= nu
+augroup END " }}}
+augroup ft_quickfix " {{{
+    au!
+    au FileType qf setlocal colorcolumn= nornu nocursorline 
+augroup END " }}}
+augroup ft_extradite " {{{
+    au!
+    au FileType extradite setlocal colorcolumn= nu
+augroup END " }}}
+" }}} =========================================================================
+
+" {{{ misc ====================================================================
+"possible solution to windows permissions 777 problem?
+"let g:chmod_new="644"
+"augroup ft_misc
+    "au!
+    "autocmd BufWritePost,FileWritePost * if exists("g:chmod_new")|
+          "\ silent! execute "!chmod ".b:chmod_new." <afile>"|
+          "\ unlet b:chmod_new|
+          "\ endif
+"augroup END
+" }}} =========================================================================
