@@ -17,3 +17,10 @@
 	template = ~/.gitcommit
 [github]
 	user = jkins
+[alias]
+	vimdiff = difftool -y -t vimdiff -R
+	ctags = !.git/hooks/ctags
+[svn]
+	rmdir = true
+[init]
+	templatedir = ~/.git_template
