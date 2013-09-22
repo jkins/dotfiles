@@ -1,0 +1,89 @@
+# general
+
+# Color output (auto set to 'no' on dumb terminals).
+zstyle ':prezto:*:*' color 'yes'
+
+# Set the Prezto modules to load (browse modules).
+zstyle ':prezto:load' pmodule \
+  'environment' \
+  'terminal' \
+  'editor' \
+  'history' \
+  'directory' \
+  'spectrum' \
+  'utility' \
+  'completion' \
+  'git'  \
+  'ssh' \
+  'syntax-highlighting' \
+  'history-substring-search' \
+  'prompt' \
+
+
+# editor
+
+# vi
+zstyle ':prezto:module:editor' key-bindings 'vi'
+
+# Auto convert .... to ../..
+zstyle ':prezto:module:editor' dot-expansion 'yes'
+
+
+# history-substring-search TODO
+
+# Set the query found color.
+# zstyle ':prezto:module:history-substring-search:color' found ''
+
+# Set the query not found color.
+# zstyle ':prezto:module:history-substring-search:color' not-found ''
+
+# Set the search globbing flags.
+# zstyle ':prezto:module:history-substring-search' globbing-flags ''
+
+
+# prompt
+zstyle ':prezto:module:prompt' theme 'jkins'
+
+
+# ssh
+
+# Set the SSH identities to load into the agent.
+zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_rsa_github' 'id_dsa_jc2cui'
+
+
+# syntax-highlighting
+
+# highlighters
+zstyle ':prezto:module:syntax-highlighting' highlighters \
+  'main' \
+  'brackets'
+
+# styles
+zstyle ':prezto:module:syntax-highlighting' styles \
+  'default' 'fg=white' \
+  'unknown-token' 'fg=red' \
+  'reserved-word' 'fg=magenta' \
+  'alias' 'fg=cyan,bold' \
+  'builtin' 'fg=green' \
+  'function' 'fg=cyan' \
+  'command' 'fg=green,bold' \
+  'precommand' 'fg=cyan' \
+  'single-hyphen-option' 'fg=white,bold' \
+  'double-hyphen-option' 'fg=white,bold' \
+  'single-quoted-argument' 'bg=green,fg=black' \
+  'double-quoted-argument' 'fg=green' \
+  'back-double-quoted-argument' 'bg=blue' \
+  'commandseparator' 'fg=yellow' \
+  'path'        'underline' \
+  'path-prefix' 'bg=blue' \
+  'globbing'    'bg=cyan' \
+  'bracket-level-1' 'fg=blue,bold' \
+  'bracket-level-2' 'fg=red,bold' \
+  'bracket-level-3' 'fg=yellow,bold' \
+  'bracket-level-4' 'fg=magenta,bold'
+
+
+# Terminal
+# Auto set the tab and window titles.
+zstyle ':prezto:module:terminal' auto-title 'yes'
+
