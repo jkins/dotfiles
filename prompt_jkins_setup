@@ -1,0 +1,75 @@
+#
+#
+
+function prompt_jkins_precmd {
+  # Get Git repository information.
+  if (( $+functions[git-info] )); then
+    git-info
+  fi
+}
+
+function prompt_jkins_setup {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
+  prompt_opts=(cr percent subst)
+
+  # Load required functions.
+  autoload -Uz add-zsh-hook
+
+  # Add hook for calling vcs_info before each command.
+  add-zsh-hook precmd prompt_jkins_precmd
+
+  # Set editor-info parameters.
+  zstyle ':prezto:module:editor:info:completing' format '%B%F{cyan}…%f%b'
+  zstyle ':prezto:module:editor:info:keymap:alternate' format '◂%F{green}vi%b'
+
+  # Set git-info parameters.
+  zstyle ':prezto:module:git:info' verbose 'yes'
+  zstyle ':prezto:module:git:info:action' format '%%B%F{yellow}►%s%f%%b'
+  zstyle ':prezto:module:git:info:added' format '%%B%F{green}+%f%%b'
+  zstyle ':prezto:module:git:info:ahead' format '%%B%F{yellow}↑%f%%b'
+  zstyle ':prezto:module:git:info:behind' format '%%B%F{yellow}↓%f%%b'
+  zstyle ':prezto:module:git:info:branch' format '%F{green}˫%f%F{white}%b%f'
+  zstyle ':prezto:module:git:info:clean' format '%F{green}√%f'
+  zstyle ':prezto:module:git:info:commit' format '%F{green}δ%.7c%f'
+  zstyle ':prezto:module:git:info:deleted' format '%%B%F{red}×%f%%b'
+  zstyle ':prezto:module:git:info:modified' format '%%B%F{blue}±%f%%b'
+  zstyle ':prezto:module:git:info:position' format '¦%F{red}%p%f'
+  zstyle ':prezto:module:git:info:renamed' format '%%B%F{magenta}→%f%%b'
+  zstyle ':prezto:module:git:info:stashed' format '%%B%F{cyan}✶%f%%b'
+  zstyle ':prezto:module:git:info:unmerged' format '%%B%F{yellow}↕%f%%b'
+  zstyle ':prezto:module:git:info:untracked' format '%%B%F{white}◌%f%%b'
+  zstyle ':prezto:module:git:info:keys' format \
+    'prompt' '$(coalesce "%b" "%p" "%c") %s%C%A%B%S%a%d%m%r%U%u' 
+
+  # PROMPT
+  PROMPT='%(?.
+.%F{red}×%f %B%F{black}%?%f%b
+
+)%F{cyan}»%f %F{white}%60<...<%~%<<%f ${git_info:+${(e)git_info[prompt]}}
+%F{white}%%%f '
+
+  #RPROMPT
+  RPROMPT='$editor_info[keymap] %B%F{black}%*%f%b'
+
+ #syntax-highlighting
+  zstyle ':prezto:module:syntax-highlighting' highlighters \
+    'main' \
+    'brackets' \
+    'pattern' \
+    'cursor' \
+    'root'
+
+  zstyle ':prezto:module:syntax-highlighting' styles \
+    'builtin' 'bg=blue' \
+    'command' 'fg=blue' \
+    'function' 'bg=blue' \
+    'bracket-level-1' 'fg=blue,bold' \
+    'bracket-level-2' 'fg=red,bold' \
+    'bracket-level-3' 'fg=yellow,bold' \
+    'bracket-level-4' 'fg=magenta,bold'
+
+}
+
+prompt_jkins_setup "$@"
+
