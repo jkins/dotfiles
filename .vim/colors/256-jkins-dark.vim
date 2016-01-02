@@ -9,7 +9,8 @@ if exists("syntax_on")
 endif
 let g:colors_name = "256-jkins-dark"
 
-hi Normal           ctermbg=233 ctermfg=253 cterm=none   
+"hi Normal           ctermbg=233 ctermfg=253 cterm=none   
+hi Normal           ctermbg=none ctermfg=253 cterm=none   
 hi ColorColumn      ctermbg=234             cterm=none   
 hi Comment                      ctermfg=245 cterm=none   
 hi Constant                     ctermfg=042 cterm=none   
@@ -35,7 +36,7 @@ hi Keyword                      ctermfg=038 cterm=none
 hi LineNr           ctermbg=232 ctermfg=240 cterm=none   
 hi MatchParen       ctermbg=239             cterm=none   
 hi ModeMsg          ctermbg=010 ctermfg=000 cterm=none
-hi NonText          ctermbg=232 ctermfg=234 cterm=none   
+hi NonText          ctermbg=none ctermfg=234 cterm=none   
 hi Number                       ctermfg=042 cterm=none   
 hi Pmenu            ctermbg=232 ctermfg=240 cterm=none
 hi PmenuSel         ctermbg=027 ctermfg=232 cterm=none
@@ -87,6 +88,8 @@ hi xmlString   ctermfg=153 cterm=none
 " Easymotion
 hi EasyMotionTarget   ctermbg=232 ctermfg=039
 hi EasyMotionShade    ctermbg=234 ctermfg=240
+hi EasyMotionTarget2First ctermbg=232 ctermfg=027
+hi EasyMotionTarget2Second ctermbg=232 ctermfg=027
 
 " NERD Tree
 hi NERDTreeCWD         ctermbg=236 ctermfg=247
