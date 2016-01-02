@@ -11,12 +11,16 @@ if [[ -z "$LANG" ]]; then
   export LANG='en_US.UTF-8'
 fi
 
+# NodeJS - nvm
+export NVM_DIR="$HOME/.nvm"
+source "$NVM_DIR/nvm.sh"
 
 # Paths
 typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
+  ~/bin
   /usr/local/{bin,sbin}
   $path
 )
@@ -66,25 +70,26 @@ csf() {
 	c_f cs $1
 }
 
-# find a target file by name, then execute a command on its relative path
+# find a target file by pattern, then execute a command on its relative path
 c_f() {
 	cmd=$1
-	name=$2
-	results=$(find . -iname "$name" -printf "%h ")
+	pattern=$2
+	results=$(find . -iname "$pattern")
 	if [[ -z $results ]]; then
-		echo "Didn't find file named '$name'"
+		echo "Didn't find files matching '$pattern'"
 		return 1
 	fi
 
-	paths=($(echo ${results}))
-	n=${#paths[@]}
+	matches=($(echo ${results}))
+	n=${#matches[@]}
 	if [[ $n == 1 ]]; then
-		${cmd} ${paths[1]}
+      echo "Found 1 file matching '$pattern': ${matches[1]}"
+      ${cmd} $(dirname ${matches[1]})
 	else
-		echo "Found many files named '$name'"
+		echo "Found $n files matching '$pattern'"
 		for i in {1..${n}}
 		do 
-			echo "${i}  ${paths[i]}"
+			echo "${i}  ${matches[i]}"
 		done
 		echo -n "Path #: "
 
@@ -93,15 +98,38 @@ c_f() {
 			echo "Invalid selection."
 			return 1
 		else
-			${cmd} ${paths[$opt]}
+            ${cmd} $(dirname $matches[$opt])
 		fi
 	fi
 }
 
-# go to the git module root
-cdm() {
-	if [[ -d ./.git ]]; then
-		echo "Already in git module root."
+# go up the tree to a dir name
+cdu() {
+  dest=$1
+  if [[ -z $dest ]]; then
+    echo "Usage: $0 destdir"
+  elif [[ "$PWD" == "/" ]]; then
+    echo "In root."
+    return 1
+  fi
+
+  local pth=$PWD
+  while [ true ]; do
+    pth=$( dirname $pth )
+    if [[ "$pth" == "/" ]]; then
+      echo "Searched to root; dir "$dest" not found."
+      return 1
+    elif [[ $(basename $pth) == "$dest" ]]; then
+      cd $pth
+      return 0
+    fi
+  done
+}
+
+# go to the git/svn module root
+cdr() {
+	if [[ -d ./.git || -d ./.svn ]]; then
+		echo "Already in module root."
 		return 1
 	elif [[ "$PWD" == "/" ]]; then
 		echo "In root."
@@ -112,9 +140,9 @@ cdm() {
 	while [ true ]; do
 		pth=$( dirname $pth )
 		if [[ "$pth" == "/" ]]; then
-			echo "Searched to root; not in a git module."
+			echo "Searched to root; not in a git/svn module."
 			return 1
-		elif [[ -d $pth/.git ]]; then
+		elif [[ -d $pth/.git || -d $pth/.svn ]]; then
 			cd $pth
 			return 0
 		fi
