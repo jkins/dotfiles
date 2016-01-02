@@ -1,52 +1,38 @@
-" .vimrc - Jeff Kinslow
-" vim:fdm=marker:sw=4:ts=4
 
 " {{{ general/startup ========================================================= 
-set nocompatible
-
-" {{{ terminal
-" avoid escape timeout issues in vim
-" http://code.google.com/p/mintty/wiki/Tips
-"let &t_ti.="\e[?7727h"
-"let &t_te.="\e[?7727l"
-"noremap <Esc>O[ <Esc>
-"noremap! <Esc>O[ <C-c>
-" mode-dependent cursor 
-let &t_ti.="\e[1 q"
-let &t_SI.="\e[5 q"
-let &t_EI.="\e[1 q"
-let &t_te.="\e[0 q"
-" }}}
 
 " {{{ pathogen
 runtime bundle/vim-pathogen/autoload/pathogen.vim
-"call pathogen#infect("test")
 call pathogen#infect()
 if !exists("vimpager")
-	call pathogen#infect("bundle-mode-lite/{}")
-	if exists("g:devmode")
-		call pathogen#infect("bundle-mode-dev/{}")
-	endif
+  call pathogen#infect("bundle-mode-lite/{}")
+  if exists("g:devmode")
+    call pathogen#infect("bundle-mode-dev/{}")
+  endif
 endif
 " }}}
 
 " {{{ colorscheme 
 if has("gui_running")
-    colorscheme gui-jkins-light
+  colorscheme gui-jkins-light
 else 
-    colorscheme 256-jkins-dark
+  colorscheme 256-jkins-dark
 endif
 " }}}
 
 syntax enable
 filetype plugin indent on
 
-" {{{ language
-try
-    lang en_US
-catch
-endtry
-" }}}
+
+lang en_US.UTF-8
+
+" {{{ platform
+if has("win32") || has("win64")
+  let g:platform = 'win'
+else
+  let g:platform = 'nix'
+endif
+
 " }}} =========================================================================
 
 " {{{ settings ================================================================
@@ -67,7 +53,6 @@ set directory^=~/tmp//,$VIMRUNTIME/temp//
 set encoding=utf-8
 set expandtab
 set fileformats=unix
-"set fillchars=fold:―,vert:¦
 set fillchars=fold:-,vert:║
 set foldlevelstart=0    " *dont open folds
 set foldtext=MyFoldText()
@@ -101,7 +86,8 @@ set sidescrolloff=5    " keep cursor n columns away from edge
 set smartcase           " different cases make search case-sensitive
 "set smartindent
 " looks like: /path/to/file    branch|JAVA|Tue 01/23/00 12:22 PM|114,65|30% 
-set statusline=%F%m%r%h%w%=\ %{g:MyGitHead(6)}\|%Y\|%{strftime(\"%a\ %m/%d/%y\ %I:%M\ %p\",\ getftime(expand('%')))}\|%l,%v\|%p%%\  
+"set statusline=%F%m%r%h%w%=\ %{g:MyGitHead(6)}\|%Y\|%{strftime(\"%a\ %m/%d/%y\ %I:%M\ %p\",\ getftime(expand('%')))}\|%l,%v\|%p%%\  
+"set statusline=%F%m
 set smarttab
 if exists("+spelllang")
     set spelllang=en_US
@@ -131,18 +117,37 @@ set wildmode=list:longest,full,full
 set nowrap              " don't wrap text
 " }}} =========================================================================
 
-" {{{ win32 ===================================================================
-if has("win32") || has("win64") 
-    let g:mswindows=1
-    "source $VIMRUNTIME/mswin.vim
-    "behave mswin
-    "let g:no_cygwin_shell=1
-    if $PATH =~? 'cygwin' && !exists("g:no_cygwin_shell")
-        set shell=bash
-        "set shellquote="\""
-        set shellpipe=2>&1\|tee
-        set shellslash
-    endif
+" {{{ windows =================================================================
+if g:platform == 'win'
+  "source $VIMRUNTIME/mswin.vim
+  "behave mswin
+  "let g:no_cygwin_shell=1
+  if $PATH =~? 'cygwin' && !exists("g:no_cygwin_shell")
+    set shell=bash
+    "set shellquote="\""
+    set shellpipe=2>&1\|tee
+    set shellslash
+  endif
+
+  " mintty mode-dependent cursor 
+  let &t_ti.="\e[1 q"
+  let &t_SI.="\e[5 q"
+  let &t_EI.="\e[1 q"
+  let &t_te.="\e[0 q"
+ 
+  " gvim
+  if has("gui_running")
+    set guifont=Consolas:h12:cANSI
+    " zoom levels
+    nnoremap <f1> :set guifont=Consolas:h3:cANSI<CR>
+    nnoremap <f2> :set guifont=Consolas:h10:cANSI<CR>
+    nnoremap <f3> :set guifont=Consolas:h12:cANSI<CR>
+    nnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
+    vnoremap <f1> :set guifont=Consolas:h3:cANSI<CR>
+    vnoremap <f2> :set guifont=Consolas:h10:cANSI<CR>
+    vnoremap <f3> :set guifont=Consolas:h12:cANSI<CR>
+    vnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
+  endif
 endif
 " }}} =========================================================================
 
@@ -153,22 +158,8 @@ if has("gui_running")
     autocmd GUIEnter * if &diff | simalt ~x | endif
     autocmd BufEnter pentadactyl.txt call g:QuickEdit()
 
+    set guifont=Inconsolata\ 14
     set guioptions=crLbhTm
-    
-    if g:mswindows
-        set guifont=Consolas:h12:cANSI
-        " zoom levels
-        nnoremap <f1> :set guifont=Consolas:h3:cANSI<CR><Tab>
-        nnoremap <f2> :set guifont=Consolas:h10:cANSI<CR>
-        nnoremap <f3> :set guifont=Consolas:h12:cANSI<CR>
-        nnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
-        vnoremap <f1> :set guifont=Consolas:h3:cANSI<CR>
-        vnoremap <f2> :set guifont=Consolas:h10:cANSI<CR>
-        vnoremap <f3> :set guifont=Consolas:h12:cANSI<CR>
-        vnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
-    else
-        "Inconsolata? TODO: *nix fonts
-    endif
 endif
 " }}} =========================================================================
 
@@ -229,23 +220,72 @@ augroup END
 let g:airline_left_sep='▒'
 let g:airline_right_sep='▒'
 let g:airline_theme="tomorrow"
+let g:airline_inactive_collapse=1
+let g:airline#extensions#tabline#enabled = 1
 " }}}
 
-" neocomplcache {{{
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_enable_camel_case_completion = 1
-let g:neocomplcache_enable_underbar_completion = 1
-let g:neocomplcache_min_syntax_length = 3
-let g:neocomplcache_enable_auto_select = 1
-"inoremap <expr><CR> neocomplcache#smart_close_popup() . "\<CR>"
+" rainbow {{{
+let g:rainbow_active = 0
+" }}}
+
+" neocomplete {{{
+let g:neocomplete#enable_at_startup=1
+let g:neocomplete#enable_smart_case=1
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+if !exists('g:neocomplete#keyword_patterns')
+  let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
+
+" Enable omni completion
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType coffee setlocal foldmethod=indent
+" }}}
+
+" neosnippet {{{
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
 " }}}
 
 " NERDTree {{{
@@ -274,16 +314,16 @@ let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 " }}}
 
-" buffergator {{{
-"let g:buffergator_autoexpand_on_split = 0
-"let g:buffergator_sort_regime = "mru"
-"let g:buffergator_split_size = 6
-"let g:buffergator_suppress_keymaps = 1
-"let g:buffergator_viewport_split_policy = "B"
-" }}}
-
 " easymotion {{{
-let g:EasyMotion_leader_key = '<Tab>'
+let g:EasyMotion_do_mapping = 0 " Disable default mapping
+nmap <Space> <Plug>(easymotion-s)
+
+" search (highlight not working atm)
+"map <leader>/ <Plug>(easymotion-sn)
+"omap <leader>/ <Plug>(easymotion-tn)
+"map n <Plug>(easymotion-next)
+"map N <Plug>(easymotion-prev)
+
 " }}}
 
 " fuzzyfinder {{{
@@ -385,9 +425,6 @@ cnoremap <c-e> <End>
 "nnoremap <silent> > :setlocal rnu<cr>>
 "nnoremap <silent> ~ :setlocal rnu<cr>~›
 
-" join lines
-nnoremap <BS> J
-
 " Keep search matches in the middle of the window and pulse the line when moving
 " to them. Same with jumps.
 "nnoremap n nzzzv
@@ -399,8 +436,8 @@ nnoremap <BS> J
 nnoremap * *<c-o>
 
 " Space to toggle folds.
-nnoremap <Space> za
-vnoremap <Space> za
+"nnoremap <Space> za
+"vnoremap <Space> za
 
 " Recursively open current top level fold
 nnoremap zO zCzO
@@ -444,14 +481,14 @@ nnoremap j gj
 nnoremap k gk
 
 " coarse movement
-nnoremap <s-h> b
-nnoremap <s-j> 10j
-nnoremap <s-k> 10k
-nnoremap <s-l> w
-vnoremap <s-h> ge
-vnoremap <s-j> 10j
-vnoremap <s-k> 10k
-vnoremap <s-l> e
+"nnoremap <s-h> b
+"nnoremap <s-j> 10j
+"nnoremap <s-k> 10k
+"nnoremap <s-l> w
+"vnoremap <s-h> ge
+"vnoremap <s-j> 10j
+"vnoremap <s-k> 10k
+"vnoremap <s-l> e
 
 " split movement
 nnoremap <C-h> <C-w>h
@@ -468,14 +505,14 @@ vnoremap <leader>w :w!<cr>
 "vnoremap <leader>cd :cd %:p:h<cr>
 
 " / searches literally, <leader>/ is search by regex, see :help magic
-nnoremap / /\V
-nnoremap ? ?\V
-nnoremap <leader>/ /\v
-nnoremap <leader>? ?\v
-vnoremap / /\V
-vnoremap ? ?\V
-vnoremap <leader>/ /\v
-vnoremap <leader>? ?\v
+"nnoremap / /\V
+"nnoremap ? ?\V
+"nnoremap <leader>/ /\v
+"nnoremap <leader>? ?\v
+"vnoremap / /\V
+"vnoremap ? ?\V
+"vnoremap <leader>/ /\v
+"vnoremap <leader>? ?\v
 
 " move a line of text using ALT+[jk], indent with ALT+[hl]
 nnoremap <A-j> :m+<CR>==
@@ -514,10 +551,12 @@ nnoremap <leader>S <C-w>v<C-w>l
 nnoremap <leader>t :tabnew<cr>
 
 " windows cygwin/clipboard, vimtip 1623
-vnoremap <silent> <leader>Y :call g:PutWinClip(visualmode(), 1)<CR>
-nnoremap <silent> <leader>Y :call g:PutWinClip('n', 1)<CR>
-nnoremap <silent> <leader>P :call g:GetWinClip()<CR>
-vnoremap <silent> <leader>P x:call g:GetWinClip()<CR>
+if g:platform == 'win'
+  nnoremap <silent> <leader>Y :call g:PutWinClip('n', 1)<CR>
+  vnoremap <silent> <leader>Y :call g:PutWinClip(visualmode(), 1)<CR>
+  nnoremap <silent> <leader>P :call g:GetWinClip()<CR>
+  vnoremap <silent> <leader>P x:call g:GetWinClip()<CR>
+endif
 
 " search for selected text, forwards (*)
 vnoremap <silent> * :<C-U>
@@ -535,7 +574,7 @@ vnoremap <silent> # :<C-U>
 
 " {{{ plugins =================================================================
 " scratch buffer
-nnoremap <leader><tab> :Scratch<cr> 
+"nnoremap <leader><tab> :Scratch<cr> 
 " buffer (ctrlp)
 nnoremap <leader>b :CtrlPBuffer<cr>
 " file (ctrlp)
@@ -584,6 +623,8 @@ nnoremap <leader>y :YRShow<cr>
 "inoremap <silent> <s-tab> <c-r>=snipMate#BackwardsSnippet()<cr>
 "snoremap <silent> <s-tab> <esc>i<right><c-r>=snipMate#BackwardsSnippet()<cr>
 "inoremap <silent> <c-r><tab> <c-r>=snipMate#ShowAvailableSnips()<cr>
+" fzf
+set rtp+=~/.fzf
 " }}}
 " }}} =========================================================================
 
@@ -686,7 +727,7 @@ function! g:ToggleShowDetails() " {{{
         set nocursorline
         silent IndentGuidesEnable
     endif
-	silent RainbowParenthesesToggle
+	silent RainbowToggle
     set list!
 endfunc " }}}
 
@@ -745,9 +786,6 @@ augroup ft_ftl " {{{
     au FileType ftl setlocal foldmethod=indent
     au FileType ftl setlocal foldlevel=4
     au FileType ftl setlocal filetype=html.ftl
-    "au FileType ftl silent RainbowParenthesesLoadBraces
-    "au FileType ftl silent RainbowParenthesesLoadChevrons
-    "au FileType ftl silent RainbowParenthesesLoadRound
     "au FileType ftl inoremap <c-return> <esc>A;<esc>^
 augroup END " }}}
 augroup ft_html " {{{
@@ -755,9 +793,6 @@ augroup ft_html " {{{
     au FileType html setlocal tabstop=2
     au FileType html setlocal foldmethod=indent
     au FileType html setlocal foldlevel=4
-    "au FileType html silent RainbowParenthesesLoadBraces
-    "au FileType html silent RainbowParenthesesLoadChevrons
-    "au FileType html silent RainbowParenthesesLoadRound
     "au FileType html inoremap <c-return> <esc>miA;<esc>`ia
 augroup END " }}}
 augroup ft_man " {{{
@@ -775,9 +810,6 @@ augroup ft_java " {{{
     "au FileType java inoremap { {<CR><CR>}<C-o>k<TAB><TAB>
     "au FileType java inoremap  <C-o>A;<CR>
     au FileType javascript inoremap  <esc>miA;<esc>`ia
-    au FileType java silent RainbowParenthesesLoadBraces
-    au FileType java silent RainbowParenthesesLoadChevrons
-    au FileType java silent RainbowParenthesesLoadRound
     "au FileType java compiler ant
     "au FileType java setlocal makeprg=mvn\ -q\ install
     "au BufEnter pom.xml setlocal makeprg=mvn\ -q\ install
@@ -794,8 +826,6 @@ augroup ft_javascript " {{{
     "au FileType javascript inoremap  <C-o>A;<CR>
     "au FileType javascript inoremap <expr> <c-return> <esc>miA;<esc>`ia
     au FileType javascript inoremap  <esc>miA;<esc>`ia
-    au FileType javascript silent RainbowParenthesesLoadBraces
-    au FileType javascript silent RainbowParenthesesLoadRound
     "au FileType javascript let b:delimitMate_eol_marker = ";"
 augroup END " }}}
 augroup ft_json " {{{
@@ -804,15 +834,12 @@ augroup ft_json " {{{
     au FileType json setlocal foldmethod=marker
     au FileType json setlocal foldmarker={,}
     au FileType json setlocal foldlevel=1
-    au FileType json silent RainbowParenthesesLoadBraces
-    au FileType json silent RainbowParenthesesLoadSquare
 augroup END " }}}
 augroup ft_xml " {{{
     au!
     au FileType xml setlocal expandtab
     au FileType xml setlocal foldmethod=syntax
     au FileType xml setlocal foldlevel=2
-    "au FileType xml silent RainbowParenthesesLoadChevrons
     au FileType xml setlocal shiftwidth=2
     au FileType xml setlocal tabstop=2
 augroup END " }}}
@@ -838,14 +865,3 @@ augroup ft_extradite " {{{
 augroup END " }}}
 " }}} =========================================================================
 
-" {{{ misc ====================================================================
-"possible solution to windows permissions 777 problem?
-"let g:chmod_new="644"
-"augroup ft_misc
-    "au!
-    "autocmd BufWritePost,FileWritePost * if exists("g:chmod_new")|
-          "\ silent! execute "!chmod ".b:chmod_new." <afile>"|
-          "\ unlet b:chmod_new|
-          "\ endif
-"augroup END
-" }}} =========================================================================
