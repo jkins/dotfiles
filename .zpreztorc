@@ -3,6 +3,9 @@
 # Color output (auto set to 'no' on dumb terminals).
 zstyle ':prezto:*:*' color 'yes'
 
+# Prevent prezto from fucking with diff
+zstyle ':prezto:module:utility:diff' color 'no'
+
 # Set the Prezto modules to load (browse modules).
 zstyle ':prezto:load' pmodule \
   'environment' \
@@ -15,6 +18,7 @@ zstyle ':prezto:load' pmodule \
   'completion' \
   'git'  \
   'ssh' \
+  'fasd' \
   'syntax-highlighting' \
   'history-substring-search' \
   'prompt' \
@@ -87,3 +91,10 @@ zstyle ':prezto:module:syntax-highlighting' styles \
 # Auto set the tab and window titles.
 zstyle ':prezto:module:terminal' auto-title 'yes'
 
+# Tmux
+
+# Auto start a session when Zsh is launched in a local terminal.
+# zstyle ':prezto:module:tmux:auto-start' local 'yes'
+
+# Auto start a session when Zsh is launched in a SSH connection.
+# zstyle ':prezto:module:tmux:auto-start' remote 'yes'
