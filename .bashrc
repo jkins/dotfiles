@@ -307,3 +307,4 @@ source ~/.dirs # Initialization for the above 'lsbm' facility: source the .sdirs
 export SOURCED_BASHRC=1
 # }}}
 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
