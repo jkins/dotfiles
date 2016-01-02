@@ -5,3 +5,4 @@ fi
 
 bindkey "" history-incremental-search-backward
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
