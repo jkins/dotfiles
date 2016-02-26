@@ -19,6 +19,7 @@ zstyle ':prezto:load' pmodule \
   'git'  \
   'ssh' \
   'fasd' \
+  'node' \
   'syntax-highlighting' \
   'history-substring-search' \
   'prompt' \
