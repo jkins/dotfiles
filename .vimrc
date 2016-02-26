@@ -153,13 +153,13 @@ endif
 
 " {{{ gvim ====================================================================
 if has("gui_running")
-    " start at 45x90
-    autocmd GUIEnter * set columns=90 | set lines=45 
-    autocmd GUIEnter * if &diff | simalt ~x | endif
-    autocmd BufEnter pentadactyl.txt call g:QuickEdit()
+  " start at 45x90
+  autocmd GUIEnter * set columns=90 | set lines=45 
+  autocmd GUIEnter * if &diff | simalt ~x | endif
+  autocmd BufEnter pentadactyl.txt call g:QuickEdit()
 
-    set guifont=Inconsolata\ 14
-    set guioptions=crLbhTm
+  set guifont=Inconsolata\ 14
+  set guioptions=crLbhTm
 endif
 " }}} =========================================================================
 
@@ -630,238 +630,237 @@ set rtp+=~/.fzf
 
 " {{{ functions ===============================================================
 function! g:MyGitHead(n)
-    if exists('g:loaded_fugitive')
-        return fugitive#head(a:n)
-    else
-        return ' '
-    endif
+  if exists('g:loaded_fugitive')
+    return fugitive#head(a:n)
+  else
+    return ' '
+  endif
 endfunction
 
 " write to cygwin clipboard, vimtip 1623
 function! g:PutWinClip(type, ...) range
-    let sel_save = &selection
-    let &selection = "inclusive"
-    let reg_save = @@
-    if a:type == 'n'
-        silent exe a:firstline . "," . a:lastline . "y"
-    elseif a:type == 'c'
-        silent exe a:1 . "," . a:2 . "y"
-    else
-        silent exe "normal! `<" . a:type . "`>y"
-    endif
-    call writefile(split(@@,"\n"), '/dev/clipboard')
-    let &selection = sel_save
-    let @@ = reg_save
+  let sel_save = &selection
+  let &selection = "inclusive"
+  let reg_save = @@
+  if a:type == 'n'
+    silent exe a:firstline . "," . a:lastline . "y"
+  elseif a:type == 'c'
+    silent exe a:1 . "," . a:2 . "y"
+  else
+    silent exe "normal! `<" . a:type . "`>y"
+  endif
+  call writefile(split(@@,"\n"), '/dev/clipboard')
+  let &selection = sel_save
+  let @@ = reg_save
 endfunction
 
 " read from cygwin clipboard, vimptip 1623
 function! g:GetWinClip()
-    let reg_save = @@
-    let @@ = join(readfile('/dev/clipboard'), "\n")
-    setlocal paste
-    exe 'normal p'
-    setlocal nopaste
-    let @@ = reg_save
+  let reg_save = @@
+  let @@ = join(readfile('/dev/clipboard'), "\n")
+  setlocal paste
+  exe 'normal p'
+  setlocal nopaste
+  let @@ = reg_save
 endfunction
 
 " toggles none->absolute->relative line numbers       
 function! g:ToggleNuMode() " {{{
-    if(&number)
-        setlocal relativenumber
-    elseif(&relativenumber)
-        setlocal norelativenumber
+  if(&number)
+    if(&relativenumber)
+      setlocal norelativenumber
+      setlocal nonumber
     else
-        setlocal number
+      setlocal relativenumber
     endif
 endfunc " }}}
 
 function! g:HandleWinEnter()
-    "if(&number || &relativenumber)
-        "setlocal relativenumber
-    "endif
-    setlocal cursorline
+  "if(&number || &relativenumber)
+    "setlocal relativenumber
+  "endif
+  setlocal cursorline
 endfunction
 
 function! g:HandleWinLeave()
-    "if(&number || &relativenumber)
-        "setlocal number
-    "endif
-    setlocal nocursorline
+  "if(&number || &relativenumber)
+      "setlocal number
+  "endif
+  setlocal nocursorline
 endfunction
 
 function! g:QuickEdit()
-	setlocal laststatus=0
-	setlocal linebreak
-	setlocal lines=10
-	setlocal nonumber
-	setlocal wrap
+  setlocal laststatus=0
+  setlocal linebreak
+  setlocal lines=10
+  setlocal nonumber
+  setlocal wrap
 endfunction
 
 function! MyFoldText() " {{{
-    let line = getline(v:foldstart)
+  let line = getline(v:foldstart)
 
-    let nucolwidth = &fdc + &number * &numberwidth
-    let windowwidth = winwidth(0) - nucolwidth - 3
-    let foldedlinecount = v:foldend - v:foldstart
+  let nucolwidth = &fdc + &number * &numberwidth
+  let windowwidth = winwidth(0) - nucolwidth - 3
+  let foldedlinecount = v:foldend - v:foldstart
 
-    " expand tabs into spaces
-    let onetab = strpart('          ', 0, &tabstop)
-    let line = substitute(line, '\t', onetab, 'g')
+  " expand tabs into spaces
+  let onetab = strpart('          ', 0, &tabstop)
+  let line = substitute(line, '\t', onetab, 'g')
 
-    let line = strpart(line, 1, windowwidth - len(foldedlinecount))
-    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-    "return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-    return '↕' . line . '…' . repeat(" ",fillcharcount) . '←' . foldedlinecount 
+  let line = strpart(line, 1, windowwidth - len(foldedlinecount))
+  let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+  "return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+  return '↕' . line . '…' . repeat(" ",fillcharcount) . '←' . foldedlinecount 
 endfunction " }}}
 
 " Shows tab characters/columns, trailing whitespace, newlines
 function! g:ToggleShowDetails() " {{{
-    if(&list)
-        set colorcolumn=
-        set cursorline
-        set foldcolumn=0
-        silent IndentGuidesDisable
-    else
-        set colorcolumn=1,80,120
-        set foldcolumn=1
-        set nocursorline
-        silent IndentGuidesEnable
-    endif
-	silent RainbowToggle
-    set list!
+  if(&list)
+    set colorcolumn=
+    set cursorline
+    set foldcolumn=0
+    silent IndentGuidesDisable
+  else
+    set colorcolumn=1,80,120
+    set foldcolumn=1
+    set nocursorline
+    silent IndentGuidesEnable
+  endif
+  silent RainbowToggle
+  set list!
 endfunc " }}}
 
 " Makes tab names the basename of the file instead of the path
 " see http://bradgrissom.com/index.php?/archives/61-Rename-tabs-in-Vim.html
 function! MyTabLine() " {{{
-    let s = ''
-    for i in range(tabpagenr('$'))
-        " select the highlighting
-        if i + 1 == tabpagenr()
-            let s .= '%#TabLineSel#'
-        else
-            let s .= '%#TabLine#'
-        endif
+  let s = ''
+  for i in range(tabpagenr('$'))
+      " select the highlighting
+      if i + 1 == tabpagenr()
+          let s .= '%#TabLineSel#'
+      else
+          let s .= '%#TabLine#'
+      endif
 
-        " set the tab page number (for mouse clicks)
-        let s .= '%' . (i + 1) . 'T'
+      " set the tab page number (for mouse clicks)
+      let s .= '%' . (i + 1) . 'T'
 
-        " the label is made by MyTabLabel()
-        "let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
-        let s .= ' %{BradLabel(' . (i + 1) . ')} '
-    endfor
+      " the label is made by MyTabLabel()
+      "let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
+      let s .= ' %{BradLabel(' . (i + 1) . ')} '
+  endfor
 
-    " after the last tab fill with TabLineFill and reset tab page nr
-    let s .= '%#TabLineFill# %T'
+  " after the last tab fill with TabLineFill and reset tab page nr
+  let s .= '%#TabLineFill# %T'
 
-    " right-align the label to close the current tab page
-    "if tabpagenr('$') > 1
-    "    let s .= '%=%#TabLine#%999Xclose'
-    "endif
+  " right-align the label to close the current tab page
+  "if tabpagenr('$') > 1
+  "    let s .= '%=%#TabLine#%999Xclose'
+  "endif
 
-    return s
+  return s
 endfunc " }}}
 
 function! BradLabel(n) " {{{
-    let buflist = tabpagebuflist(a:n)
-    let winnr   = tabpagewinnr(a:n)
-    let bufnam  = bufname(buflist[winnr - 1])
-    " This is getting the basename() of bufname above
-    let base    = substitute(substitute(bufnam, '.*\', '', ''), '.*/', '', '')
-    let name    = a:n . ' ' . base
-    return name
+  let buflist = tabpagebuflist(a:n)
+  let winnr   = tabpagewinnr(a:n)
+  let bufnam  = bufname(buflist[winnr - 1])
+  " This is getting the basename() of bufname above
+  let base    = substitute(substitute(bufnam, '.*\', '', ''), '.*/', '', '')
+  let name    = a:n . ' ' . base
+  return name
 endfunction " }}}
 
 function! MyTabLabel(n) " {{{
-    let buflist = tabpagebuflist(a:n)
-    let winnr = tabpagewinnr(a:n)
-    return bufname(buflist[winnr - 1])
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  return bufname(buflist[winnr - 1])
 endfunction " }}}
 " }}}
 
 " {{{ filetypes ===============================================================
 augroup ft_ftl " {{{
-    au!
-    au FileType ftl setlocal tabstop=2
-    au FileType ftl setlocal foldmethod=indent
-    au FileType ftl setlocal foldlevel=4
-    au FileType ftl setlocal filetype=html.ftl
-    "au FileType ftl inoremap <c-return> <esc>A;<esc>^
+  au!
+  au FileType ftl setlocal tabstop=2
+  au FileType ftl setlocal foldmethod=indent
+  au FileType ftl setlocal foldlevel=4
+  au FileType ftl setlocal filetype=html.ftl
+  "au FileType ftl inoremap <c-return> <esc>A;<esc>^
 augroup END " }}}
 augroup ft_html " {{{
-    au!
-    au FileType html setlocal tabstop=2
-    au FileType html setlocal foldmethod=indent
-    au FileType html setlocal foldlevel=4
-    "au FileType html inoremap <c-return> <esc>miA;<esc>`ia
+  au!
+  au FileType html setlocal tabstop=2
+  au FileType html setlocal foldmethod=indent
+  au FileType html setlocal foldlevel=4
+  "au FileType html inoremap <c-return> <esc>miA;<esc>`ia
 augroup END " }}}
 augroup ft_man " {{{
-    au!
-    au FileType man setlocal nomodifiable nolist
+  au!
+  au FileType man setlocal nomodifiable nolist
 augroup END " }}}
 augroup ft_java " {{{
-    au!
-    au FileType java setlocal foldmethod=marker
-    au FileType java setlocal foldmarker={,}
-    au FileType java setlocal foldlevel=1
-    au FileType java setlocal foldmethod=marker
-    au FileType java setlocal shiftwidth=4
-    "au FileType java inoremap ; <C-o>A;
-    "au FileType java inoremap { {<CR><CR>}<C-o>k<TAB><TAB>
-    "au FileType java inoremap  <C-o>A;<CR>
-    au FileType javascript inoremap  <esc>miA;<esc>`ia
-    "au FileType java compiler ant
-    "au FileType java setlocal makeprg=mvn\ -q\ install
-    "au BufEnter pom.xml setlocal makeprg=mvn\ -q\ install
-    "au FileType java let b:delimitMate_eol_marker = ";"
+  au!
+  au FileType java setlocal foldmethod=marker
+  au FileType java setlocal foldmarker={,}
+  au FileType java setlocal foldlevel=1
+  au FileType java setlocal foldmethod=marker
+  au FileType java setlocal shiftwidth=4
+  "au FileType java inoremap ; <C-o>A;
+  "au FileType java inoremap { {<CR><CR>}<C-o>k<TAB><TAB>
+  "au FileType java inoremap  <C-o>A;<CR>
+  "au FileType java compiler ant
+  "au FileType java setlocal makeprg=mvn\ -q\ install
+  "au BufEnter pom.xml setlocal makeprg=mvn\ -q\ install
+  "au FileType java let b:delimitMate_eol_marker = ";"
 augroup END " }}}
 augroup ft_javascript " {{{
-    au!
-    au FileType javascript setlocal foldmethod=marker
-    au FileType javascript setlocal foldmarker={,}
-    au FileType javascript setlocal foldlevel=1
-    au FileType javascript setlocal shiftwidth=2
-    "au FileType javascript inoremap ; <C-o>A;
-    "au FileType javascript inoremap { {<CR><CR>}<C-o>k<TAB><TAB>
-    "au FileType javascript inoremap  <C-o>A;<CR>
-    "au FileType javascript inoremap <expr> <c-return> <esc>miA;<esc>`ia
-    au FileType javascript inoremap  <esc>miA;<esc>`ia
-    "au FileType javascript let b:delimitMate_eol_marker = ";"
+  au!
+  au FileType javascript setlocal foldmethod=marker
+  au FileType javascript setlocal foldmarker={,}
+  au FileType javascript setlocal foldlevel=1
+  au FileType javascript setlocal shiftwidth=2
+  "au FileType javascript inoremap ; <C-o>A;
+  "au FileType javascript inoremap { {<CR><CR>}<C-o>k<TAB><TAB>
+  "au FileType javascript inoremap  <C-o>A;<CR>
+  "au FileType javascript inoremap <expr> <c-return> <esc>miA;<esc>`ia
+  au FileType javascript inoremap  <esc>miA;<esc>`ia
+  "au FileType javascript let b:delimitMate_eol_marker = ";"
 augroup END " }}}
 augroup ft_json " {{{
-    au!
-    au FileType json setlocal expandtab
-    au FileType json setlocal foldmethod=marker
-    au FileType json setlocal foldmarker={,}
-    au FileType json setlocal foldlevel=1
+  au!
+  au FileType json setlocal expandtab
+  au FileType json setlocal foldmethod=marker
+  au FileType json setlocal foldmarker={,}
+  au FileType json setlocal foldlevel=1
 augroup END " }}}
 augroup ft_xml " {{{
-    au!
-    au FileType xml setlocal expandtab
-    au FileType xml setlocal foldmethod=syntax
-    au FileType xml setlocal foldlevel=2
-    au FileType xml setlocal shiftwidth=2
-    au FileType xml setlocal tabstop=2
+  au!
+  au FileType xml setlocal expandtab
+  au FileType xml setlocal foldmethod=syntax
+  au FileType xml setlocal foldlevel=2
+  au FileType xml setlocal shiftwidth=2
+  au FileType xml setlocal tabstop=2
 augroup END " }}}
 augroup ft_nerdtree " {{{
-    au!
-    "au FileType nerdtree setlocal colorcolumn= nonu
+  au!
+  "au FileType nerdtree setlocal colorcolumn= nonu
 augroup END " }}}
 augroup ft_tagbar " {{{
-    au!
-    "au FileType tagbar setlocal colorcolumn= statusline="Tag Bar" nornu
+  au!
+  "au FileType tagbar setlocal colorcolumn= statusline="Tag Bar" nornu
 augroup END " }}}
 augroup ft_fugitiveblame " {{{
-    au!
-    au FileType fugitiveblame setlocal colorcolumn= nu
+  au!
+  au FileType fugitiveblame setlocal colorcolumn= nu
 augroup END " }}}
 augroup ft_quickfix " {{{
-    au!
-    au FileType qf setlocal colorcolumn= nornu nocursorline 
+  au!
+  au FileType qf setlocal colorcolumn= nornu nocursorline 
 augroup END " }}}
 augroup ft_extradite " {{{
-    au!
-    au FileType extradite setlocal colorcolumn= nu
+  au!
+  au FileType extradite setlocal colorcolumn= nu
 augroup END " }}}
 " }}} =========================================================================
 
