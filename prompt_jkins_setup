@@ -29,10 +29,10 @@ function prompt_jkins_setup {
   zstyle ':prezto:module:git:info:added' format '%%B%F{green}+%f%%b'
   zstyle ':prezto:module:git:info:ahead' format '%%B%F{yellow}↑%f%%b'
   zstyle ':prezto:module:git:info:behind' format '%%B%F{yellow}↓%f%%b'
-  zstyle ':prezto:module:git:info:branch' format '%F{green}˫%f%F{white}%b%f'
-  zstyle ':prezto:module:git:info:clean' format '%F{green}√%f'
-  zstyle ':prezto:module:git:info:commit' format '%F{green}δ%.7c%f'
-  zstyle ':prezto:module:git:info:deleted' format '%%B%F{red}×%f%%b'
+  zstyle ':prezto:module:git:info:branch' format '%F{green}⎇%f%F{white}%b%f'
+  zstyle ':prezto:module:git:info:clean' format '%F{green}✓%f'
+  zstyle ':prezto:module:git:info:commit' format '%F{green}⍿%.7c%f'
+  zstyle ':prezto:module:git:info:deleted' format '%%B%F{red}✗%f%%b'
   zstyle ':prezto:module:git:info:modified' format '%%B%F{blue}±%f%%b'
   zstyle ':prezto:module:git:info:position' format '¦%F{red}%p%f'
   zstyle ':prezto:module:git:info:renamed' format '%%B%F{magenta}→%f%%b'
@@ -46,7 +46,7 @@ function prompt_jkins_setup {
   PROMPT='%(?.
 .%F{red}×%f %B%F{black}%?%f%b
 
-)%F{cyan}»%f %F{white}%60<...<%~%<<%f ${git_info:+${(e)git_info[prompt]}}
+)%F{cyan}␥%f%B%F{black}【%b%F{white}%60<...<%~%<<%f%B%F{black}】%b%f ${git_info:+${(e)git_info[prompt]}}
 %F{white}%%%f '
 
   #RPROMPT
