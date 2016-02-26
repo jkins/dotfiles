@@ -53,7 +53,7 @@ zstyle ':prezto:module:prompt' theme 'jkins'
 # ssh
 
 # Set the SSH identities to load into the agent.
-zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_rsa_github' 'id_dsa_jc2cui'
+zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_rsa_github'
 
 
 # syntax-highlighting
