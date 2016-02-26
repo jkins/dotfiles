@@ -231,9 +231,9 @@ augroup END
 
 " {{{ plugin settings =========================================================
 " airline {{{
-let g:airline_left_sep='▒'
-let g:airline_right_sep='▒'
-let g:airline_theme="tomorrow"
+let g:airline_left_sep='▛'
+let g:airline_right_sep='▜'
+let g:airline_theme="murmur"
 let g:airline_inactive_collapse=1
 let g:airline#extensions#tabline#enabled = 1
 " }}}
