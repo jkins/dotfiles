@@ -13,6 +13,9 @@ endif
 " }}}
 
 " {{{ pathogen
+" AnsiEsc plugin (cecutil) maps <leader>rwp and <leader>swp. Prevent that.
+let g:no_cecutil_maps = 1 
+
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
 if !exists("vimpager")
