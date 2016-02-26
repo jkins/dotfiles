@@ -6,7 +6,6 @@ export CLICOLOR=1
 export EDITOR='vim'
 export GIT_EDITOR='vim'
 export GREP_COLOR='1;32'
-export GREP_OPTIONS='--color=auto'
 export HISTCONTROL=ignoredups
 export HISTFILE=~/.bash_history
 export HISTFILESIZE=10000
