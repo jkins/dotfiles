@@ -22,12 +22,6 @@
 	rmdir = true
 [init]
 	templatedir = ~/.git_template
-[url "https://github"]
-	insteadOf = git://github
-[http]
-	proxy = http://contractorproxy.ms.northgrum.com:80
-[https]
-	proxy = http://contractorproxy.ms.northgrum.com:80
 [push]
 	default = simple
 [alias]
