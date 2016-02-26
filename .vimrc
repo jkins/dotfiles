@@ -386,11 +386,8 @@ let localleader = "\\"
 " save a file a super user
 cmap w!! %!sudo tee > /dev/null %
 
-" command line editing
-cnoremap <c-j> <t_kd>
-cnoremap <c-k> <t_ku>
-cnoremap <c-a> <Home>
-cnoremap <c-e> <End>
+" delete buffer without closing split, also close location windows
+nnoremap <silent> <leader>x :lclose<bar>b#<bar>bd #<CR>
 
 " relative line numbers when operator-pending
 "nnoremap <silent> d :setlocal rnu<cr>d
