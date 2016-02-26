@@ -284,17 +284,17 @@ autocmd FileType coffee setlocal foldmethod=indent
 
 " neosnippet {{{
 " Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
+" imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)"
+" \: pumvisible() ? "\<C-n>" : "\<TAB>"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)"
+" \: "\<TAB>"
 
 " For snippet_complete marker.
 if has('conceal')
@@ -355,51 +355,16 @@ let g:session_default_to_last = 1
 " }}}
 
 " ctrlp {{{
-let g:ctrlp_by_filename = 1
-let g:ctrlp_cache_dir = $VIMRUNTIME.'/.ctrlp_cache'
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_custom_ignore = '\v\~$'
-\ . '|\.(o|png|PNG|JPG|class|CLASS|jpg|exe|bak|swp|jar|war|ear|zip|tar|gz|bz2)$'
-\ . '|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
-\ . '|.*[/\\]$' 
-let g:ctrlp_use_caching = 1
-let g:ctrlp_working_path_mode = 2
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files']
-
-" Make sure ctrlp is installed and loaded
-"if !exists('g:loaded_ctrlp') || ( exists('g:loaded_ctrlp') && !g:loaded_ctrlp )
-	"finish
-"endif
-
-" ctrlp only looks for this
-"let g:ctrlp_status_func = {
-	"\ 'main': 'CtrlP_Statusline_1',
-	"\ 'prog': 'CtrlP_Statusline_2',
-    "\ }
-
-"" Arguments: focus, byfname, s:regexp, prv, item, nxt, marked
-"" a:1 a:2 a:3 a:4 a:5 a:6 a:7
-"fu! CtrlP_Statusline_1(...)
-	"let focus = '%#LineNr# '.a:1.' %*'
-	"let byfname = '%#Character# '.a:2.' %*'
-	"let regex = a:3 ? '%#LineNr# regex %*' : ''
-	"let prv = ' <'.a:4.'>='
-	"let item = '{ '.a:5.' }'
-	"let nxt = '=<'.a:6.'>'
-	"let marked = ' '.a:7.' '
-	"let dir = ' %=%<%#LineNr# '.getcwd().' %*'
-	"" Return almost the full statusline
-	"retu focus.byfname.regex.item.marked.dir
-"endf
-
-"" Argument: len
-"" a:1
-"fu! CtrlP_Statusline_2(...)
-	"let len = '%#Function# '.a:1.' %*'
-	"let dir = ' %=%<%#LineNr# '.getcwd().' %*'
-	"" Return the full statusline
-	"retu len.dir
-"endf
+" let g:ctrlp_by_filename = 1
+" let g:ctrlp_cache_dir = $VIMRUNTIME.'/.ctrlp_cache'
+" let g:ctrlp_clear_cache_on_exit = 0
+" let g:ctrlp_custom_ignore = '\v\~$'
+" \ . '|\.(o|png|PNG|JPG|class|CLASS|jpg|exe|bak|swp|jar|war|ear|zip|tar|gz|bz2)$'
+" \ . '|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
+" \ . '|.*[/\\]$' 
+" let g:ctrlp_use_caching = 1
+" let g:ctrlp_working_path_mode = 2
+" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files']
 " }}}
 
 " powerline {{{
