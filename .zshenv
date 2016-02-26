@@ -2,8 +2,11 @@
 export SHELL='zsh'
 export EDITOR='vim'
 export VISUAL='vim'
-export GREP_OPTIONS='--color=auto' GREP_COLOR='1,32'
-export PAGER='less'
+export PAGER='vim -c PAGER -'
+
+
+# NVM Dir
+export NVM_DIR=$(readlink -f "$HOME/.nvm")
 
 
 # Language
