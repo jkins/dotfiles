@@ -14,10 +14,6 @@ if [[ -z "$LANG" ]]; then
   export LANG='en_US.UTF-8'
 fi
 
-# NodeJS - nvm
-export NVM_DIR="$HOME/.nvm"
-source "$NVM_DIR/nvm.sh"
-
 # Paths
 typeset -gU cdpath fpath mailpath path
 
