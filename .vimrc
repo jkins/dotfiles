@@ -46,6 +46,8 @@ if has("win32") || has("win64")
 else
   let g:platform = 'nix'
 endif
+" }}}
+
 
 " }}} =========================================================================
 
@@ -104,7 +106,7 @@ set smartcase           " different cases make search case-sensitive
 "set statusline=%F%m
 set smarttab
 if exists("+spelllang")
-    set spelllang=en_US
+  set spelllang=en_US
 endif
 set suffixes+=.class    " don't autocomplete these extensions
 set noswapfile
