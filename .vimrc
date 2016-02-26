@@ -406,10 +406,6 @@ nnoremap <silent> <leader>x :lclose<bar>b#<bar>bd #<CR>
 " Don't move on *
 nnoremap * *<c-o>
 
-" Space to toggle folds.
-"nnoremap <Space> za
-"vnoremap <Space> za
-
 " Recursively open current top level fold
 nnoremap zO zCzO
 
@@ -441,25 +437,9 @@ nnoremap ; :
 " clear search results
 nnoremap <leader><space> :noh<cr>
 
-" easier line+column marks
-nnoremap ' `
-nnoremap ` '
-vnoremap ' `
-vnoremap ` '
-
 " wrapped lines treated as separate when moving up and down
 nnoremap j gj
 nnoremap k gk
-
-" coarse movement
-"nnoremap <s-h> b
-"nnoremap <s-j> 10j
-"nnoremap <s-k> 10k
-"nnoremap <s-l> w
-"vnoremap <s-h> ge
-"vnoremap <s-j> 10j
-"vnoremap <s-k> 10k
-"vnoremap <s-l> e
 
 " split movement
 nnoremap <C-h> <C-w>h
@@ -472,32 +452,31 @@ nnoremap <leader>w :w!<cr>
 vnoremap <leader>w :w!<cr>
 
 " switch to directory of open buffer
-"nnoremap <leader>cd :cd %:p:h<cr>
-"vnoremap <leader>cd :cd %:p:h<cr>
+nnoremap <leader>cd :cd %:p:h<cr>
 
 " / searches literally, <leader>/ is search by regex, see :help magic
-"nnoremap / /\V
-"nnoremap ? ?\V
-"nnoremap <leader>/ /\v
-"nnoremap <leader>? ?\v
-"vnoremap / /\V
-"vnoremap ? ?\V
-"vnoremap <leader>/ /\v
-"vnoremap <leader>? ?\v
+nnoremap / /\V
+nnoremap ? ?\V
+nnoremap <leader>/ /\v
+nnoremap <leader>? ?\v
+vnoremap / /\V
+vnoremap ? ?\V
+vnoremap <leader>/ /\v
+vnoremap <leader>? ?\v
 
 " move a line of text using ALT+[jk], indent with ALT+[hl]
-nnoremap <A-j> :m+<CR>==
-nnoremap <A-k> :m-2<CR>==
-nnoremap <A-h> <<
-nnoremap <A-l> >>
-inoremap <A-j> <Esc>:m+<CR>==gi
-inoremap <A-k> <Esc>:m-2<CR>==gi
-inoremap <A-h> <Esc><<`]a
-inoremap <A-l> <Esc>>>`]a
-vnoremap <A-j> :m'>+<CR>gv=gv
-vnoremap <A-k> :m-2<CR>gv=gv
-vnoremap <A-h> <gv
-vnoremap <A-l> >gv
+nnoremap <a-j> :m+<CR>
+nnoremap <a-h> <<
+nnoremap <a-l> >>
+nnoremap <a-k> :m-2<CR>
+inoremap <a-j> <Esc>:m+<CR>gi
+inoremap <a-k> <Esc>:m-2<CR>gi
+inoremap <a-h> <Esc><<`]a
+inoremap <a-l> <Esc>>>`]a
+vnoremap <a-j> :m'>+<CR>gv
+vnoremap <a-k> :m-2<CR>gv
+vnoremap <a-h> <gv
+vnoremap <a-l> >gv
 
 " details - tab/eol/whitespace chars
 nnoremap <silent> <leader>d :call g:ToggleShowDetails()<cr>
@@ -546,12 +525,21 @@ vnoremap <silent> # :<C-U>
 " {{{ plugins =================================================================
 " scratch buffer
 "nnoremap <leader><tab> :Scratch<cr> 
-" buffer (ctrlp)
-nnoremap <leader>b :CtrlPBuffer<cr>
-" file (ctrlp)
-nnoremap <leader>f :CtrlP<cr>
-" MRU file (ctrlp)
-nnoremap <leader>F :CtrlPMRUFiles<cr>
+
+" ctrlp {{{
+" " buffer
+" nnoremap <leader>b :CtrlPBuffer<cr>
+" " file
+" nnoremap <leader>f :CtrlP<cr>
+" " MRU file
+" nnoremap <leader>F :CtrlPMRUFiles<cr>
+" }}}
+
+" unite {{{
+nnoremap <leader>b :Unite buffer<CR>
+nnoremap <leader>f :UniteWithProjectDir -start-insert file_rec<CR>
+" }}}
+
 " git status
 nnoremap <leader>gs :Gstatus<cr>
 " git log
@@ -576,16 +564,8 @@ nnoremap <F5> :NERDTreeToggle<cr>
 nnoremap <F7> :botright cope<cr>
 " vimrc
 nnoremap <leader>rc :e $MYVIMRC<cr>
-" vim-session
-nnoremap <leader>SS :SaveSession
-nnoremap <leader>SO :OpenSession
-" tagbar
-nnoremap <F6> :TagbarToggle<cr>
 " gundo tree
 nnoremap <leader>u :GundoToggle<cr>
-" smart buffer delete
-nnoremap <silent> <leader>x :Sbd<cr>
-nnoremap <silent> <leader>X :Sbdm<cr>
 " YankRing
 nnoremap <leader>y :YRShow<cr>
 " snipmate
