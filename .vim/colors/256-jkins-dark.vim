@@ -14,7 +14,7 @@ hi Normal           ctermbg=none ctermfg=253 cterm=none
 hi ColorColumn      ctermbg=234             cterm=none   
 hi Comment                      ctermfg=245 cterm=none   
 hi Constant                     ctermfg=042 cterm=none   
-"hi Cursor           ctermbg=254 ctermfg=000 cterm=none   
+hi Cursor           ctermbg=254 ctermfg=000 cterm=none   
 hi CursorColumn     ctermbg=234             cterm=none   
 hi CursorLine       ctermbg=234             cterm=none   
 hi CursorLineNr     ctermbg=233 ctermfg=027 cterm=none
@@ -61,7 +61,7 @@ hi Title                        ctermfg=045 cterm=none
 hi Type                         ctermfg=027 cterm=none
 hi Todo             ctermbg=226 ctermfg=017 cterm=underline
 hi Underlined                                   cterm=none   
-hi VertSplit        ctermbg=000 ctermfg=243 cterm=none   
+hi VertSplit         ctermfg=000 cterm=none   
 hi Visual           ctermbg=012 ctermfg=232 cterm=none   
 hi WildMenu         ctermbg=017 ctermfg=248 cterm=none   
 
@@ -86,8 +86,12 @@ hi xmlString   ctermfg=153 cterm=none
 ":hi ftlStartDirective cterm=none ctermfg=#0000C0
 
 " Easymotion
+"hi EasyMotionTarget   ctermbg=232 ctermfg=039
+"hi EasyMotionShade    ctermbg=234 ctermfg=240
+"hi EasyMotionTarget2First ctermbg=232 ctermfg=027
+"hi EasyMotionTarget2Second ctermbg=232 ctermfg=027
 hi EasyMotionTarget   ctermbg=232 ctermfg=039
-hi EasyMotionShade    ctermbg=234 ctermfg=240
+hi EasyMotionShade    ctermfg=240
 hi EasyMotionTarget2First ctermbg=232 ctermfg=027
 hi EasyMotionTarget2Second ctermbg=232 ctermfg=027
 
