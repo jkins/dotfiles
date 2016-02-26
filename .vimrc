@@ -1,6 +1,17 @@
 
 " {{{ general/startup ========================================================= 
 
+" {{{ terminal cursor
+if &term =~ 'xterm\|rxvt'
+  " █ cursor in normal mode
+  let &t_EI = "\<Esc>[2 q"
+  " _ cursor (blinking) in replace mode
+  let &t_SR = "\<Esc>[3 q"
+  " | cursor (blinking) in insert mode
+  let &t_SI = "\<Esc>[5 q"
+endif
+" }}}
+
 " {{{ pathogen
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
