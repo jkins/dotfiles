@@ -624,6 +624,9 @@ function! g:ToggleNuMode() " {{{
     else
       setlocal relativenumber
     endif
+  else
+    setlocal number
+  endif
 endfunc " }}}
 
 function! g:HandleWinEnter()
