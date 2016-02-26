@@ -13,8 +13,6 @@
 	safecrlf = true
 [apply]
 	whitespace = fix
-[commit]
-	template = ~/.gitcommit
 [github]
 	user = jkins
 [alias]
