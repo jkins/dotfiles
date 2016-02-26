@@ -383,8 +383,6 @@ let mapleader = ","
 let g:mapleader = ","
 let localleader = "\\"
 
-" save a file a super user
-cmap w!! %!sudo tee > /dev/null %
 
 " delete buffer without closing split, also close location windows
 nnoremap <silent> <leader>x :lclose<bar>b#<bar>bd #<CR>
