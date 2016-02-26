@@ -113,6 +113,7 @@ set tabstop=4           " a tab is 4 characters wide
 set tags=./tags;/,~/tags
 set textwidth=0         " auto-newline after n chars (0 disabled)
 set tildeop             " ~ behaves like an operator
+set timeoutlen=400      " ms before mappings are accepted
 set title               " vim can change window title
 set ttyfast             " fast terminal connection
 set ttymouse=xterm2
