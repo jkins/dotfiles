@@ -279,7 +279,7 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType coffee setlocal foldmethod=indent
+autocmd FileType coffee setlocal omnifunc=coffeecomplete#Complete
 " }}}
 
 " neosnippet {{{
@@ -731,6 +731,18 @@ endfunction " }}}
 " }}}
 
 " {{{ filetypes ===============================================================
+augroup ft_vim " {{{
+  au!
+  au FileType vim setlocal foldmethod=marker
+  au FileType vim setlocal foldmarker={{{,}}}
+  au FileType vim setlocal tabstop=2
+augroup END " }}}
+augroup ft_coffee " {{{
+  au!
+  au FileType coffee setlocal foldmethod=indent
+  au FileType coffee setlocal tabstop=2
+  au FileType coffee setlocal foldlevel=1
+augroup END " }}}
 augroup ft_ftl " {{{
   au!
   au FileType ftl setlocal tabstop=2
