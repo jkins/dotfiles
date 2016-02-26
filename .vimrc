@@ -367,9 +367,6 @@ let g:session_default_to_last = 1
 " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files']
 " }}}
 
-" powerline {{{
-"let g:Powerline_symbols = "compatible"
-" }}}
 
 " xmledit {{{
 let g:xml_syntax_folding = 1
