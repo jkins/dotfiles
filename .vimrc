@@ -500,6 +500,10 @@ nnoremap <leader>S <C-w>v<C-w>l
 " tab
 nnoremap <leader>t :tabnew<cr>
 
+" 'replace' a line - comment it out and place a fresh copy below
+nmap <leader>r :copy .<cr>kgccj
+vmap <leader>r :copy '>+<cr>gvgc`[
+
 " windows cygwin/clipboard, vimtip 1623
 if g:platform == 'win'
   nnoremap <silent> <leader>Y :call g:PutWinClip('n', 1)<CR>
