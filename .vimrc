@@ -36,18 +36,7 @@ endif
 
 syntax enable
 filetype plugin indent on
-
-
 lang en_US.UTF-8
-
-" {{{ platform
-if has("win32") || has("win64")
-  let g:platform = 'win'
-else
-  let g:platform = 'nix'
-endif
-" }}}
-
 
 " }}} =========================================================================
 
@@ -134,7 +123,14 @@ set wildmode=list:longest,full,full
 set nowrap              " don't wrap text
 " }}} =========================================================================
 
-" {{{ windows =================================================================
+" {{{ platform-specific =======================================================
+if has("win32") || has("win64")
+  let g:platform = 'win'
+else
+  let g:platform = 'nix'
+endif
+
+" {{{ windows
 if g:platform == 'win'
   "source $VIMRUNTIME/mswin.vim
   "behave mswin
@@ -165,8 +161,52 @@ if g:platform == 'win'
     vnoremap <f3> :set guifont=Consolas:h12:cANSI<CR>
     vnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
   endif
+
+  au! bufwritepost _vimrc source $MYVIMRC
+
+  " windows cygwin/clipboard, vimtip 1623
+  " write to cygwin clipboard
+  function! g:PutWinClip(type, ...) range
+    let sel_save = &selection
+    let &selection = "inclusive"
+    let reg_save = @@
+    if a:type == 'n'
+      silent exe a:firstline . "," . a:lastline . "y"
+    elseif a:type == 'c'
+      silent exe a:1 . "," . a:2 . "y"
+    else
+      silent exe "normal! `<" . a:type . "`>y"
+    endif
+    call writefile(split(@@,"\n"), '/dev/clipboard')
+    let &selection = sel_save
+    let @@ = reg_save
+  endfunction
+
+  " read from cygwin clipboard
+  function! g:GetWinClip()
+    let reg_save = @@
+    let @@ = join(readfile('/dev/clipboard'), "\n")
+    setlocal paste
+    exe 'normal p'
+    setlocal nopaste
+    let @@ = reg_save
+  endfunction
+
+  nnoremap <silent> <leader>y :call g:PutWinClip('n', 1)<CR>
+  vnoremap <silent> <leader>y :call g:PutWinClip(visualmode(), 1)<CR>
+  nnoremap <silent> <leader>p :call g:GetWinClip()<CR>
+  vnoremap <silent> <leader>p x:call g:GetWinClip()<CR>
+" }}}
+else
+" {{{ nix
+  " easier system clipboard copy/paste
+  nnoremap <silent> <leader>y "+y
+  vnoremap <silent> <leader>y "+y
+  nnoremap <silent> <leader>p "+p
+  vnoremap <silent> <leader>p "+p
 endif
 " }}} =========================================================================
+
 
 " {{{ gvim ====================================================================
 if has("gui_running")
@@ -198,7 +238,6 @@ au VimResized * if &diff | :wincmd = | endif
 
 " When vimrc is edited, reload it
 au! bufwritepost .vimrc source $MYVIMRC
-au! bufwritepost _vimrc source $MYVIMRC    " windows
 
 " Normal line numbers in diff
 au FilterWritePost * if &diff | setlocal number | endif
@@ -507,13 +546,6 @@ nnoremap <leader>t :tabnew<cr>
 nmap <leader>r :copy .<cr>kgccj
 vmap <leader>r :copy '>+<cr>gvgc`[
 
-" windows cygwin/clipboard, vimtip 1623
-if g:platform == 'win'
-  nnoremap <silent> <leader>Y :call g:PutWinClip('n', 1)<CR>
-  vnoremap <silent> <leader>Y :call g:PutWinClip(visualmode(), 1)<CR>
-  nnoremap <silent> <leader>P :call g:GetWinClip()<CR>
-  vnoremap <silent> <leader>P x:call g:GetWinClip()<CR>
-endif
 
 " search for selected text, forwards (*)
 vnoremap <silent> * :<C-U>
@@ -595,32 +627,6 @@ function! g:MyGitHead(n)
   endif
 endfunction
 
-" write to cygwin clipboard, vimtip 1623
-function! g:PutWinClip(type, ...) range
-  let sel_save = &selection
-  let &selection = "inclusive"
-  let reg_save = @@
-  if a:type == 'n'
-    silent exe a:firstline . "," . a:lastline . "y"
-  elseif a:type == 'c'
-    silent exe a:1 . "," . a:2 . "y"
-  else
-    silent exe "normal! `<" . a:type . "`>y"
-  endif
-  call writefile(split(@@,"\n"), '/dev/clipboard')
-  let &selection = sel_save
-  let @@ = reg_save
-endfunction
-
-" read from cygwin clipboard, vimptip 1623
-function! g:GetWinClip()
-  let reg_save = @@
-  let @@ = join(readfile('/dev/clipboard'), "\n")
-  setlocal paste
-  exe 'normal p'
-  setlocal nopaste
-  let @@ = reg_save
-endfunction
 
 " toggles none->absolute->relative line numbers       
 function! g:ToggleNuMode() " {{{
