@@ -606,7 +606,7 @@ nnoremap <leader>rc :e $MYVIMRC<cr>
 " gundo tree
 nnoremap <leader>u :GundoToggle<cr>
 " YankRing
-nnoremap <leader>y :YRShow<cr>
+nnoremap <leader>P :YRShow<cr>
 " snipmate
 "inoremap <silent> <tab> <c-r>=snipMate#TriggerSnippet()<cr>
 "snoremap <silent> <tab> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
