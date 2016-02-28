@@ -18,12 +18,14 @@ let g:no_cecutil_maps = 1
 
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
-if !exists("vimpager")
-  call pathogen#infect("bundle-mode-lite/{}")
-  if exists("g:devmode")
-    call pathogen#infect("bundle-mode-dev/{}")
-  endif
-endif
+
+" partial loading for slow startup
+" if !exists("vimpager")
+"   call pathogen#infect("bundle-mode-lite/{}")
+"   if exists("g:devmode")
+"     call pathogen#infect("bundle-mode-dev/{}")
+"   endif
+" endif
 " }}}
 
 " {{{ colorscheme 
@@ -70,7 +72,6 @@ set ignorecase          " lowercase search => case insensitive search
 set incsearch           " search as you type
 set laststatus=2        " statusline is always second-to-last line
 set lazyredraw          " don't redraw when executing macros
-set listchars=tab:⇥\ ,trail:⍁,eol:↲,precedes:‹,extends:›
 set magic              " leave magic at default settings
 set modelines=5
 set mouse=nvi
@@ -125,30 +126,22 @@ set nowrap              " don't wrap text
 
 " {{{ platform-specific =======================================================
 if has("win32") || has("win64")
-  let g:platform = 'win'
+  let g:platform = 'windows'
+elseif has("win32unix") || has("win64unix")
+  let g:platform = 'cygwin'
+elseif has("unix")
+  let g:platform = 'unix'
 else
-  let g:platform = 'nix'
+  let g:platform = 'unknown'
 endif
 
 " {{{ windows
-if g:platform == 'win'
+if g:platform == 'windows'
   "source $VIMRUNTIME/mswin.vim
   "behave mswin
   "let g:no_cygwin_shell=1
-  if $PATH =~? 'cygwin' && !exists("g:no_cygwin_shell")
-    set shell=bash
-    "set shellquote="\""
-    set shellpipe=2>&1\|tee
-    set shellslash
-  endif
 
-  " mintty mode-dependent cursor 
-  let &t_ti.="\e[1 q"
-  let &t_SI.="\e[5 q"
-  let &t_EI.="\e[1 q"
-  let &t_te.="\e[0 q"
- 
-  " gvim
+  " gvim font zooming
   if has("gui_running")
     set guifont=Consolas:h12:cANSI
     " zoom levels
@@ -162,61 +155,18 @@ if g:platform == 'win'
     vnoremap <f4> :set guifont=Consolas:h18:cANSI<CR>
   endif
 
+  " auto source vimrc
   au! bufwritepost _vimrc source $MYVIMRC
-
-  " windows cygwin/clipboard, vimtip 1623
-  " write to cygwin clipboard
-  function! g:PutWinClip(type, ...) range
-    let sel_save = &selection
-    let &selection = "inclusive"
-    let reg_save = @@
-    if a:type == 'n'
-      silent exe a:firstline . "," . a:lastline . "y"
-    elseif a:type == 'c'
-      silent exe a:1 . "," . a:2 . "y"
-    else
-      silent exe "normal! `<" . a:type . "`>y"
-    endif
-    call writefile(split(@@,"\n"), '/dev/clipboard')
-    let &selection = sel_save
-    let @@ = reg_save
-  endfunction
-
-  " read from cygwin clipboard
-  function! g:GetWinClip()
-    let reg_save = @@
-    let @@ = join(readfile('/dev/clipboard'), "\n")
-    setlocal paste
-    exe 'normal p'
-    setlocal nopaste
-    let @@ = reg_save
-  endfunction
-
-  nnoremap <silent> <leader>y :call g:PutWinClip('n', 1)<CR>
-  vnoremap <silent> <leader>y :call g:PutWinClip(visualmode(), 1)<CR>
-  nnoremap <silent> <leader>p :call g:GetWinClip()<CR>
-  vnoremap <silent> <leader>p x:call g:GetWinClip()<CR>
-" }}}
-else
-" {{{ nix
-  " easier system clipboard copy/paste
-  nnoremap <silent> <leader>y "+y
-  vnoremap <silent> <leader>y "+y
-  nnoremap <silent> <leader>p "+p
-  vnoremap <silent> <leader>p "+p
 endif
-" }}} =========================================================================
+" }}}
 
-
-" {{{ gvim ====================================================================
-if has("gui_running")
-  " start at 45x90
-  autocmd GUIEnter * set columns=90 | set lines=45 
-  autocmd GUIEnter * if &diff | simalt ~x | endif
-  autocmd BufEnter pentadactyl.txt call g:QuickEdit()
-
-  set guifont=Inconsolata\ 14
-  set guioptions=crLbhTm
+" listchars
+if g:platform == "windows" || g:platform == "cygwin"
+  " Consolas
+  set listchars=tab:→\ ,trail:◊,eol:¬,precedes:‹,extends:›
+else
+  " Deja Vu Sans Mono
+  set listchars=tab:⇥\ ,trail:⍁,eol:↲,precedes:‹,extends:›
 endif
 " }}} =========================================================================
 
@@ -273,8 +223,15 @@ augroup END
 
 " {{{ plugin settings =========================================================
 " airline {{{
-let g:airline_left_sep='▛'
-let g:airline_right_sep='▜'
+if g:platform == 'windows' || g:platform == 'cygwin'
+  " Consolas
+  let g:airline_left_sep='▒'
+  let g:airline_right_sep='▒'
+else
+  " Deja Vu Sans Mono
+  let g:airline_left_sep='▛'
+  let g:airline_right_sep='▜'
+endif
 let g:airline_theme="murmur"
 let g:airline_inactive_collapse=1
 let g:airline#extensions#tabline#enabled = 1
@@ -546,6 +503,11 @@ nnoremap <leader>t :tabnew<cr>
 nmap <leader>r :copy .<cr>kgccj
 vmap <leader>r :copy '>+<cr>gvgc`[
 
+" easier system clipboard copy/paste
+nnoremap <silent> <leader>y "+y
+vnoremap <silent> <leader>y "+y
+nnoremap <silent> <leader>p "+p
+vnoremap <silent> <leader>p "+p
 
 " search for selected text, forwards (*)
 vnoremap <silent> * :<C-U>
