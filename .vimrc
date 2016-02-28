@@ -69,7 +69,7 @@ set directory^=~/tmp//,$VIMRUNTIME/temp//
 set encoding=utf-8
 set expandtab
 set fileformats=unix
-set fillchars=fold:-,vert:║
+set fillchars=fold:-,vert:▒
 set foldlevelstart=0    " *dont open folds
 set foldtext=MyFoldText()
 set formatoptions=qrn1  " see :help fo-table
@@ -81,7 +81,7 @@ set ignorecase          " lowercase search => case insensitive search
 set incsearch           " search as you type
 set laststatus=2        " statusline is always second-to-last line
 set lazyredraw          " don't redraw when executing macros
-set listchars=tab:»\ ,trail:·,eol:¬,precedes:‹,extends:›
+set listchars=tab:⇥\ ,trail:⍁,eol:↲,precedes:‹,extends:›
 set magic              " leave magic at default settings
 set modelines=5
 set mouse=nvi
