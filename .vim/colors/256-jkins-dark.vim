@@ -36,7 +36,7 @@ hi Keyword                      ctermfg=038 cterm=none
 hi LineNr           ctermbg=232 ctermfg=240 cterm=none   
 hi MatchParen       ctermbg=239             cterm=none   
 hi ModeMsg          ctermbg=010 ctermfg=000 cterm=none
-hi NonText          ctermbg=none ctermfg=234 cterm=none   
+hi NonText          ctermbg=none ctermfg=025 cterm=none
 hi Number                       ctermfg=042 cterm=none   
 hi Pmenu            ctermbg=232 ctermfg=240 cterm=none
 hi PmenuSel         ctermbg=027 ctermfg=232 cterm=none
